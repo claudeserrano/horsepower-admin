@@ -10,7 +10,7 @@
             <div class="col-lg-12">
                 <h1>Please upload the following files:</h1>
             </div>
-{{"asdasdasdasdas"}}
+
 
             <form class="form-horizontal" enctype="multipart/form-data" role="form" method="POST" action="{{ route('upload') }}">
             

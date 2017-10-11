@@ -62,10 +62,10 @@ Route::get('/files', function(Request $request){
 });
 
 Route::get('/reg/{lang}', function (Request $request, $lang) {
-	// if($request->session()->has('reg') && session('reg') < 1){
-	// 	return redirect('home');
-	// }
-	// copy("forms/Registration_". $lang ."_Fillable.pdf", "Form.pdf");
+	if($request->session()->has('reg') && session('reg') < 1){
+		return redirect('home');
+	}
+	//copy("forms/Registration_". $lang ."_Fillable.pdf", "Form.pdf");
     return view($lang . '.registration');
 });
 

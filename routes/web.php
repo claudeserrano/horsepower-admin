@@ -73,8 +73,8 @@ Route::get('/bf/{lang}', function (Request $request, $lang) {
 	if($request->session()->has('bf') && session('bf') < 1){
 		//return redirect('home');
 	}
-	return "forms/BF_". $lang ."_Fillable.pdf";
-	copy("forms/BF_". $lang ."_Fillable.pdf", "Form.pdf");
+	// return "forms/BF_". $lang ."_Fillable.pdf";
+	copy("BF_". $lang ."_Fillable.pdf", "Form.pdf");
     //return view($lang . '.bf');
 });
 

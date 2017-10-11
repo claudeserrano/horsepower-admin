@@ -71,12 +71,11 @@ Route::get('/reg/{lang}', function (Request $request, $lang) {
 
 Route::get('/bf/{lang}', function (Request $request, $lang) {
 	if($request->session()->has('bf') && session('bf') < 1){
-		//return redirect('home');
+		return redirect('home');
 	}
-	// return "forms/BF_". $lang ."_Fillable.pdf";
-	copy("robots.txt", "wowowee.txt");
-	// copy("BF_". $lang ."_Fillable.pdf", "Form.pdf");
-    //return view($lang . '.bf');
+
+	// copy("forms/BF_". $lang ."_Fillable.pdf", "Form.pdf");
+    return view($lang . '.bf');
 });
 
 Route::post('/upload', function(Request $request){

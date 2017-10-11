@@ -1,521 +1,160 @@
 ---
 FieldType: Text
-FieldName: SEX1
-FieldNameAlt: SEX_1)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: SEX2
-FieldNameAlt: SEX_2)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: SEX3
-FieldNameAlt: SEX_3)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: SEX4
-FieldNameAlt: SEX_4)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: SEX5
-FieldNameAlt: SEX_5)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: SEX6
-FieldNameAlt: SEX_6)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: SEX7
-FieldNameAlt: SEX_7)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: SEX8
-FieldNameAlt: SEX_8)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: PCT2
-FieldNameAlt: PCT._2)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: PCT3
-FieldNameAlt: PCT._3)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: PCT4
-FieldNameAlt: PCT._4)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: DATE
-FieldNameAlt: DATE
+FieldName: Name
 FieldFlags: 0
 FieldJustification: Left
 ---
 FieldType: Text
-FieldName: STATE
-FieldNameAlt: STATE
+FieldName: SSN1
 FieldFlags: 0
 FieldJustification: Left
 ---
 FieldType: Text
-FieldName: CITY
-FieldNameAlt: ZIP
+FieldName: SSN2
 FieldFlags: 0
 FieldJustification: Left
 ---
 FieldType: Text
-FieldName: ZIP
-FieldNameAlt: ZIP
+FieldName: SSN3
 FieldFlags: 0
 FieldJustification: Left
 ---
 FieldType: Text
-FieldName: SSN
-FieldNameAlt: SSN
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Button
-FieldName: SEX
-FieldFlags: 49152
-FieldJustification: Left
-FieldStateOption: F
-FieldStateOption: M
-FieldStateOption: Off
----
-FieldType: Text
-FieldName: NUMBER
-FieldNameAlt: HOME/CELL #
+FieldName: Address1
 FieldFlags: 0
 FieldJustification: Left
 ---
 FieldType: Text
-FieldName: EMAIL
-FieldNameAlt: EMAIL
+FieldName: City
 FieldFlags: 0
 FieldJustification: Left
 ---
 FieldType: Text
-FieldName: PLACE_MARRIED
-FieldNameAlt: PLACE_MARRIED
+FieldName: State
 FieldFlags: 0
 FieldJustification: Left
 ---
 FieldType: Text
-FieldName: DATE_MARRIED
-FieldNameAlt: DATE_MARRIED
+FieldName: Zip
 FieldFlags: 0
 FieldJustification: Left
 ---
 FieldType: Text
-FieldName: DATE_DIVORCE
-FieldNameAlt: DATE_DIVORCE
+FieldName: AreaCode
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: TelNo1
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: TelNo2
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: AreaCodePhone
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: CellNo1
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: CellNo2
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: DOBMonth
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: DOBDay
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: DOBYear
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Email
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: StartMonth
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: StartDay
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: StartYear
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Employer
+FieldFlags: 0
+FieldValue: Horsepower Electric
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Classification
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: SchoolClass
 FieldFlags: 0
 FieldJustification: Left
 ---
 FieldType: Button
-FieldName: STATUS
+FieldName: EthnicGroup
 FieldFlags: 49152
+FieldValue: Hispanic
 FieldJustification: Left
-FieldStateOption: DIVORCED
-FieldStateOption: MARRIED
+FieldStateOption: Hispanic
+FieldStateOption: NonHispanic
 FieldStateOption: Off
-FieldStateOption: SINGLE
-FieldStateOption: WIDOW
----
-FieldType: Text
-FieldName: DOB
-FieldNameAlt: DOB
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: SPOUSE_EMPLOYER
-FieldNameAlt: SPOUSE_EMPLOYER
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: SPOUSE_EMPLOYER_ADDRESS
-FieldNameAlt: SPOUSE_EMPLOYER_ADDRESS
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: SPOUSE_EMPLOYER_NUMBER
-FieldNameAlt: SPOUSE_EMPLOYER_NUMBER
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: SPOUSE_DATE_HIRED
-FieldNameAlt: SPOUSE_DATE_HIRED
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: BENEFICIARY2
-FieldNameAlt: BENEFICIARY NAME
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: BENEFICIARY3
-FieldNameAlt: BENEFICIARY NAME
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: BENEFICIARY4
-FieldNameAlt: BENEFICIARY NAME
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: BENE_SSN1
-FieldNameAlt: SOC. SECURITY NO._1
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: BENE_SSN2
-FieldNameAlt: SOC. SECURITY NO._2)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: BENE_SSN3
-FieldNameAlt: SOC. SECURITY NO._3)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: BENE_SSN4
-FieldNameAlt: SOC. SECURITY NO._4)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: BENE_DOB1
-FieldNameAlt: BIRTH DATE_1)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: BENE_DOB2
-FieldNameAlt: BIRTH DATE_2)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: BENE_DOB3
-FieldNameAlt: BIRTH DATE_3)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: BENE_DOB4
-FieldNameAlt: BIRTH DATE_4)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: BENE_RELATIONSHIP1
-FieldNameAlt: RELATIONSHIP_1)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: BENE_RELATIONSHIP2
-FieldNameAlt: RELATIONSHIP_2)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: BENE_RELATIONSHIP3
-FieldNameAlt: RELATIONSHIP_3)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: BENE_RELATIONSHIP4
-FieldNameAlt: RELATIONSHIP_4)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: PCT1
-FieldNameAlt: PCT._1)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: BENEFICIARY1
-FieldNameAlt: BENEFICIARY NAME
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: FAMILY1
-FieldNameAlt: FAMILY NAME
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: FAMILY2
-FieldNameAlt: FAMILY NAME
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: FAMILY3
-FieldNameAlt: FAMILY NAME
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: FAMILY4
-FieldNameAlt: FAMILY NAME
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: FAMILY5
-FieldNameAlt: FAMILY NAME
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: FAMILY6
-FieldNameAlt: FAMILY NAME
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: FAMILY7
-FieldNameAlt: FAMILY NAME
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: FAMILY8
-FieldNameAlt: FAMILY NAME
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: FAMILY_DOB1
-FieldNameAlt: DATE OF BIRTH_1)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_DOB2
-FieldNameAlt: DATE OF BIRTH_2)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_DOB3
-FieldNameAlt: DATE OF BIRTH_3)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_DOB4
-FieldNameAlt: DATE OF BIRTH_4)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_DOB5
-FieldNameAlt: DATE OF BIRTH_5)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_DOB6
-FieldNameAlt: DATE OF BIRTH_6)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_DOB7
-FieldNameAlt: DATE OF BIRTH_7)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_DOB8
-FieldNameAlt: DATE OF BIRTH_8)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_SSN2
-FieldNameAlt: SOC. SEC. NUMBER_2)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_SSN3
-FieldNameAlt: SOC. SEC. NUMBER_3)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_SSN1
-FieldNameAlt: SOC. SEC. NUMBER_1)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_SSN4
-FieldNameAlt: SOC. SEC. NUMBER_4)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_SSN5
-FieldNameAlt: SOC. SEC. NUMBER_5)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_SSN6
-FieldNameAlt: SOC. SEC. NUMBER_6)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_SSN7
-FieldNameAlt: SOC. SEC. NUMBER_7)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_SSN8
-FieldNameAlt: SOC. SEC. NUMBER_8)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_RELATIONSHIP1
-FieldNameAlt: RELATIONSHIP_1)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_RELATIONSHIP2
-FieldNameAlt: RELATIONSHIP_2)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_RELATIONSHIP3
-FieldNameAlt: RELATIONSHIP_3)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_RELATIONSHIP4
-FieldNameAlt: RELATIONSHIP_4)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_RELATIONSHIP5
-FieldNameAlt: RELATIONSHIP_5)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_RELATIONSHIP6
-FieldNameAlt: RELATIONSHIP_6)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_RELATIONSHIP7
-FieldNameAlt: RELATIONSHIP_7)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: FAMILY_RELATIONSHIP8
-FieldNameAlt: RELATIONSHIP_8)
-FieldFlags: 0
-FieldJustification: Center
----
-FieldType: Text
-FieldName: APT
-FieldNameAlt: APT. NO.
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: INITIALS
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: FIRST_NAME
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: STREET_ADDRESS
-FieldNameAlt: STREET ADDRESS
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: SHOP_NAME
-FieldNameAlt: SHOP NAME
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: JOB_CLASS
-FieldNameAlt: JOB CLASS
-FieldFlags: 0
-FieldJustification: Left
----
-FieldType: Text
-FieldName: DATE_HIRED
-FieldNameAlt: DATE HIRED
-FieldFlags: 0
-FieldJustification: Left
 ---
 FieldType: Button
-FieldName: COURT_ORDER
+FieldName: Race
 FieldFlags: 49152
+FieldValue: White
 FieldJustification: Left
-FieldStateOption: N
+FieldStateOption: AfricanAmerican
+FieldStateOption: Asian
+FieldStateOption: Native
 FieldStateOption: Off
-FieldStateOption: Y
+FieldStateOption: Other
+FieldStateOption: White
 ---
-FieldType: Text
-FieldName: LAST_NAME
-FieldFlags: 0
+FieldType: Button
+FieldName: Sex
+FieldFlags: 49152
+FieldValue: Male
 FieldJustification: Left
+FieldStateOption: Female
+FieldStateOption: Male
+FieldStateOption: Off
+---
+FieldType: Button
+FieldName: Veteran
+FieldFlags: 49152
+FieldValue: No
+FieldJustification: Left
+FieldStateOption: No
+FieldStateOption: Off
+FieldStateOption: Yes

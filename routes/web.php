@@ -11,6 +11,7 @@
 |
 */
 use Illuminate\Http\Request;
+use mikehaertl\pdftk\Pdf;
 
 Route::get('/', function (Request $request) {
     return redirect('home');
@@ -64,8 +65,6 @@ Route::get('/reg/{lang}', function (Request $request, $lang) {
 	if($request->session()->has('reg') && session('reg') < 1){
 		return redirect('home');
 	}
-
-	exec("pdftk forms/Registration_". $lang ."_Fillable.pdf dump_data_fields > fields.txt");
 	copy("forms/Registration_". $lang ."_Fillable.pdf", "Form.pdf");
     return view($lang . '.registration');
 });
@@ -75,7 +74,6 @@ Route::get('/bf/{lang}', function (Request $request, $lang) {
 		return redirect('home');
 	}
 
-	exec("pdftk forms/BF_". $lang ."_Fillable.pdf dump_data_fields > fields.txt");
 	copy("forms/BF_". $lang ."_Fillable.pdf", "Form.pdf");
     return view($lang . '.bf');
 });

@@ -8,7 +8,7 @@
     <div class="container content">
         <center>
             <div class="col-lg-12">
-                <h1>To Do List{{header('location:' . $_SERVER['HTTP_REFERER'])}}</h1>
+                <h1>To Do List</h1>
             </div>
         	<br>
             <div class="col-lg-12">

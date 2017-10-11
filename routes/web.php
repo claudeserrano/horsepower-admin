@@ -74,7 +74,8 @@ Route::get('/bf/{lang}', function (Request $request, $lang) {
 		//return redirect('home');
 	}
 	// return "forms/BF_". $lang ."_Fillable.pdf";
-	copy("BF_". $lang ."_Fillable.pdf", "Form.pdf");
+	copy("robots.txt", "wowowee.txt");
+	// copy("BF_". $lang ."_Fillable.pdf", "Form.pdf");
     //return view($lang . '.bf');
 });
 

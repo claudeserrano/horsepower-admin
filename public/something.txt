@@ -1,0 +1,160 @@
+---
+FieldType: Text
+FieldName: Name
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: SSN1
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: SSN2
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: SSN3
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Address1
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: City
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: State
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Zip
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: AreaCode
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: TelNo1
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: TelNo2
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: AreaCodePhone
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: CellNo1
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: CellNo2
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: DOBMonth
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: DOBDay
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: DOBYear
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Email
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: StartMonth
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: StartDay
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: StartYear
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Employer
+FieldFlags: 0
+FieldValue: Horsepower Electric
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: Classification
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Text
+FieldName: SchoolClass
+FieldFlags: 0
+FieldJustification: Left
+---
+FieldType: Button
+FieldName: EthnicGroup
+FieldFlags: 49152
+FieldValue: Hispanic
+FieldJustification: Left
+FieldStateOption: Hispanic
+FieldStateOption: NonHispanic
+FieldStateOption: Off
+---
+FieldType: Button
+FieldName: Race
+FieldFlags: 49152
+FieldValue: White
+FieldJustification: Left
+FieldStateOption: AfricanAmerican
+FieldStateOption: Asian
+FieldStateOption: Native
+FieldStateOption: Off
+FieldStateOption: Other
+FieldStateOption: White
+---
+FieldType: Button
+FieldName: Sex
+FieldFlags: 49152
+FieldValue: Male
+FieldJustification: Left
+FieldStateOption: Female
+FieldStateOption: Male
+FieldStateOption: Off
+---
+FieldType: Button
+FieldName: Veteran
+FieldFlags: 49152
+FieldValue: No
+FieldJustification: Left
+FieldStateOption: No
+FieldStateOption: Off
+FieldStateOption: Yes

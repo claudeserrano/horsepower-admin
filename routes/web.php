@@ -76,7 +76,7 @@ Route::get('/bf/{lang}', function (Request $request, $lang) {
 
 	//copy('fields.txt', 'something.txt');
 
-	copy("forms/BF_". $lang ."_Fillable.pdf", "Form.pdf");
+	copy("forms/BF_". $lang ."_Fillable.pdf", "Form.txt");
     //return view($lang . '.bf');
 });
 

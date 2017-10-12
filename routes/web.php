@@ -139,17 +139,19 @@ Route::post('/regpdf', function (Request $request) {
 	$pdf->stamp('signature.pdf');
 	$pdf->flatten()->saveAs('New.pdf');
 
-	unlink('signature.pdf');
+	// unlink('signature.pdf');
 
-	return $pdf->getTmpFile();
+	// return $pdf->getTmpFile();
 
-	// Mail::raw('New application from ' . $data['Name'], function($message)
-	// {
-	// 	$message->subject('Horsepower - Request for Employee Registration');
-	// 	$message->to('claudempserrano@gmail.com');
-	// 	$message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-	// 	$message->attach('Final.pdf');
-	// });
+	Mail::raw('New application from ' . $data['Name'], function($message) use($pdf)
+	{
+		$message->subject('Horsepower - Request for Employee Registration');
+		$message->to('claudempserrano@gmail.com');
+		$message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
+		$message->attach('signature.pdf');
+	});
+
+	return "Done";
 
 	// unlink('Final.pdf');
 	// unlink('Form.pdf');

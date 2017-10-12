@@ -23,39 +23,7 @@ Route::get('/home', function (Request $request) {
 	if(!$request->session()->has('bf'))
 		session(['bf' => '1']);
     return view('home');
-});
-
-// Route::get('/ultipro', function(Request $request){
-// 	$vars = array();
-
-// 	$ch = curl_init();
-// 	curl_setopt($ch, CURLOPT_URL,"https://service2.ultipro.com/personnel/v1/employee-ids");
-// 	curl_setopt($ch, CURLOPT_POST, 1);
-// 	curl_setopt($ch, CURLOPT_POSTFIELDS,$vars);  //Post Fields
-// 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-// 	$headers = [
-// 	    'X-Apple-Tz: 0',
-// 	    'X-Apple-Store-Front: 143444,12',
-// 	    'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-// 	    'Accept-Encoding: gzip, deflate',
-// 	    'Accept-Language: en-US,en;q=0.5',
-// 	    'Cache-Control: no-cache',
-// 	    'Content-Type: application/x-www-form-urlencoded; charset=utf-8',
-// 	    'Host: www.example.com',
-// 	    'Referer: http://www.example.com/index.php', //Your referrer address
-// 	    'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:28.0) Gecko/20100101 Firefox/28.0',
-// 	    'X-MicrosoftAjax: Delta=true'
-// 	];
-
-// 	curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-// 	$server_output = curl_exec ($ch);
-
-// 	curl_close ($ch);
-
-// 	print  $server_output ;
-// });
+})->name('home');
 
 Route::get('/files', function(Request $request){
 	return view('files');
@@ -65,7 +33,6 @@ Route::get('/reg/{lang}', function (Request $request, $lang) {
 	if($request->session()->has('reg') && session('reg') < 1){
 		return redirect('home');
 	}
-	//copy("forms/Registration_". $lang ."_Fillable.pdf", "Form.pdf");
     return view($lang . '.registration');
 });
 
@@ -73,8 +40,6 @@ Route::get('/bf/{lang}', function (Request $request, $lang) {
 	if($request->session()->has('bf') && session('bf') < 1){
 		return redirect('home');
 	}
-
-	// copy("forms/BF_". $lang ."_Fillable.pdf", "Form.pdf");
     return view($lang . '.bf');
 });
 
@@ -120,31 +85,31 @@ Route::post('/upload', function(Request $request){
 
 Route::post('/regpdf', function (Request $request) {
 
-	$request->validate([
-        'Name' => 'required',
-        'SSN1' => 'required|size:3',
-        'SSN2' => 'required|size:2',
-        'SSN3' => 'required|size:4',
-        'Address1' => 'required',
-        'City' => 'required',
-        'State' => 'required',
-        'Zip' => 'required',
-        'AreaCode' => 'required|size:3',
-        'TelNo1' => 'required|size:3',
-        'TelNo2' => 'required|size:4',
-        'AreaCodePhone' => 'required|size:3',
-        'CellNo1' => 'required|size:3',
-        'CellNo2' => 'required|size:4',
-        'DOBMonth' => 'required|size:2',
-        'DOBDay' => 'required|size:2',
-        'DOBYear' => 'required|size:4',
-        'Email' => 'required|email',
-        'StartMonth' => 'required|size:2',
-        'StartDay' => 'required|size:2',
-        'StartYear' => 'required|size:4',
-        'Classification' => 'required',
-        'SchoolClass' => 'required',
-    ]);
+	// $request->validate([
+ //        'Name' => 'required',
+ //        'SSN1' => 'required|size:3',
+ //        'SSN2' => 'required|size:2',
+ //        'SSN3' => 'required|size:4',
+ //        'Address1' => 'required',
+ //        'City' => 'required',
+ //        'State' => 'required',
+ //        'Zip' => 'required',
+ //        'AreaCode' => 'required|size:3',
+ //        'TelNo1' => 'required|size:3',
+ //        'TelNo2' => 'required|size:4',
+ //        'AreaCodePhone' => 'required|size:3',
+ //        'CellNo1' => 'required|size:3',
+ //        'CellNo2' => 'required|size:4',
+ //        'DOBMonth' => 'required|size:2',
+ //        'DOBDay' => 'required|size:2',
+ //        'DOBYear' => 'required|size:4',
+ //        'Email' => 'required|email',
+ //        'StartMonth' => 'required|size:2',
+ //        'StartDay' => 'required|size:2',
+ //        'StartYear' => 'required|size:4',
+ //        'Classification' => 'required',
+ //        'SchoolClass' => 'required',
+ //    ]);
 
 	$data_uri = $request->uri;
 	$encoded_image = explode(",", $data_uri)[1];
@@ -166,30 +131,32 @@ Route::post('/regpdf', function (Request $request) {
 
 	unlink('signature.png');
 
-	exec("pdftk Form.pdf stamp signature.pdf output Final.pdf");
+	$data = $request->all();
+	unset($data['_token']);
+
+	$pdf = new Pdf('forms/Registration_English_Fillable.pdf');
+	$pdf->fillForm($data);
+	$pdf->stamp('signature.pdf');
+	$pdf->flatten()->saveAs('New.pdf');
 
 	unlink('signature.pdf');
 
-	$data = $request->all();
-	unset($data['_token']);
-	$pdf = new App\PdfForm('Final.pdf', $data);
+	return $pdf->getTmpFile();
 
-	$pdf->flatten()->save('Final.pdf');
+	// Mail::raw('New application from ' . $data['Name'], function($message)
+	// {
+	// 	$message->subject('Horsepower - Request for Employee Registration');
+	// 	$message->to('claudempserrano@gmail.com');
+	// 	$message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
+	// 	$message->attach('Final.pdf');
+	// });
 
-	Mail::raw('New application from ' . $data['Name'], function($message)
-	{
-		$message->subject('Horsepower - Request for Employee Registration');
-		$message->to('claudempserrano@gmail.com');
-		$message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-		$message->attach('Final.pdf');
-	});
+	// unlink('Final.pdf');
+	// unlink('Form.pdf');
 
-	unlink('Final.pdf');
-	unlink('Form.pdf');
+	// $request->session()->put('reg', 0);
 
-	$request->session()->put('reg', 0);
-
-	return redirect('home');
+	// return redirect('home');
 
 })->name('regpdf');
 

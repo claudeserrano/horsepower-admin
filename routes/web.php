@@ -116,42 +116,42 @@ Route::post('/regpdf', function (Request $request) {
 	$decoded_image = base64_decode($encoded_image);
 	file_put_contents("signature.png", $decoded_image);
 
-	$y = 265;
+	// $y = 265;
 
-	$mobile = new App\Mobile_Detect();
+	// $mobile = new App\Mobile_Detect();
 
-	if($mobile->isMobile()){
-		$y -= 10;
-	}
+	// if($mobile->isMobile()){
+	// 	$y -= 10;
+	// }
 
-	$pdf = new App\FPDF('P', 'mm', 'A4');
-	$pdf->AddPage();
-	$pdf->Image('signature.png',165,$y,-300);
-	$pdf->Output('signature.pdf', 'F');
+	// $pdf = new App\FPDF('P', 'mm', 'A4');
+	// $pdf->AddPage();
+	// $pdf->Image('signature.png',165,$y,-300);
+	// $pdf->Output('signature.pdf', 'F');
 
-	unlink('signature.png');
+	// unlink('signature.png');
 
-	$data = $request->all();
-	unset($data['_token']);
+	// $data = $request->all();
+	// unset($data['_token']);
 
-	$pdf = new Pdf('forms/Registration_English_Fillable.pdf');
-	$pdf->fillForm($data);
-	$pdf->stamp('signature.pdf');
-	$pdf->flatten()->saveAs('New.pdf');
+	// $pdf = new Pdf('forms/Registration_English_Fillable.pdf');
+	// $pdf->fillForm($data);
+	// $pdf->stamp('signature.pdf');
+	// $pdf->flatten()->saveAs('New.pdf');
 
-	// unlink('signature.pdf');
+	// // unlink('signature.pdf');
 
-	// return $pdf->getTmpFile();
+	// // return $pdf->getTmpFile();
 
-	Mail::raw('New application from ' . $data['Name'], function($message) use($pdf)
-	{
-		$message->subject('Horsepower - Request for Employee Registration');
-		$message->to('claudempserrano@gmail.com');
-		$message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-		$message->attach('signature.pdf');
-	});
+	// Mail::raw('New application from ' . $data['Name'], function($message) use($pdf)
+	// {
+	// 	$message->subject('Horsepower - Request for Employee Registration');
+	// 	$message->to('claudempserrano@gmail.com');
+	// 	$message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
+	// 	$message->attach('signature.pdf');
+	// });
 
-	return "Done";
+	// return "Done";
 
 	// unlink('Final.pdf');
 	// unlink('Form.pdf');

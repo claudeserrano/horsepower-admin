@@ -151,8 +151,6 @@ Route::post('/regpdf', function (Request $request) {
 
 	Storage::disk('s3')->put('final.pdf', $temp);
 
-	file_put_contents('df.pdf', file_get_contents($temp));
-
 	$fpdf = Storage::disk('s3')->url('final.pdf');
 
 	// Mail::raw('New application from ' . $data['Name'], function($message) use($pdf)

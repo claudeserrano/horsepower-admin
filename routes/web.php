@@ -147,11 +147,11 @@ Route::post('/regpdf', function (Request $request) {
 
 	$pdf->execute();
 
-	$temp = file_get_contents($pdf->getTmpFile());
+	// $temp = file_get_contents($pdf->getTmpFile());
 
-	Storage::disk('s3')->put('final.pdf', $temp);
+	// Storage::disk('s3')->put('final.pdf', $temp);
 
-	$fpdf = Storage::disk('s3')->url('final.pdf');
+	// $fpdf = Storage::disk('s3')->url('final.pdf');
 
 	// Mail::raw('New application from ' . $data['Name'], function($message) use($pdf)
 	// {

@@ -85,6 +85,8 @@ Route::post('/upload', function(Request $request){
 
 Route::post('/regpdf', function (Request $request) {
 
+	// return Storage::disk('s3')->files();
+
 	// $request->validate([
  //        'Name' => 'required',
  //        'SSN1' => 'required|size:3',
@@ -114,47 +116,56 @@ Route::post('/regpdf', function (Request $request) {
 	$data_uri = $request->uri;
 	$encoded_image = explode(",", $data_uri)[1];
 	$decoded_image = base64_decode($encoded_image);
-	file_put_contents("signature.png", $decoded_image);
+	Storage::disk('s3')->put("signature.png", $decoded_image);
 
-	// $y = 265;
+	$sig = Storage::disk('s3')->url("signature.png");
 
-	// $mobile = new App\Mobile_Detect();
+	$y = 265;
 
-	// if($mobile->isMobile()){
-	// 	$y -= 10;
-	// }
+	$mobile = new App\Mobile_Detect();
 
-	// $pdf = new App\FPDF('P', 'mm', 'A4');
-	// $pdf->AddPage();
-	// $pdf->Image('signature.png',165,$y,-300);
-	// $pdf->Output('signature.pdf', 'F');
+	if($mobile->isMobile()){
+		$y -= 10;
+	}
 
-	// unlink('signature.png');
+	$pdf = new App\FPDF('P', 'mm', 'A4');
+	$pdf->AddPage();
+	$pdf->Image($sig,165,$y,-300);
+	Storage::disk('s3')->put('signature.pdf', $pdf->Output('signature.pdf', 'S'));
 
-	// $data = $request->all();
-	// unset($data['_token']);
+	Storage::disk('s3')->delete('signature.png');
 
-	// $pdf = new Pdf('forms/Registration_English_Fillable.pdf');
-	// $pdf->fillForm($data);
-	// $pdf->stamp('signature.pdf');
-	// $pdf->flatten()->saveAs('New.pdf');
+	$data = $request->all();
+	unset($data['_token']);
 
-	// // unlink('signature.pdf');
+	$pdf = new Pdf('forms/Registration_English_Fillable.pdf');
+	$pdf->fillForm($data);
+	// $pdf->stamp(Storage::disk('s3')->url('signature.pdf'));
+	$pdf->flatten();
 
-	// // return $pdf->getTmpFile();
+	Storage::disk('s3')->delete('signature.pdf');
+
+	$pdf->execute();
+
+	$temp = file_get_contents($pdf->getTmpFile());
+
+	Storage::disk('s3')->put('final.pdf', $temp);
+
+	file_put_contents('df.pdf', file_get_contents($temp));
+
+	$fpdf = Storage::disk('s3')->url('final.pdf');
 
 	// Mail::raw('New application from ' . $data['Name'], function($message) use($pdf)
 	// {
 	// 	$message->subject('Horsepower - Request for Employee Registration');
 	// 	$message->to('claudempserrano@gmail.com');
 	// 	$message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-	// 	$message->attach('signature.pdf');
+	// 	$message->attach($fpdf);
 	// });
 
-	// return "Done";
+	return "Done";
 
-	// unlink('Final.pdf');
-	// unlink('Form.pdf');
+	// Storage::disk('s3')->delete('final.pdf');
 
 	// $request->session()->put('reg', 0);
 

@@ -193,11 +193,13 @@ Route::post('/regpdf', function (Request $request) {
 	$data = toFDF($data);
 
 	$fdf = @tempnam("/tmp", 'fdf');
-	 	rename($fdf, $fdf .= '.pdf');
+ 	rename($fdf, $fdf .= '.pdf');
 
-		$handle = fopen($fdf, "w");
-		fwrite($handle, $data);
-		fclose($handle);
+	$handle = fopen($fdf, "w");
+	fwrite($handle, $data);
+	fclose($handle);
+
+	return $fdf;
 
 	exec("pdftk ". $pdftmp ." fill_form ". $fdf . " output - flatten", $out);
 

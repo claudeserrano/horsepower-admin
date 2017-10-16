@@ -151,6 +151,8 @@ Route::post('/regpdf', function (Request $request) {
 	$pdf->stamp(Storage::disk('s3')->url('signature.pdf'));
 	$pdf->flatten();
 
+	return file_get_contents($pdf->getTmpFile());
+
 	Storage::disk('s3')->delete('signature.pdf');
 
 	$pdf->execute();

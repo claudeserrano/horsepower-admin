@@ -113,7 +113,7 @@ Route::post('/regpdf', function (Request $request) {
  //        'SchoolClass' => 'required',
  //    ]);
 
-	return exec("pdftk");
+	return exec("bin/pdftk");
 
 	$data_uri = $request->uri;
 	$encoded_image = explode(",", $data_uri)[1];

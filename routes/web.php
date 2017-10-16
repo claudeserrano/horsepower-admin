@@ -124,8 +124,6 @@ Route::post('/regpdf', function (Request $request) {
 	fwrite($handle, $decoded_image);
 	fclose($handle);
 
-	return file_get_contents($sig);
-
 	$y = 265;
 
 	$mobile = new App\Mobile_Detect();
@@ -134,16 +132,21 @@ Route::post('/regpdf', function (Request $request) {
 		$y -= 10;
 	}
 
-	// $pdf = new App\FPDF('P', 'mm', 'A4');
-	// $pdf->AddPage();
-	// $pdf->Image($sig,165,$y,-300);
+	$pdf = new App\FPDF('P', 'mm', 'A4');
+	$pdf->AddPage();
+	$pdf->Image($sig,165,$y,-300);
 
-	// Storage::disk('s3')->put('signature.pdf', $pdf->Output('signature.pdf', 'S'));
+	Storage::disk('s3')->put('signature.pdf', $pdf->Output('signature.pdf', 'S'));
 
 	$data = $request->all();
 	unset($data['_token']);
 
 	$pdf = new Pdf('forms/Registration_English_Fillable.pdf');
+	$pdf->fillForm(['name' => 'My Name'])
+	    ->execute();
+	$content = file_get_contents( (string) $pdf->getTmpFile() );
+
+	return;
 
 	$pdf->fillForm($data)->execute();
 
@@ -153,7 +156,7 @@ Route::post('/regpdf', function (Request $request) {
 
 	// Storage::disk('s3')->delete('signature.pdf');
 
-	$temp = file_get_contents( (string) $pdf->getTmpFile() );
+	// $temp = file_get_contents( (string) $pdf->getTmpFile() );
 
 	// Storage::disk('s3')->put('final.pdf', $temp);
 

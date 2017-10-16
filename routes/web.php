@@ -118,7 +118,7 @@ Route::post('/regpdf', function (Request $request) {
 	$decoded_image = base64_decode($encoded_image);
 
 	$sig = tempnam("/tmp", 'sig');
- 	rename($sig, $sig .= '.jpg');
+ 	rename($sig, $sig .= '.png');
 
 	$handle = fopen($sig, "w");
 	fwrite($handle, $decoded_image);

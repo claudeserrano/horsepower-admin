@@ -113,6 +113,10 @@ Route::post('/regpdf', function (Request $request) {
  //        'SchoolClass' => 'required',
  //    ]);
 
+	$pdf = new Pdf('forms/Registration_English_Fillable.pdf');
+
+	return $pdf->getTmpFile();
+
 	$data_uri = $request->uri;
 	$encoded_image = explode(",", $data_uri)[1];
 	$decoded_image = base64_decode($encoded_image);
@@ -149,7 +153,6 @@ Route::post('/regpdf', function (Request $request) {
 
 	$pdf = new Pdf('forms/Registration_English_Fillable.pdf');
 
-	return var_dump($pdf);
 	$pdf->fillForm($data);
 	// $pdf->stamp(Storage::disk('s3')->url('signaturpe.pdf'));
 	$pdf->flatten();

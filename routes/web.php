@@ -143,6 +143,10 @@ Route::post('/regpdf', function (Request $request) {
 
 	$pdf = new Pdf('forms/Registration_English_Fillable.pdf');
 
+	$pdf->send();
+
+	return;
+
 	$pdf->fillForm($data)->execute();
 
 	// $pdf->stamp(Storage::disk('s3')->url('signature.pdf'));
@@ -151,7 +155,7 @@ Route::post('/regpdf', function (Request $request) {
 
 	// Storage::disk('s3')->delete('signature.pdf');
 
-	// $temp = file_get_contents( (string) $pdf->getTmpFile() );
+	$temp = file_get_contents( (string) $pdf->getTmpFile() );
 
 	// Storage::disk('s3')->put('final.pdf', $temp);
 

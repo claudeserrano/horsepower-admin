@@ -175,6 +175,8 @@ Route::post('/regpdf', function (Request $request) {
 
 		exec('/app/bin/pdftk '. $pdftmp .' stamp ' . $sig . ' output -', $output);
 
+		return;
+
 		foreach($output as $out){
 			$fin .= (string) $out . "\n";
 		}
@@ -199,14 +201,14 @@ Route::post('/regpdf', function (Request $request) {
 	fwrite($handle, $data);
 	fclose($handle);
 
-	exec("/app/bin/pdftk ". $pdftmp ." fill_form ". $fdf . " output - flatten", $out);
+	exec("pdftk ". $pdftmp ." fill_form ". $fdf . " output - flatten", $out);
 
 	$las = "";
 	foreach($out as $sin){
 		$las .= (string) $sin . "\n";
 	}
 
-	return $out;
+	return $las;
 
 	Storage::disk('s3')->put('final.pdf', $las);
 

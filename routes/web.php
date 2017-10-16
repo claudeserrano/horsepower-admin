@@ -139,6 +139,7 @@ Route::post('/regpdf', function (Request $request) {
 	$pdf = new App\FPDF('P', 'mm', 'A4');
 	$pdf->AddPage();
 	$pdf->Image($sig,165,$y,-300);
+
 	Storage::disk('s3')->put('signature.pdf', $pdf->Output('signature.pdf', 'S'));
 
 	// Storage::disk('s3')->delete('signature.png');
@@ -151,7 +152,7 @@ Route::post('/regpdf', function (Request $request) {
 	// $pdf->stamp(Storage::disk('s3')->url('signature.pdf'));
 	$pdf->flatten();
 
-	return file_get_contents($pdf->getTmpFile());
+	return file_get_contents(Storage::disk('s3')->url('signature.pdf'));
 
 	Storage::disk('s3')->delete('signature.pdf');
 

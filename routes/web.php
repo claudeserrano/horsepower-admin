@@ -133,25 +133,25 @@ Route::post('/regpdf', function (Request $request) {
 	$pdf->Image($sig,165,$y,-300);
 	Storage::disk('s3')->put('signature.pdf', $pdf->Output('signature.pdf', 'S'));
 
-	// Storage::disk('s3')->delete('signature.png');
+	Storage::disk('s3')->delete('signature.png');
 
-	// $data = $request->all();
-	// unset($data['_token']);
+	$data = $request->all();
+	unset($data['_token']);
 
-	// $pdf = new Pdf('forms/Registration_English_Fillable.pdf');
-	// $pdf->fillForm($data);
-	// // $pdf->stamp(Storage::disk('s3')->url('signature.pdf'));
-	// $pdf->flatten();
+	$pdf = new Pdf('forms/Registration_English_Fillable.pdf');
+	$pdf->fillForm($data);
+	// $pdf->stamp(Storage::disk('s3')->url('signature.pdf'));
+	$pdf->flatten();
 
-	// Storage::disk('s3')->delete('signature.pdf');
+	Storage::disk('s3')->delete('signature.pdf');
 
-	// $pdf->execute();
+	$pdf->execute();
 
-	// $temp = file_get_contents($pdf->getTmpFile());
+	$temp = file_get_contents($pdf->getTmpFile());
 
-	// Storage::disk('s3')->put('final.pdf', $temp);
+	Storage::disk('s3')->put('final.pdf', $temp);
 
-	// $fpdf = Storage::disk('s3')->url('final.pdf');
+	$fpdf = Storage::disk('s3')->url('final.pdf');
 
 	// Mail::raw('New application from ' . $data['Name'], function($message) use($pdf)
 	// {

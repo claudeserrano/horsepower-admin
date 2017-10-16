@@ -175,8 +175,6 @@ Route::post('/regpdf', function (Request $request) {
 
 		exec('/app/bin/pdftk '. $pdftmp .' stamp ' . $sig . ' output -', $output);
 
-		return;
-
 		foreach($output as $out){
 			$fin .= (string) $out . "\n";
 		}
@@ -184,6 +182,8 @@ Route::post('/regpdf', function (Request $request) {
 		$handle = fopen($pdftmp, "w");
 		fwrite($handle, $fin);
 		fclose($handle);
+
+		return file_get_contents($pdftmp);
 
 	} catch (Exception $e) {
 		return $e; 

@@ -115,7 +115,8 @@ Route::post('/regpdf', function (Request $request) {
 
 	// $temp = Storage::disk('s3')->url('Mr Bean Logo.png', ['response-content-disposition' => 'true']);
 
-	return tempnam("/tmp", "TMP");
+	$t = tempnam("/tmp", "TMP");
+	rename($t, $t + ".txt");
 	return var_dump($t);
 	$data_uri = $request->uri;
 	$encoded_image = explode(",", $data_uri)[1];

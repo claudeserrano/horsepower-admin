@@ -173,7 +173,7 @@ Route::post('/regpdf', function (Request $request) {
 		fwrite($handle, $pdf);
 		fclose($handle);
 
-		exec('pdftk '. $pdftmp .' stamp ' . $sig . ' output -', $output);
+		exec('/app/bin/pdftk '. $pdftmp .' stamp ' . $sig . ' output -', $output);
 
 		foreach($output as $out){
 			$fin .= (string) $out . "\n";
@@ -199,9 +199,7 @@ Route::post('/regpdf', function (Request $request) {
 	fwrite($handle, $data);
 	fclose($handle);
 
-	return file_get_contents($pdftmp);
-
-	exec("pdftk ". $pdftmp ." fill_form ". $fdf . " output - flatten", $out);
+	exec("/app/bin/pdftk ". $pdftmp ." fill_form ". $fdf . " output - flatten", $out);
 
 	$las = "";
 	foreach($out as $sin){

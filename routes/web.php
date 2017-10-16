@@ -199,14 +199,14 @@ Route::post('/regpdf', function (Request $request) {
 		fwrite($handle, $data);
 		fclose($handle);
 
-	exec("pdftk ". $pdftmp ." fill_form ". $fdf . " output " . sys_get_temp_dir() . "\something.pdf flatten", $out);
+	exec("pdftk ". $pdftmp ." fill_form ". $fdf . " output " . sys_get_temp_dir() . "/something.pdf flatten", $out);
 
 	// $las = "";
 	// foreach($out as $sin){
 	// 	$las .= (string) $sin . "\n";
 	// }
 
-	return sys_get_temp_dir() . "\something.pdf";
+	return file_get_contents(sys_get_temp_dir() . "/something.pdf");
 
 	// $pdf->stamp(Storage::disk('s3')->url('signature.pdf'));
 

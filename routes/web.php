@@ -113,11 +113,11 @@ Route::post('/regpdf', function (Request $request) {
  //        'SchoolClass' => 'required',
  //    ]);
 
-	// $temp = Storage::disk('s3')->url('Mr Bean Logo.png', ['response-content-disposition' => 'true']);
+	$temp = Storage::disk('s3')->url('Mr Bean Logo.png', ['response-content-disposition' => 'true']);
 
-	$t = tempnam("/tmp", "TMP");
+	$t = tempnam("/tmp", $temp);
 	// rename($t, $t + ".txt");
-	return var_dump($t);
+	return file_get_contents($t);
 	$data_uri = $request->uri;
 	$encoded_image = explode(",", $data_uri)[1];
 	$decoded_image = base64_decode($encoded_image);

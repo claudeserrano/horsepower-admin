@@ -157,7 +157,7 @@ Route::post('/regpdf', function (Request $request) {
 
 	// Storage::disk('s3')->put('final.pdf', $temp);
 
-	return $pdf->getTmpFile();
+	return $temp;
 
 
 	$fpdf = Storage::disk('s3')->url('final.pdf');

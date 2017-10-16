@@ -199,7 +199,7 @@ Route::post('/regpdf', function (Request $request) {
 	fwrite($handle, $data);
 	fclose($handle);
 
-	exec("pdftk ". $pdftmp ." fill_form ". $fdf . " output -", $out);
+	exec("/app/bin/pdftk ". $pdftmp ." fill_form ". $fdf . " output -", $out);
 
 	$las = "";
 	foreach($out as $sin){

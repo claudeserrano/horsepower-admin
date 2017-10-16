@@ -118,7 +118,7 @@ Route::post('/regpdf', function (Request $request) {
 	$decoded_image = base64_decode($encoded_image);
 	// Storage::disk('s3')->put("signature.png", $decoded_image);
 
-	return env('AWS_ACCESS_KEY_ID');
+	return Storage::disk('s3')->files();
 
 	// $sig = Storage::disk('s3')->url("signature.png");
 

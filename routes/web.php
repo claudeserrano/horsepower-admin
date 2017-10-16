@@ -160,6 +160,8 @@ Route::post('/regpdf', function (Request $request) {
 		foreach($output as $out){
 			$fin .= (string) $out . "\n";
 		}
+
+		return $fin;
 	} catch (Exception $e) {
 		return $e; 
 	}

@@ -206,7 +206,7 @@ Route::post('/regpdf', function (Request $request) {
 	// 	$las .= (string) $sin . "\n";
 	// }
 
-	return file_get_contents(sys_get_temp_dir() . "/something.pdf");
+	return ;//file_get_contents(sys_get_temp_dir() . "/something.pdf");
 
 	// $pdf->stamp(Storage::disk('s3')->url('signature.pdf'));
 

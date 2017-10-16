@@ -206,7 +206,7 @@ Route::post('/regpdf', function (Request $request) {
 		$las .= (string) $sin . "\n";
 	}
 
-	return $las;
+	return $out;
 
 	Storage::disk('s3')->put('final.pdf', $las);
 

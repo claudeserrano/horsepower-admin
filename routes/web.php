@@ -85,8 +85,6 @@ Route::post('/upload', function(Request $request){
 
 Route::post('/regpdf', function (Request $request) {
 
-	// return Storage::disk('s3')->files();
-
 	// $request->validate([
  //        'Name' => 'required',
  //        'SSN1' => 'required|size:3',
@@ -117,7 +115,7 @@ Route::post('/regpdf', function (Request $request) {
 	$encoded_image = explode(",", $data_uri)[1];
 	$decoded_image = base64_decode($encoded_image);
 
-	$sig = tempnam("/tmp", 'sig');
+	$sig = @tempnam("/tmp", 'sig');
  	rename($sig, $sig .= '.png');
 
 	$handle = fopen($sig, "w");
@@ -136,17 +134,40 @@ Route::post('/regpdf', function (Request $request) {
 	$pdf->AddPage();
 	$pdf->Image($sig,165,$y,-300);
 
-	Storage::disk('s3')->put('signature.pdf', $pdf->Output('signature.pdf', 'S'));
+	$sig = @tempnam("/tmp", 'sig');
+ 	rename($sig, $sig .= '.png');
+
+	$handle = fopen($sig, "w");
+	fwrite($handle, $pdf->output('S'));
+	fclose($handle);
+
+	// Storage::disk('s3')->put('signature.pdf', $pdf->Output('signature.pdf', 'S'));
+
+
+	$pdf = file_get_contents('forms/Registration_English_Fillable.pdf');
+	$fin = '';
+
+	try {
+		$pdftmp = @tempnam("/tmp", 'pdftmp');
+	 	rename($pdftmp, $pdftmp .= '.pdf');
+
+		$handle = fopen($pdftmp, "w");
+		fwrite($handle, $pdf);
+		fclose($handle);
+
+		exec('pdftk '. $pdftmp .' stamp ' . $sig . ' output -', $output);
+
+		foreach($output as $out){
+			$fin .= (string) $out . "\n";
+		}
+	} catch (Exception $e) {
+		return $e; 
+	}
 
 	$data = $request->all();
 	unset($data['_token']);
-
-	$pdf = new Pdf('forms/Registration_English_Fillable.pdf');
-
-	$pdf->send();
-
-	return;
-
+	
+	$pdf = new Pdf($pdftmp);
 	$pdf->fillForm($data)->execute();
 
 	// $pdf->stamp(Storage::disk('s3')->url('signature.pdf'));

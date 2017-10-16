@@ -115,7 +115,11 @@ Route::post('/regpdf', function (Request $request) {
 
 	$temp = Storage::disk('s3')->url('Mr Bean Logo.png', ['response-content-disposition' => 'true']);
 
-	$t = tempnam("/tmp", $temp);
+	$t = tempnam("/tmp", 'asdsad');
+
+	$handle = fopen($t, "w");
+	fwrite($handle, "writing to tempfile");
+	fclose($handle);
 	// rename($t, $t + ".txt");
 	return $t;
 	$data_uri = $request->uri;

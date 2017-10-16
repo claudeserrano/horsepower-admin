@@ -142,11 +142,6 @@ Route::post('/regpdf', function (Request $request) {
 	unset($data['_token']);
 
 	$pdf = new Pdf('forms/Registration_English_Fillable.pdf');
-	$pdf->fillForm(['name' => 'My Name'])
-	    ->execute();
-	$content = file_get_contents( (string) $pdf->getTmpFile() );
-
-	return $pdf->getdatatry();
 
 	$pdf->fillForm($data)->execute();
 

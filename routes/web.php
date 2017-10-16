@@ -210,18 +210,6 @@ Route::post('/regpdf', function (Request $request) {
 
 	return;
 
-	// $pdf->stamp(Storage::disk('s3')->url('signature.pdf'));
-
-	// $pdf->flatten();
-
-	// Storage::disk('s3')->delete('signature.pdf');
-
-	// $temp = file_get_contents( (string) $pdf->getTmpFile() );
-
-	// Storage::disk('s3')->put('final.pdf', $temp);
-
-	return;
-
 	$fpdf = Storage::disk('s3')->url('final.pdf');
 
 	// Mail::raw('New application from ' . $data['Name'], function($message) use($pdf)

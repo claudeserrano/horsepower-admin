@@ -83,6 +83,24 @@ Route::post('/upload', function(Request $request){
     return redirect('home');
 })->name('upload');
 
+function toFDF($arr){
+	$header = "%FDF-1.2 \n
+		1 0 obj<</FDF<< /Fields[ \n";
+	$footer = "] >> >> \n
+		endobj \n
+		trailer \n
+		<</Root 1 0 R>> \n
+		%%EOF";
+
+	$fdf = "";
+	foreach($arr as $key=>$value){
+		$fdf .= "<< /T (" . $key . ") /V (" . $value . ") >>\n";
+	}
+
+	return $header . $fdf . $footer;
+
+}
+
 Route::post('/regpdf', function (Request $request) {
 
 	// $request->validate([
@@ -161,28 +179,46 @@ Route::post('/regpdf', function (Request $request) {
 			$fin .= (string) $out . "\n";
 		}
 
-		return $fin;
+		$handle = fopen($pdftmp, "w");
+		fwrite($handle, $fin);
+		fclose($handle);
+
 	} catch (Exception $e) {
 		return $e; 
 	}
 
 	$data = $request->all();
 	unset($data['_token']);
-	
-	$pdf = new Pdf($pdftmp);
-	$pdf->fillForm($data)->execute();
+
+	$data = toFDF($data);
+
+	$fdf = @tempnam("/tmp", 'fdf');
+	 	rename($fdf, $fdf .= '.pdf');
+
+		$handle = fopen($fdf, "w");
+		fwrite($handle, $data);
+		fclose($handle);
+
+	exec("pdftk ". $pdftmp ." fill_form ". $fdf . " output " . sys_get_temp_dir() . "\something.pdf flatten", $out);
+
+	// $las = "";
+	// foreach($out as $sin){
+	// 	$las .= (string) $sin . "\n";
+	// }
+
+	return sys_get_temp_dir() . "\something.pdf";
 
 	// $pdf->stamp(Storage::disk('s3')->url('signature.pdf'));
 
-	$pdf->flatten();
+	// $pdf->flatten();
 
 	// Storage::disk('s3')->delete('signature.pdf');
 
-	$temp = file_get_contents( (string) $pdf->getTmpFile() );
+	// $temp = file_get_contents( (string) $pdf->getTmpFile() );
 
 	// Storage::disk('s3')->put('final.pdf', $temp);
 
-	return $temp;
+	return;
 
 	$fpdf = Storage::disk('s3')->url('final.pdf');
 

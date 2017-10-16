@@ -199,7 +199,7 @@ Route::post('/regpdf', function (Request $request) {
 	fwrite($handle, $data);
 	fclose($handle);
 
-	return $fdf;
+	return file_get_contents($fdf);
 
 	exec("pdftk ". $pdftmp ." fill_form ". $fdf . " output - flatten", $out);
 

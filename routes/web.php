@@ -117,14 +117,16 @@ Route::post('/regpdf', function (Request $request) {
 	$encoded_image = explode(",", $data_uri)[1];
 	$decoded_image = base64_decode($encoded_image);
 
-	// $sig = tempnam("/tmp", 'sig');
- // 	rename($sig, $sig .= '.png');
+	$sig = tempnam("/tmp", 'sig');
+ 	rename($sig, $sig .= '.png');
 
-	// $handle = fopen($sig, "w");
-	// fwrite($handle, $decoded_image);
-	// fclose($handle);
+	$handle = fopen($sig, "w");
+	fwrite($handle, $decoded_image);
+	fclose($handle);
 
-	// $sig = Storage::disk('s3')->url("signature.png");
+	$sig = Storage::disk('s3')->url("signature.png");
+
+	return(file_get_contents($sig));
 
 	$y = 265;
 
@@ -157,8 +159,7 @@ Route::post('/regpdf', function (Request $request) {
 
 	// Storage::disk('s3')->put('final.pdf', $temp);
 
-	return $pdf->getTmpFile();
-
+	return $temp;
 
 	$fpdf = Storage::disk('s3')->url('final.pdf');
 

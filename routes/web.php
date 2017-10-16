@@ -118,7 +118,7 @@ Route::post('/regpdf', function (Request $request) {
 	$t = tempnam("/tmp", 'asdsad');
 
 	$handle = fopen($t, "w");
-	fwrite($handle, "writing to tempfile");
+	fwrite($handle, file_get_contents($temp);
 	fclose($handle);
 	// rename($t, $t + ".txt");
 	return file_get_contents($t);

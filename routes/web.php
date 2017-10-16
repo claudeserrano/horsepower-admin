@@ -113,10 +113,10 @@ Route::post('/regpdf', function (Request $request) {
  //        'SchoolClass' => 'required',
  //    ]);
 
-	// $data_uri = $request->uri;
-	// $encoded_image = explode(",", $data_uri)[1];
-	// $decoded_image = base64_decode($encoded_image);
-	// Storage::disk('s3')->put("signature.png", $decoded_image);
+	$data_uri = $request->uri;
+	$encoded_image = explode(",", $data_uri)[1];
+	$decoded_image = base64_decode($encoded_image);
+	Storage::disk('s3')->put("signature.png", $decoded_image);
 
 	// $sig = Storage::disk('s3')->url("signature.png");
 

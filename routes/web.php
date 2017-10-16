@@ -126,7 +126,7 @@ Route::post('/regpdf', function (Request $request) {
 
 	$sig = Storage::disk('s3')->url("signature.png");
 
-	return(file_get_contents($sig));
+	return file_get_contents($sig);
 
 	$y = 265;
 

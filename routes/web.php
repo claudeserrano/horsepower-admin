@@ -146,7 +146,7 @@ Route::post('/regpdf', function (Request $request) {
 	    ->execute();
 	$content = file_get_contents( (string) $pdf->getTmpFile() );
 
-	return;
+	return $pdf->send('smth.pdf', true);
 
 	$pdf->fillForm($data)->execute();
 

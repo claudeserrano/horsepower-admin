@@ -113,6 +113,8 @@ Route::post('/regpdf', function (Request $request) {
  //        'SchoolClass' => 'required',
  //    ]);
 
+	return exec('pdftk');
+
 	$data_uri = $request->uri;
 	$encoded_image = explode(",", $data_uri)[1];
 	$decoded_image = base64_decode($encoded_image);

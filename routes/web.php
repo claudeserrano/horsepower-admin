@@ -113,6 +113,10 @@ Route::post('/regpdf', function (Request $request) {
  //        'SchoolClass' => 'required',
  //    ]);
 
+	// $temp = Storage::disk('s3')->url('Mr Bean Logo.png', ['response-content-disposition' => 'true']);
+
+	return tempnam("/tmp", "TMP");
+	return var_dump($t);
 	$data_uri = $request->uri;
 	$encoded_image = explode(",", $data_uri)[1];
 	$decoded_image = base64_decode($encoded_image);
@@ -140,7 +144,7 @@ Route::post('/regpdf', function (Request $request) {
 
 	$pdf = new Pdf('forms/Registration_English_Fillable.pdf');
 	$pdf->fillForm($data);
-	// $pdf->stamp(Storage::disk('s3')->url('signature.pdf'));
+	$pdf->stamp(Storage::disk('s3')->url('signature.pdf'));
 	$pdf->flatten();
 
 	Storage::disk('s3')->delete('signature.pdf');
@@ -149,9 +153,10 @@ Route::post('/regpdf', function (Request $request) {
 
 	$temp = file_get_contents($pdf->getTmpFile());
 
+	Storage::disk('s3')->put('final.pdf', $temp);
+
 	return $temp;
 
-	Storage::disk('s3')->put('final.pdf', $temp);
 
 	$fpdf = Storage::disk('s3')->url('final.pdf');
 

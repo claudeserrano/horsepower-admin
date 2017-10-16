@@ -112,22 +112,20 @@ Route::post('/regpdf', function (Request $request) {
  //        'Classification' => 'required',
  //        'SchoolClass' => 'required',
  //    ]);
-
-	$temp = Storage::disk('s3')->url('Mr Bean Logo.png', ['response-content-disposition' => 'true']);
-
-	$t = tempnam("/tmp", 'asdsad');
-
-	$handle = fopen($t, "w");
-	fwrite($handle, file_get_contents($temp));
-	fclose($handle);
-	// rename($t, $t + ".txt");
-	return file_get_contents($t);
+	
 	$data_uri = $request->uri;
 	$encoded_image = explode(",", $data_uri)[1];
 	$decoded_image = base64_decode($encoded_image);
-	Storage::disk('s3')->put("signature.png", $decoded_image);
 
-	$sig = Storage::disk('s3')->url("signature.png");
+	$sig = tempnam("/tmp", 'sig');
+
+	$handle = fopen($sig, "w");
+	fwrite($handle, $decoded_image);
+	fclose($handle);
+
+	// Storage::disk('s3')->put("signature.png", $decoded_image);
+
+	// $sig = Storage::disk('s3')->url("signature.png");
 
 	$y = 265;
 
@@ -141,6 +139,8 @@ Route::post('/regpdf', function (Request $request) {
 	$pdf->AddPage();
 	$pdf->Image($sig,165,$y,-300);
 	Storage::disk('s3')->put('signature.pdf', $pdf->Output('signature.pdf', 'S'));
+
+	return;
 
 	Storage::disk('s3')->delete('signature.png');
 

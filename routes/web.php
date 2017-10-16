@@ -121,7 +121,7 @@ Route::post('/regpdf', function (Request $request) {
 	fwrite($handle, "writing to tempfile");
 	fclose($handle);
 	// rename($t, $t + ".txt");
-	return $t;
+	return file_get_contents($t);
 	$data_uri = $request->uri;
 	$encoded_image = explode(",", $data_uri)[1];
 	$decoded_image = base64_decode($encoded_image);

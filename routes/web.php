@@ -113,22 +113,16 @@ Route::post('/regpdf', function (Request $request) {
  //        'SchoolClass' => 'required',
  //    ]);
 
-	$pdf = new Pdf('forms/Registration_English_Fillable.pdf');
-
-	return $pdf->getTmpFile();
-
 	$data_uri = $request->uri;
 	$encoded_image = explode(",", $data_uri)[1];
 	$decoded_image = base64_decode($encoded_image);
 
-	$sig = tempnam("/tmp", 'sig');
- 	rename($sig, $sig .= '.png');
+	// $sig = tempnam("/tmp", 'sig');
+ // 	rename($sig, $sig .= '.png');
 
-	$handle = fopen($sig, "w");
-	fwrite($handle, $decoded_image);
-	fclose($handle);
-
-	// Storage::disk('s3')->put("signature.png", $decoded_image);
+	// $handle = fopen($sig, "w");
+	// fwrite($handle, $decoded_image);
+	// fclose($handle);
 
 	// $sig = Storage::disk('s3')->url("signature.png");
 
@@ -140,30 +134,28 @@ Route::post('/regpdf', function (Request $request) {
 		$y -= 10;
 	}
 
-	$pdf = new App\FPDF('P', 'mm', 'A4');
-	$pdf->AddPage();
-	$pdf->Image($sig,165,$y,-300);
+	// $pdf = new App\FPDF('P', 'mm', 'A4');
+	// $pdf->AddPage();
+	// $pdf->Image($sig,165,$y,-300);
 
-	Storage::disk('s3')->put('signature.pdf', $pdf->Output('signature.pdf', 'S'));
-
-	// Storage::disk('s3')->delete('signature.png');
+	// Storage::disk('s3')->put('signature.pdf', $pdf->Output('signature.pdf', 'S'));
 
 	$data = $request->all();
 	unset($data['_token']);
 
 	$pdf = new Pdf('forms/Registration_English_Fillable.pdf');
 
-	$pdf->fillForm($data);
-	// $pdf->stamp(Storage::disk('s3')->url('signaturpe.pdf'));
+	$pdf->fillForm($data)->execute()
+
+	$pdf->stamp(Storage::disk('s3')->url('signature.pdf'));
+
 	$pdf->flatten();
 
-	Storage::disk('s3')->delete('signature.pdf');
+	// Storage::disk('s3')->delete('signature.pdf');
 
-	$pdf->execute();
+	$temp = file_get_contents( (string) $pdf->getTmpFile() );
 
-	$temp = file_get_contents($pdf->getTmpFile());
-
-	Storage::disk('s3')->put('final.pdf', $temp);
+	// Storage::disk('s3')->put('final.pdf', $temp);
 
 	return $temp;
 

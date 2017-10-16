@@ -873,14 +873,15 @@ function Image($file, $x=null, $y=null, $w=0, $h=0, $type='', $link='')
 	if(!isset($this->images[$file]))
 	{
 		// First use of this image, get info
-		if($type=='')
-		{
-			$pos = strrpos($file,'.');
-			if(!$pos)
-				$this->Error('Image file has no extension and no type was specified: '.$file);
-			$type = substr($file,$pos+1);
-		}
-		$type = strtolower($type);
+		// if($type=='')
+		// {
+		// 	$pos = strrpos($file,'.');
+		// 	if(!$pos)
+		// 		$this->Error('Image file has no extension and no type was specified: '.$file);
+		// 	$type = substr($file,$pos+1);
+		// }
+		// $type = strtolower($type);
+		$type = 'jpeg';
 		if($type=='jpeg')
 			$type = 'jpg';
 		$mtd = '_parse'.$type;

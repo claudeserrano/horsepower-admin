@@ -113,25 +113,25 @@ Route::post('/regpdf', function (Request $request) {
  //        'SchoolClass' => 'required',
  //    ]);
 
-	$data_uri = $request->uri;
-	$encoded_image = explode(",", $data_uri)[1];
-	$decoded_image = base64_decode($encoded_image);
-	Storage::disk('s3')->put("signature.png", $decoded_image);
+	// $data_uri = $request->uri;
+	// $encoded_image = explode(",", $data_uri)[1];
+	// $decoded_image = base64_decode($encoded_image);
+	// Storage::disk('s3')->put("signature.png", $decoded_image);
 
-	$sig = Storage::disk('s3')->url("signature.png");
+	// $sig = Storage::disk('s3')->url("signature.png");
 
-	$y = 265;
+	// $y = 265;
 
-	$mobile = new App\Mobile_Detect();
+	// $mobile = new App\Mobile_Detect();
 
-	if($mobile->isMobile()){
-		$y -= 10;
-	}
+	// if($mobile->isMobile()){
+	// 	$y -= 10;
+	// }
 
-	$pdf = new App\FPDF('P', 'mm', 'A4');
-	$pdf->AddPage();
-	$pdf->Image($sig,165,$y,-300);
-	Storage::disk('s3')->put('signature.pdf', $pdf->Output('signature.pdf', 'S'));
+	// $pdf = new App\FPDF('P', 'mm', 'A4');
+	// $pdf->AddPage();
+	// $pdf->Image($sig,165,$y,-300);
+	// Storage::disk('s3')->put('signature.pdf', $pdf->Output('signature.pdf', 'S'));
 
 	// Storage::disk('s3')->delete('signature.png');
 

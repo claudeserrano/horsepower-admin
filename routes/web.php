@@ -149,7 +149,7 @@ Route::post('/regpdf', function (Request $request) {
 
 	$pdf = new Pdf('forms/Registration_English_Fillable.pdf');
 
-	return file_get_contents($pdf->getData());
+	return $pdf->getData();
 	$pdf->fillForm($data);
 	// $pdf->stamp(Storage::disk('s3')->url('signaturpe.pdf'));
 	$pdf->flatten();

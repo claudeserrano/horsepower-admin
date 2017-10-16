@@ -141,9 +141,7 @@ Route::post('/regpdf', function (Request $request) {
 	$pdf->Image($sig,165,$y,-300);
 	Storage::disk('s3')->put('signature.pdf', $pdf->Output('signature.pdf', 'S'));
 
-	return;
-
-	Storage::disk('s3')->delete('signature.png');
+	// Storage::disk('s3')->delete('signature.png');
 
 	$data = $request->all();
 	unset($data['_token']);

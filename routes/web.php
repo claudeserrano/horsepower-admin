@@ -182,6 +182,8 @@ Route::post('/regpdf/{lang}', function (Request $request, $lang) {
 		fwrite($handle, $pdf);
 		fclose($handle);
 
+		return file_get_contents($pdftmp);
+
 		exec(env('LD_LIBRARY_PATH', '') . 'pdftk '. $pdftmp .' stamp ' . $sig . ' output -', $output);
 
 		foreach($output as $out){
@@ -222,7 +224,6 @@ Route::post('/regpdf/{lang}', function (Request $request, $lang) {
 	fwrite($handle, $last);
 	fclose($handle);
 
-	return file_get_contents($final);
 
 	Mail::raw('New application from ' . $data['Name'], function($message) use($final)
 	{

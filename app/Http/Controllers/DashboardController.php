@@ -23,7 +23,6 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
-        return env('MAIL_DRIVER');
 		if(!$request->session()->has('reg'))
 			session(['reg' => '1']);
 		if(!$request->session()->has('bf'))

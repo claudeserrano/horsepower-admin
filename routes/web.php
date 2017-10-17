@@ -232,7 +232,7 @@ Route::post('/regpdf/{lang}', function (Request $request, $lang) {
 
 	$request->session()->put('reg', 0);
 
-	return redirect('home');
+	return redirect('dashboard');
 
 })->name('regpdf');
 

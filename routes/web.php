@@ -174,8 +174,6 @@ Route::post('/regpdf/{lang}', function (Request $request, $lang) {
 	$pdf = file_get_contents('forms/Registration_English_Fillable.pdf');
 	$fin = '';
 
-	$command = getenv('LIB_PATH', '') . 'pdftk ';
-
 	return $command;
 
 	try {
@@ -186,7 +184,7 @@ Route::post('/regpdf/{lang}', function (Request $request, $lang) {
 		fwrite($handle, $pdf);
 		fclose($handle);
 
-		exec(env('LD_LIBRARY_PATH', '') . 'pdftk '. $pdftmp .' stamp ' . $sig . ' output -', $output);
+		exec(getenv('LIB_PATH', '') . 'pdftk '. $pdftmp .' stamp ' . $sig . ' output -', $output);
 
 		foreach($output as $out){
 			$fin .= (string) $out . "\n";
@@ -214,7 +212,7 @@ Route::post('/regpdf/{lang}', function (Request $request, $lang) {
 	fwrite($handle, $dfdf);
 	fclose($handle);
 
-	exec(env('LD_LIBRARY_PATH', '') . "pdftk ". $pdftmp ." fill_form ". $fdf . " output -", $out);
+	exec(getenv('LIB_PATH', '') . "pdftk ". $pdftmp ." fill_form ". $fdf . " output -", $out);
 
 	$last = "";
 	foreach($out as $sin){
@@ -338,7 +336,7 @@ Route::post('/bfpdf', function (Request $request) {
 		fwrite($handle, $pdf);
 		fclose($handle);
 
-		exec(env("LD_LIBRARY_PATH") . 'pdftk '. $pdftmp .' stamp ' . $sig . ' output -', $output);
+		exec(getenv("LIB_PATH") . 'pdftk '. $pdftmp .' stamp ' . $sig . ' output -', $output);
 
 		foreach($output as $out){
 			$fin .= (string) $out . "\n";
@@ -364,7 +362,7 @@ Route::post('/bfpdf', function (Request $request) {
 	fwrite($handle, $dfdf);
 	fclose($handle);
 
-	exec(env("LD_LIBRARY_PATH") . "pdftk ". $pdftmp ." fill_form ". $fdf . " output -", $out);
+	exec(getenv("LIB_PATH") . "pdftk ". $pdftmp ." fill_form ". $fdf . " output -", $out);
 
 	$last = "";
 	foreach($out as $sin){

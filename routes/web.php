@@ -174,6 +174,10 @@ Route::post('/regpdf/{lang}', function (Request $request, $lang) {
 	$pdf = file_get_contents('forms/Registration_English_Fillable.pdf');
 	$fin = '';
 
+	$command = env('LD_LIBRARY_PATH', '') . 'pdftk ';
+
+	return $command;
+
 	try {
 		$pdftmp = @tempnam("/tmp", 'pdftmp');
 	 	rename($pdftmp, $pdftmp .= '.pdf');

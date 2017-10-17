@@ -178,6 +178,8 @@ Route::post('/regpdf/{lang}', function (Request $request, $lang) {
 
 	return $command;
 
+	return $command;
+
 	try {
 		$pdftmp = @tempnam("/tmp", 'pdftmp');
 	 	rename($pdftmp, $pdftmp .= '.pdf');

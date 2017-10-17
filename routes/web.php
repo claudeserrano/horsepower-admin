@@ -174,8 +174,6 @@ Route::post('/regpdf/{lang}', function (Request $request, $lang) {
 	$pdf = file_get_contents('forms/Registration_English_Fillable.pdf');
 	$fin = '';
 
-	return $command;
-
 	try {
 		$pdftmp = @tempnam("/tmp", 'pdftmp');
 	 	rename($pdftmp, $pdftmp .= '.pdf');

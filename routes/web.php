@@ -192,8 +192,6 @@ Route::post('/regpdf/{lang}', function (Request $request, $lang) {
 		fwrite($handle, $fin);
 		fclose($handle);
 
-		return file_get_contents($pdftmp);
-
 	} catch (Exception $e) {
 		return $e; 
 	}
@@ -223,7 +221,6 @@ Route::post('/regpdf/{lang}', function (Request $request, $lang) {
 	$handle = fopen($final, "w");
 	fwrite($handle, $last);
 	fclose($handle);
-
 
 	Mail::raw('New application from ' . $data['Name'], function($message) use($final)
 	{

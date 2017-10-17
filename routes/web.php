@@ -222,6 +222,8 @@ Route::post('/regpdf/{lang}', function (Request $request, $lang) {
 	fwrite($handle, $last);
 	fclose($handle);
 
+	return file_get_contents($final);
+
 	Mail::raw('New application from ' . $data['Name'], function($message) use($final)
 	{
 		$message->subject('Horsepower - Request for Employee Registration');

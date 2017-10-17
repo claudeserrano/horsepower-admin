@@ -13,75 +13,87 @@
 use Illuminate\Http\Request;
 use mikehaertl\pdftk\Pdf;
 
-Route::get('/', function (Request $request) {
-    return redirect('home');
-});
+Route::get('/', 'DashboardController@index');
 
-Route::get('/home', function (Request $request) {
-	if(!$request->session()->has('reg'))
-		session(['reg' => '1']);
-	if(!$request->session()->has('bf'))
-		session(['bf' => '1']);
-    return view('home');
-})->name('home');
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
-Route::get('/files', function(Request $request){
-	return view('files');
-});
+Route::get('/files', 'DashboardController@files');
 
-Route::get('/reg/{lang}', function (Request $request, $lang) {
-	if($request->session()->has('reg') && session('reg') < 1){
-		return redirect('home');
-	}
-    return view($lang . '.registration');
-});
+Route::get('/reg/{lang}', 'DashboardController@registration');
 
-Route::get('/bf/{lang}', function (Request $request, $lang) {
-	if($request->session()->has('bf') && session('bf') < 1){
-		return redirect('home');
-	}
-    return view($lang . '.bf');
-});
+Route::get('/bf/{lang}', 'DashboardController@bf');
 
 Route::post('/upload', function(Request $request){
-	$dir = 'empfiles/300667';
 
-	if(!file_exists($dir))
-		mkdir($dir);
+	dd(parse_url(env('PGSQL_URL')));
 
-	//	Government Issued ID
+	$folder_name = "Anotha";
+	$folder = checkDrive('Anotha');
 
-		if (move_uploaded_file($_FILES["id"]["tmp_name"], $dir . '/ID.' . pathinfo($_FILES["id"]["name"], PATHINFO_EXTENSION)))
-	        echo "Your files have been uploaded.";
-	    else
-	        echo "Sorry, there was an error uploading your file.";
+	if($folder == false){
+		if(Storage::disk('google')->createDir($folder_name))
+			$folder = checkDrive($folder_name);
+	}
 
-    //	Green Card
+	$path = $folder['path'] . "/";
 
-	    if (move_uploaded_file($_FILES["greencard"]["tmp_name"], $dir . '/GCARD.' . pathinfo($_FILES["greencard"]["name"], PATHINFO_EXTENSION)))
-	        echo "Your files have been uploaded.";
-	    else
-	        echo "Sorry, there was an error uploading your file.";
+	Storage::disk('google')->put($path . 'GOVID.'.pathinfo($_FILES["id"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["id"]["tmp_name"]));
 
-    //	SSN
+	Storage::disk('google')->put($path . 'GREENCARD.'.pathinfo($_FILES["greencard"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["greencard"]["tmp_name"]));
 
-	    if (move_uploaded_file($_FILES["ssn"]["tmp_name"], $dir . '/SSN.' . pathinfo($_FILES["ssn"]["name"], PATHINFO_EXTENSION)))
-	        echo "Your files have been uploaded.";
-	    else
-	        echo "Sorry, there was an error uploading your file.";
+	Storage::disk('google')->put($path . 'SSN.'.pathinfo($_FILES["ssn"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["ssn"]["tmp_name"]));
 
-    //	Direct Deposit
+	Storage::disk('google')->put($path . 'DD.'.pathinfo($_FILES["dd"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["dd"]["tmp_name"]));
 
-	    if (move_uploaded_file($_FILES["dd"]["tmp_name"], $dir . '/DD.' . pathinfo($_FILES["dd"]["name"], PATHINFO_EXTENSION)))
-	        echo "Your files have been uploaded.";
-	    else
-	        echo "Sorry, there was an error uploading your file.";
+	return;
+
+	// $dir = 'empfiles/300667';
+
+	// if(!file_exists($dir))
+	// 	mkdir($dir);
+
+	// //	Government Issued ID
+
+	// 	if (move_uploaded_file($_FILES["id"]["tmp_name"], $dir . '/ID.' . pathinfo($_FILES["id"]["name"], PATHINFO_EXTENSION)))
+	//         echo "Your files have been uploaded.";
+	//     else
+	//         echo "Sorry, there was an error uploading your file.";
+
+ //    //	Green Card
+
+	//     if (move_uploaded_file($_FILES["greencard"]["tmp_name"], $dir . '/GCARD.' . pathinfo($_FILES["greencard"]["name"], PATHINFO_EXTENSION)))
+	//         echo "Your files have been uploaded.";
+	//     else
+	//         echo "Sorry, there was an error uploading your file.";
+
+ //    //	SSN
+
+	//     if (move_uploaded_file($_FILES["ssn"]["tmp_name"], $dir . '/SSN.' . pathinfo($_FILES["ssn"]["name"], PATHINFO_EXTENSION)))
+	//         echo "Your files have been uploaded.";
+	//     else
+	//         echo "Sorry, there was an error uploading your file.";
+
+ //    //	Direct Deposit
+
+	//     if (move_uploaded_file($_FILES["dd"]["tmp_name"], $dir . '/DD.' . pathinfo($_FILES["dd"]["name"], PATHINFO_EXTENSION)))
+	//         echo "Your files have been uploaded.";
+	//     else
+	//         echo "Sorry, there was an error uploading your file.";
 
     //	Certifications
 
 
     return redirect('home');
 })->name('upload');
+
+
+function checkDrive($filename){
+	foreach(Storage::disk('google')->listContents() as $item){
+		if(!strcmp($item['filename'], $filename))
+			return $item;
+	}
+	return false;
+}
 
 function toFDF($arr){
 	$header = "%FDF-1.2 \n
@@ -101,7 +113,7 @@ function toFDF($arr){
 
 }
 
-Route::post('/regpdf', function (Request $request) {
+Route::post('/regpdf/{lang}', function (Request $request, $lang) {
 
 	// $request->validate([
  //        'Name' => 'required',
@@ -159,9 +171,6 @@ Route::post('/regpdf', function (Request $request) {
 	fwrite($handle, $pdf->output('S'));
 	fclose($handle);
 
-	// Storage::disk('s3')->put('signature.pdf', $pdf->Output('signature.pdf', 'S'));
-
-
 	$pdf = file_get_contents('forms/Registration_English_Fillable.pdf');
 	$fin = '';
 
@@ -173,7 +182,7 @@ Route::post('/regpdf', function (Request $request) {
 		fwrite($handle, $pdf);
 		fclose($handle);
 
-		exec('/app/bin/pdftk '. $pdftmp .' stamp ' . $sig . ' output -', $output);
+		exec(env('LD_LIBRARY_PATH', '') . 'pdftk '. $pdftmp .' stamp ' . $sig . ' output -', $output);
 
 		foreach($output as $out){
 			$fin .= (string) $out . "\n";
@@ -190,89 +199,97 @@ Route::post('/regpdf', function (Request $request) {
 	$data = $request->all();
 	unset($data['_token']);
 
-	$data = toFDF($data);
+	$dfdf = toFDF($data);
 
 	$fdf = @tempnam("/tmp", 'fdf');
  	rename($fdf, $fdf .= '.pdf');
 
 	$handle = fopen($fdf, "w");
-	fwrite($handle, $data);
+	fwrite($handle, $dfdf);
 	fclose($handle);
 
-	exec("/app/bin/pdftk ". $pdftmp ." fill_form ". $fdf . " output -", $out);
+	exec(env('LD_LIBRARY_PATH', '') . "pdftk ". $pdftmp ." fill_form ". $fdf . " output -", $out);
 
-	$las = "";
+	$last = "";
 	foreach($out as $sin){
-		$las .= (string) $sin . "\n";
+		$last .= (string) $sin . "\n";
 	}
 
-	Storage::disk('s3')->put('final.pdf', $las);
+	$final = @tempnam("/tmp", 'final');
+ 	rename($final, $final .= '.pdf');
 
-	return;
+	$handle = fopen($final, "w");
+	fwrite($handle, $last);
+	fclose($handle);
 
-	$fpdf = Storage::disk('s3')->url('final.pdf');
+	Mail::raw('New application from ' . $data['Name'], function($message) use($final)
+	{
+		$message->subject('Horsepower - Request for Employee Registration');
+		$message->to('claudempserrano@gmail.com');
+		$message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
+		$message->attach($final);
+	});
 
-	// Mail::raw('New application from ' . $data['Name'], function($message) use($pdf)
-	// {
-	// 	$message->subject('Horsepower - Request for Employee Registration');
-	// 	$message->to('claudempserrano@gmail.com');
-	// 	$message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-	// 	$message->attach($fpdf);
-	// });
+	$request->session()->put('reg', 0);
 
-	return "Done";
-
-	// Storage::disk('s3')->delete('final.pdf');
-
-	// $request->session()->put('reg', 0);
-
-	// return redirect('home');
+	return redirect('home');
 
 })->name('regpdf');
 
 Route::post('/bfpdf', function (Request $request) {
 
-	$request->validate([
-		'LAST_NAME' => 'required',
-		'FIRST_NAME' => 'required',
-		'SSN' => 'required|size:11',
-		'NUMBER' => 'required|size:14',
-		'DOB' => 'required|size:10|date_format:m/d/Y',
-		'EMAIL' => 'required|email',
-		'STREET_ADDRESS' => 'required',
-		'CITY' => 'required',
-		'STATE' => 'required',
-		'ZIP' => 'required',
-		'JOB_CLASS' => 'required',
-		'DATE_HIRED' => 'required|date_format:m/d/Y',
-		'FAMILY_DOB1' => 'nullable|date_format:m/d/Y',
-		'FAMILY_DOB2' => 'nullable|date_format:m/d/Y',
-		'FAMILY_DOB3' => 'nullable|date_format:m/d/Y',
-		'FAMILY_DOB4' => 'nullable|date_format:m/d/Y',
-		'FAMILY_DOB5' => 'nullable|date_format:m/d/Y',
-		'FAMILY_DOB6' => 'nullable|date_format:m/d/Y',
-		'FAMILY_DOB7' => 'nullable|date_format:m/d/Y',
-		'FAMILY_DOB8' => 'nullable|date_format:m/d/Y',
-		'DATE_MARRIED' => 'nullable|date_format:m/d/Y',
-		'DATE_DIVORCE' => 'nullable|date_format:m/d/Y',
-		'SPOUSE_DATE' => 'nullable|date_format:m/d/Y',
-		'BENE_DOB1' => 'nullable|date_format:m/d/Y',
-		'BENE_DOB2' => 'nullable|date_format:m/d/Y',
-		'BENE_DOB3' => 'nullable|date_format:m/d/Y',
-		'BENE_DOB4' => 'nullable|date_format:m/d/Y',
-		'SPOUSE_EMPLOYER_NUMBER' => 'nullable|size:14',
-		'FAMILY_SSN1' => 'nullable|size:11',
-		'FAMILY_SSN2' => 'nullable|size:11',
-		'FAMILY_SSN3' => 'nullable|size:11',
-		'FAMILY_SSN4' => 'nullable|size:11',
-		'FAMILY_SSN5' => 'nullable|size:11',
-		'FAMILY_SSN6' => 'nullable|size:11',
-		'FAMILY_SSN7' => 'nullable|size:11',
-		'FAMILY_SSN8' => 'nullable|size:11',
-		'BENE_SSN1' => 'nullable|size:11',
-		'BENE_SSN2' => 'nullable|size:11',
-		'BENE_SSN3' => 'nullable|size:11',
-	]);
+	// $request->validate([
+	// 	'LAST_NAME' => 'required',
+	// 	'FIRST_NAME' => 'required',
+	// 	'SSN' => 'required|size:11',
+	// 	'NUMBER' => 'required|size:14',
+	// 	'DOB' => 'required|size:10|date_format:m/d/Y',
+	// 	'EMAIL' => 'required|email',
+	// 	'STREET_ADDRESS' => 'required',
+	// 	'CITY' => 'required',
+	// 	'STATE' => 'required',
+	// 	'ZIP' => 'required',
+	// 	'JOB_CLASS' => 'required',
+	// 	'DATE_HIRED' => 'required|date_format:m/d/Y',
+	// 	'FAMILY_DOB1' => 'nullable|date_format:m/d/Y',
+	// 	'FAMILY_DOB2' => 'nullable|date_format:m/d/Y',
+	// 	'FAMILY_DOB3' => 'nullable|date_format:m/d/Y',
+	// 	'FAMILY_DOB4' => 'nullable|date_format:m/d/Y',
+	// 	'FAMILY_DOB5' => 'nullable|date_format:m/d/Y',
+	// 	'FAMILY_DOB6' => 'nullable|date_format:m/d/Y',
+	// 	'FAMILY_DOB7' => 'nullable|date_format:m/d/Y',
+	// 	'FAMILY_DOB8' => 'nullable|date_format:m/d/Y',
+	// 	'DATE_MARRIED' => 'nullable|date_format:m/d/Y',
+	// 	'DATE_DIVORCE' => 'nullable|date_format:m/d/Y',
+	// 	'SPOUSE_DATE' => 'nullable|date_format:m/d/Y',
+	// 	'BENE_DOB1' => 'nullable|date_format:m/d/Y',
+	// 	'BENE_DOB2' => 'nullable|date_format:m/d/Y',
+	// 	'BENE_DOB3' => 'nullable|date_format:m/d/Y',
+	// 	'BENE_DOB4' => 'nullable|date_format:m/d/Y',
+	// 	'SPOUSE_EMPLOYER_NUMBER' => 'nullable|size:14',
+	// 	'FAMILY_SSN1' => 'nullable|size:11',
+	// 	'FAMILY_SSN2' => 'nullable|size:11',
+	// 	'FAMILY_SSN3' => 'nullable|size:11',
+	// 	'FAMILY_SSN4' => 'nullable|size:11',
+	// 	'FAMILY_SSN5' => 'nullable|size:11',
+	// 	'FAMILY_SSN6' => 'nullable|size:11',
+	// 	'FAMILY_SSN7' => 'nullable|size:11',
+	// 	'FAMILY_SSN8' => 'nullable|size:11',
+	// 	'BENE_SSN1' => 'nullable|size:11',
+	// 	'BENE_SSN2' => 'nullable|size:11',
+	// 	'BENE_SSN3' => 'nullable|size:11',
+	// ]);
+
+	$data_uri = $request->uri;
+	$encoded_image = explode(",", $data_uri)[1];
+	$decoded_image = base64_decode($encoded_image);
+
+	$sig = @tempnam("/tmp", 'sig');
+ 	rename($sig, $sig .= '.png');
+
+	$handle = fopen($sig, "w");
+	fwrite($handle, $decoded_image);
+	fclose($handle);
 
 	if($request->lang > 0){
 		$x = 107;
@@ -290,42 +307,81 @@ Route::post('/bfpdf', function (Request $request) {
 		$y -= 14;
 	}
 	
-
 	unset($request['lang']);
-
-	$data_uri = $request->uri;
-	$encoded_image = explode(",", $data_uri)[1];
-	$decoded_image = base64_decode($encoded_image);
-	file_put_contents("signature.png", $decoded_image);
 
 	$pdf = new App\FPDF('P', 'mm', 'A4');
 	$pdf->AddPage();
-	$pdf->Image('signature.png',$x,$y,-300);
-	$pdf->Output('signature.pdf', 'F');
+	$pdf->Image($sig,$x,$y,-300);
 
-	unlink('signature.png');
+	$sig = @tempnam("/tmp", 'sig');
+ 	rename($sig, $sig .= '.png');
 
-	exec("pdftk Form.pdf stamp signature.pdf output Final.pdf");
+	$handle = fopen($sig, "w");
+	fwrite($handle, $pdf->output('S'));
+	fclose($handle);
 
-	unlink('signature.pdf');
+	$pdf = file_get_contents('forms/BF_English_Fillable.pdf');
+	$fin = '';
+
+	try {
+		$pdftmp = @tempnam("/tmp", 'pdftmp');
+	 	rename($pdftmp, $pdftmp .= '.pdf');
+
+		$handle = fopen($pdftmp, "w");
+		fwrite($handle, $pdf);
+		fclose($handle);
+
+		exec(env("LD_LIBRARY_PATH") . 'pdftk '. $pdftmp .' stamp ' . $sig . ' output -', $output);
+
+		foreach($output as $out){
+			$fin .= (string) $out . "\n";
+		}
+
+		$handle = fopen($pdftmp, "w");
+		fwrite($handle, $fin);
+		fclose($handle);
+	} catch (Exception $e) {
+		return $e; 
+	}
 
 	$data = $request->all();
 	$data["DATE"] = date("m/d/Y");
 	unset($data['_token']);
-	$pdf = new App\PdfForm('Final.pdf', $data);
 
-	$pdf->flatten()->save('Final.pdf');
+	$dfdf = toFDF($data);
 
-	Mail::raw('New application from '. $data['FIRST_NAME'] . ' ' . $data['LAST_NAME'], function($message)
-	{
-		$message->subject('Horsepower - Building Trades Benefit Funds Enrollment');
-		$message->to('claudempserrano@gmail.com');
-		$message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-		$message->attach('Final.pdf');
-	});
+	$fdf = @tempnam("/tmp", 'fdf');
+ 	rename($fdf, $fdf .= '.pdf');
 
-	unlink('Final.pdf');
-	unlink('Form.pdf');
+	$handle = fopen($fdf, "w");
+	fwrite($handle, $dfdf);
+	fclose($handle);
+
+	exec(env("LD_LIBRARY_PATH") . "pdftk ". $pdftmp ." fill_form ". $fdf . " output -", $out);
+
+	$last = "";
+	foreach($out as $sin){
+		$last .= (string) $sin . "\n";
+		echo $sin;
+		echo '<br>';
+	}
+
+	$final = @tempnam("/tmp", 'final');
+ 	rename($final, $final .= '.pdf');
+
+	$handle = fopen($final, "w");
+	fwrite($handle, $last);
+	fclose($handle);
+
+	return file_put_contents('final.pdf', $last);
+
+	// Mail::raw('New application from '. $data['FIRST_NAME'] . ' ' . $data['LAST_NAME'], function($message)
+	// {
+	// 	$message->subject('Horsepower - Building Trades Benefit Funds Enrollment');
+	// 	$message->to('claudempserrano@gmail.com');
+	// 	$message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
+	// 	$message->attach('Final.pdf');
+	// });
 
 	$request->session()->put('bf', 0);
 

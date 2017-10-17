@@ -14,7 +14,8 @@
         "laravelcollective/html": "^5.5",
         "league/flysystem-aws-s3-v3": "^1.0",
         "mikehaertl/php-pdftk": "^0.4.0",
-        "mikehaertl/phpwkhtmltopdf": "^2.2"
+        "mikehaertl/phpwkhtmltopdf": "^2.2",
+        "nao-pon/flysystem-google-drive": "^1.1"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

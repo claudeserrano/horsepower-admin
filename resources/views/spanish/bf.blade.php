@@ -19,7 +19,7 @@
                 </center>
             </div>
 
-            <form class="form-horizontal" role="form" method="POST" action="{{ route('bfpdf') }}">
+            <form class="form-horizontal" role="form" method="POST" action="{{ route('bfpdf', ['lang' => 'Spanish']) }}">
             
             {{ csrf_field() }}
 

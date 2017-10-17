@@ -19,7 +19,7 @@
 
             <div class="col-lg-12"><hr></div>
 
-            <form class="form-horizontal" role="form" method="POST" action="{{ route('regpdf') }}">
+            <form class="form-horizontal" role="form" method="POST" action="{{ route('regpdf', ['lang' => 'Spanish']) }}">
             
             {{ csrf_field() }}
 

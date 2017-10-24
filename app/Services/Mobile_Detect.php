@@ -25,7 +25,7 @@
  * @version     2.8.26
  */
 
-namespace App;
+namespace App\Services;
 
 class Mobile_Detect
 {

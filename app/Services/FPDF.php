@@ -7,7 +7,7 @@
 * Author:  Olivier PLATHEY                                                     *
 *******************************************************************************/
 
-namespace App;
+namespace App\Services;
 
 define('FPDF_VERSION','1.81');
 

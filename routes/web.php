@@ -13,22 +13,28 @@
 use Illuminate\Http\Request;
 use mikehaertl\pdftk\Pdf;
 
-Route::get('/', 'DashboardController@index');
+Route::middleware(['horsepower'])->group(function () {
+    
+});
+
+Route::get('/', 'UsersController@index')->name('home');
+Route::get('/token/{id}/{token}', 'UsersController@index');
+
+Route::get('/auth', 'UsersController@index')->name('auth');
+Route::post('/validate/key', 'UsersController@validateKey')->name('validate');
+
+Route::get('/admin/generate/', 'UsersController@getGenerateView');
+Route::post('/admin/generate/key', 'UsersController@generateKey')->name('generate');
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
-
 Route::get('/files', 'DashboardController@files');
-
 Route::get('/reg/{lang}', 'DashboardController@registration');
-
 Route::get('/bf/{lang}', 'DashboardController@bf');
 
 Route::post('/upload', function(Request $request){
 
-	dd(parse_url(env('PGSQL_URL')));
-
-	$folder_name = "Anotha";
-	$folder = checkDrive('Anotha');
+	$folder_name = "300667";
+	$folder = checkDrive('300667');
 
 	if($folder == false){
 		if(Storage::disk('google')->createDir($folder_name))
@@ -37,6 +43,7 @@ Route::post('/upload', function(Request $request){
 
 	$path = $folder['path'] . "/";
 
+	//	Government Issued ID
 	Storage::disk('google')->put($path . 'GOVID.'.pathinfo($_FILES["id"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["id"]["tmp_name"]));
 
 	Storage::disk('google')->put($path . 'GREENCARD.'.pathinfo($_FILES["greencard"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["greencard"]["tmp_name"]));
@@ -45,14 +52,6 @@ Route::post('/upload', function(Request $request){
 
 	Storage::disk('google')->put($path . 'DD.'.pathinfo($_FILES["dd"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["dd"]["tmp_name"]));
 
-	return;
-
-	// $dir = 'empfiles/300667';
-
-	// if(!file_exists($dir))
-	// 	mkdir($dir);
-
-	// //	Government Issued ID
 
 	// 	if (move_uploaded_file($_FILES["id"]["tmp_name"], $dir . '/ID.' . pathinfo($_FILES["id"]["name"], PATHINFO_EXTENSION)))
 	//         echo "Your files have been uploaded.";
@@ -83,7 +82,7 @@ Route::post('/upload', function(Request $request){
     //	Certifications
 
 
-    return redirect('home');
+    return redirect()->route('dashboard');
 })->name('upload');
 
 
@@ -110,131 +109,9 @@ function toFDF($arr){
 	}
 
 	return $header . $fdf . $footer;
-
 }
 
-Route::post('/regpdf/{lang}', function (Request $request, $lang) {
-
-	// $request->validate([
- //        'Name' => 'required',
- //        'SSN1' => 'required|size:3',
- //        'SSN2' => 'required|size:2',
- //        'SSN3' => 'required|size:4',
- //        'Address1' => 'required',
- //        'City' => 'required',
- //        'State' => 'required',
- //        'Zip' => 'required',
- //        'AreaCode' => 'required|size:3',
- //        'TelNo1' => 'required|size:3',
- //        'TelNo2' => 'required|size:4',
- //        'AreaCodePhone' => 'required|size:3',
- //        'CellNo1' => 'required|size:3',
- //        'CellNo2' => 'required|size:4',
- //        'DOBMonth' => 'required|size:2',
- //        'DOBDay' => 'required|size:2',
- //        'DOBYear' => 'required|size:4',
- //        'Email' => 'required|email',
- //        'StartMonth' => 'required|size:2',
- //        'StartDay' => 'required|size:2',
- //        'StartYear' => 'required|size:4',
- //        'Classification' => 'required',
- //        'SchoolClass' => 'required',
- //    ]);
-
-	$data_uri = $request->uri;
-	$encoded_image = explode(",", $data_uri)[1];
-	$decoded_image = base64_decode($encoded_image);
-
-	$sig = @tempnam("/tmp", 'sig');
- 	rename($sig, $sig .= '.png');
-
-	$handle = fopen($sig, "w");
-	fwrite($handle, $decoded_image);
-	fclose($handle);
-
-	$y = 265;
-
-	$mobile = new App\Mobile_Detect();
-
-	if($mobile->isMobile()){
-		$y -= 10;
-	}
-
-	$pdf = new App\FPDF('P', 'mm', 'A4');
-	$pdf->AddPage();
-	$pdf->Image($sig,165,$y,-300);
-
-	$sig = @tempnam("/tmp", 'sig');
- 	rename($sig, $sig .= '.png');
-
-	$handle = fopen($sig, "w");
-	fwrite($handle, $pdf->output('S'));
-	fclose($handle);
-
-	$pdf = file_get_contents('forms/Registration_English_Fillable.pdf');
-	$fin = '';
-
-	try {
-		$pdftmp = @tempnam("/tmp", 'pdftmp');
-	 	rename($pdftmp, $pdftmp .= '.pdf');
-
-		$handle = fopen($pdftmp, "w");
-		fwrite($handle, $pdf);
-		fclose($handle);
-
-		exec(getenv('LIB_PATH', '') . 'pdftk '. $pdftmp .' stamp ' . $sig . ' output -', $output);
-
-		foreach($output as $out){
-			$fin .= (string) $out . "\n";
-		}
-
-		$handle = fopen($pdftmp, "w");
-		fwrite($handle, $fin);
-		fclose($handle);
-
-	} catch (Exception $e) {
-		return $e; 
-	}
-
-	$data = $request->all();
-	unset($data['_token']);
-
-	$dfdf = toFDF($data);
-
-	$fdf = @tempnam("/tmp", 'fdf');
- 	rename($fdf, $fdf .= '.pdf');
-
-	$handle = fopen($fdf, "w");
-	fwrite($handle, $dfdf);
-	fclose($handle);
-
-	exec(getenv('LIB_PATH', '') . "pdftk ". $pdftmp ." fill_form ". $fdf . " output -", $out);
-
-	$last = "";
-	foreach($out as $sin){
-		$last .= (string) $sin . "\n";
-	}
-
-	$final = @tempnam("/tmp", 'final');
- 	rename($final, $final .= '.pdf');
-
-	$handle = fopen($final, "w");
-	fwrite($handle, $last);
-	fclose($handle);
-
-	Mail::raw('New application from ' . $data['Name'], function($message) use($final)
-	{
-		$message->subject('Horsepower - Request for Employee Registration');
-		$message->to('claudempserrano@gmail.com');
-		$message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-		$message->attach($final);
-	});
-
-	$request->session()->put('reg', 0);
-
-	return redirect('dashboard');
-
-})->name('regpdf');
+Route::post('/regpdf/{lang}', 'DashboardController@sendReg')->name('regpdf');
 
 Route::post('/bfpdf', function (Request $request) {
 
@@ -300,7 +177,7 @@ Route::post('/bfpdf', function (Request $request) {
 		$y = 258;
 	}
 
-	$mobile = new App\Mobile_Detect();
+	$mobile = new App\Services\Mobile_Detect();
 
 	if($mobile->isMobile()){
 		$x += 6;
@@ -309,7 +186,7 @@ Route::post('/bfpdf', function (Request $request) {
 	
 	unset($request['lang']);
 
-	$pdf = new App\FPDF('P', 'mm', 'A4');
+	$pdf = new App\Services\FPDF('P', 'mm', 'A4');
 	$pdf->AddPage();
 	$pdf->Image($sig,$x,$y,-300);
 
@@ -331,15 +208,19 @@ Route::post('/bfpdf', function (Request $request) {
 		fwrite($handle, $pdf);
 		fclose($handle);
 
+		$pdftmp = "forms/Bf_English_Fillable.pdf";
+
 		exec(getenv("LIB_PATH") . 'pdftk '. $pdftmp .' stamp ' . $sig . ' output -', $output);
 
 		foreach($output as $out){
 			$fin .= (string) $out . "\n";
 		}
 
-		$handle = fopen($pdftmp, "w");
+		$pdftmp = @tempnam("/tmp", 'newtmp');
+		$handle = fopen($pdftmp, "wb");
 		fwrite($handle, $fin);
 		fclose($handle);
+
 	} catch (Exception $e) {
 		return $e; 
 	}
@@ -361,9 +242,7 @@ Route::post('/bfpdf', function (Request $request) {
 
 	$last = "";
 	foreach($out as $sin){
-		$last .= (string) $sin . "\n";
-		echo $sin;
-		echo '<br>';
+		$last .= (string) $sin . "\r\n";
 	}
 
 	$final = @tempnam("/tmp", 'final');
@@ -373,15 +252,13 @@ Route::post('/bfpdf', function (Request $request) {
 	fwrite($handle, $last);
 	fclose($handle);
 
-	return file_put_contents('final.pdf', $last);
-
-	// Mail::raw('New application from '. $data['FIRST_NAME'] . ' ' . $data['LAST_NAME'], function($message)
-	// {
-	// 	$message->subject('Horsepower - Building Trades Benefit Funds Enrollment');
-	// 	$message->to('claudempserrano@gmail.com');
-	// 	$message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-	// 	$message->attach('Final.pdf');
-	// });
+	Mail::raw('New application from '. $data['FIRST_NAME'] . ' ' . $data['LAST_NAME'], function($message) use($last)
+	{
+		$message->subject('Horsepower - Building Trades Benefit Funds Enrollment');
+		$message->to('claudempserrano@gmail.com');
+		$message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
+		$message->attachData($last, 'Final.pdf', ['mime' => 'application/pdf',]);
+	});
 
 	$request->session()->put('bf', 0);
 

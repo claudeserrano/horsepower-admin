@@ -141,24 +141,12 @@ class DashboardController extends Controller
 
         exec(getenv('LIB_PATH', '') . "pdftk /tmp/first.pdf fill_form ". $fdf . " output /tmp/final.pdf");
 
-        $last = "";
-        foreach($out as $sin){
-            $last .= (string) $sin . "\n";
-        }
-
-        $final = @tempnam("/tmp", 'final');
-        rename($final, $final .= '.pdf');
-
-        $handle = fopen($final, "w");
-        fwrite($handle, $last);
-        fclose($handle);
-
         \Mail::raw('New application from ' . $data['Name'], function($message) use($final)
         {
             $message->subject('Horsepower - Request for Employee Registration');
             $message->to('claudempserrano@gmail.com');
             $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-            $message->attach($final);
+            $message->attach('/tmp/final.pdf');
         });
 
         $request->session()->put('reg', 0);

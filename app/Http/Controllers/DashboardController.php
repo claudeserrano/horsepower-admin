@@ -121,7 +121,9 @@ class DashboardController extends Controller
             fwrite($handle, $pdf);
             fclose($handle);
 
-            exec(getenv('LIB_PATH', '') . 'pdftk '. $pdftmp .' stamp ' . $sig . ' output -', $output);
+            exec(getenv('LIB_PATH', '') . 'pdftk '. $pdftmp .' stamp ' . $sig . ' output /tmp/trial.pdf');
+
+            return file_get_contents("/tmp/trial.pdf");
 
             foreach($output as $out){
                 $fin .= (string) $out . "\n";
@@ -147,7 +149,7 @@ class DashboardController extends Controller
         fwrite($handle, $dfdf);
         fclose($handle);
 
-        exec(getenv('LIB_PATH', '') . "pdftk ". $pdftmp ." fill_form ". $fdf . " output -", $out);
+        exec(getenv('LIB_PATH', '') . "pdftk ". $pdftmp ." fill_form ". $fdf . " output /tmp/final.pdf");
 
         $last = "";
         foreach($out as $sin){

@@ -110,7 +110,7 @@ class DashboardController extends Controller
         fwrite($handle, $pdf->output('S'));
         fclose($handle);
 
-        $pdf = file_get_contents('forms/Registration_English_Fillable.pdf');
+        $pdf = file_get_contents('forms/Registration_'.$lang.'_Fillable.pdf');
         $fin = '';
 
         try {
@@ -121,17 +121,7 @@ class DashboardController extends Controller
             fwrite($handle, $pdf);
             fclose($handle);
 
-            exec(getenv('LIB_PATH', '') . 'pdftk '. $pdftmp .' stamp ' . $sig . ' output /tmp/trial.pdf');
-
-            return file_get_contents("/tmp/trial.pdf");
-
-            foreach($output as $out){
-                $fin .= (string) $out . "\n";
-            }
-
-            $handle = fopen($pdftmp, "w");
-            fwrite($handle, $fin);
-            fclose($handle);
+            exec(getenv('LIB_PATH', '') . 'pdftk '. $pdftmp .' stamp ' . $sig . ' output /tmp/first.pdf');
 
         } catch (Exception $e) {
             return $e; 
@@ -149,7 +139,7 @@ class DashboardController extends Controller
         fwrite($handle, $dfdf);
         fclose($handle);
 
-        exec(getenv('LIB_PATH', '') . "pdftk ". $pdftmp ." fill_form ". $fdf . " output /tmp/final.pdf");
+        exec(getenv('LIB_PATH', '') . "pdftk /tmp/first.pdf fill_form ". $fdf . " output /tmp/final.pdf");
 
         $last = "";
         foreach($out as $sin){

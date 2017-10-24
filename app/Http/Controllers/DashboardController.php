@@ -50,7 +50,8 @@ class DashboardController extends Controller
      * @param  string
      * @return \Illuminate\Http\Response
      */
-    public function sendReg(Request $request, $lang) {
+    public function sendReg(Request $request, $lang) 
+    {
 
         // $request->validate([
         //     'Name' => 'required',
@@ -78,50 +79,43 @@ class DashboardController extends Controller
         //     'SchoolClass' => 'required',
         // ]);
 
+        //  File paths
+        $tmp = env('TMP_PATH', 'tmp/');
+        $sig = $tmp . 'sig.png';
+        $sigpdf = $tmp . 'sig.pdf';
+        $pdftmp = $tmp . 'form.pdf';
+        $first = $tmp . 'first.pdf';
+        $fdf = $tmp . 'fdf.pdf';
+
         //  Signature image processing
         $data_uri = $request->uri;
         $encoded_image = explode(",", $data_uri)[1];
         $decoded_image = base64_decode($encoded_image);
 
         //  Copying image to tmp file
-        $sig = @tempnam("/tmp", 'sig');
-        rename($sig, $sig .= '.png');
-
-        $handle = fopen($sig, "w");
-        fwrite($handle, $decoded_image);
-        fclose($handle);
+        file_put_contents($sig, $decoded_image);
 
         $y = 265;
 
+        //  Check if using mobile
         $mobile = new \App\Services\Mobile_Detect();
-
         if($mobile->isMobile()){
             $y -= 10;
         }
 
+        //  Creating signature PDF file
         $pdf = new \App\Services\FPDF('P', 'mm', 'A4');
         $pdf->AddPage();
         $pdf->Image($sig,165,$y,-300);
-
-        $sig = @tempnam("/tmp", 'sig');
-        rename($sig, $sig .= '.png');
-
-        $handle = fopen($sig, "w");
-        fwrite($handle, $pdf->output('S'));
-        fclose($handle);
+        file_put_contents($sigpdf, $pdf->output('S'));
 
         $pdf = file_get_contents('forms/Registration_'.$lang.'_Fillable.pdf');
-        $fin = '';
 
         try {
-            $pdftmp = @tempnam("/tmp", 'pdftmp');
-            rename($pdftmp, $pdftmp .= '.pdf');
+            file_put_contents($pdftmp, $pdf);
 
-            $handle = fopen($pdftmp, "w");
-            fwrite($handle, $pdf);
-            fclose($handle);
-
-            exec(getenv('LIB_PATH', '') . 'pdftk '. $pdftmp .' stamp ' . $sig . ' output /tmp/first.pdf');
+            //  Stamp signature to PDF
+            exec(getenv('LIB_PATH', '') . 'pdftk '. $pdftmp .' stamp ' . $sigpdf . ' output ' . $first);
 
         } catch (Exception $e) {
             return $e; 
@@ -130,29 +124,144 @@ class DashboardController extends Controller
         $data = $request->all();
         unset($data['_token']);
 
+        //  Create FDF file for filling up form
         $dfdf = toFDF($data);
+        file_put_contents($fdf, $dfdf);
 
-        $fdf = @tempnam("/tmp", 'fdf');
-        rename($fdf, $fdf .= '.pdf');
+        //  Fill up form with signature & flatten file to remove editing
+        exec(getenv('LIB_PATH', '') . 'pdftk '. $first .' fill_form '. $fdf . ' output tmp/final.pdf flatten');
 
-        $handle = fopen($fdf, "w");
-        fwrite($handle, $dfdf);
-        fclose($handle);
-
-        exec(getenv('LIB_PATH', '') . "pdftk /tmp/first.pdf fill_form ". $fdf . " output /tmp/final.pdf");
-
-        \Mail::raw('New application from ' . $data['Name'], function($message) use($final)
+        \Mail::raw('New application from ' . $data['Name'], function($message)
         {
             $message->subject('Horsepower - Request for Employee Registration');
             $message->to('claudempserrano@gmail.com');
             $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-            $message->attach('/tmp/final.pdf');
+            $message->attach('tmp/final.pdf');
         });
 
         $request->session()->put('reg', 0);
 
         return redirect('dashboard');
 
+    }
+
+    public function sendBF(Request $request, $lang)
+    {
+        
+        // $request->validate([
+        //  'LAST_NAME' => 'required',
+        //  'FIRST_NAME' => 'required',
+        //  'SSN' => 'required|size:11',
+        //  'NUMBER' => 'required|size:14',
+        //  'DOB' => 'required|size:10|date_format:m/d/Y',
+        //  'EMAIL' => 'required|email',
+        //  'STREET_ADDRESS' => 'required',
+        //  'CITY' => 'required',
+        //  'STATE' => 'required',
+        //  'ZIP' => 'required',
+        //  'JOB_CLASS' => 'required',
+        //  'DATE_HIRED' => 'required|date_format:m/d/Y',
+        //  'FAMILY_DOB1' => 'nullable|date_format:m/d/Y',
+        //  'FAMILY_DOB2' => 'nullable|date_format:m/d/Y',
+        //  'FAMILY_DOB3' => 'nullable|date_format:m/d/Y',
+        //  'FAMILY_DOB4' => 'nullable|date_format:m/d/Y',
+        //  'FAMILY_DOB5' => 'nullable|date_format:m/d/Y',
+        //  'FAMILY_DOB6' => 'nullable|date_format:m/d/Y',
+        //  'FAMILY_DOB7' => 'nullable|date_format:m/d/Y',
+        //  'FAMILY_DOB8' => 'nullable|date_format:m/d/Y',
+        //  'DATE_MARRIED' => 'nullable|date_format:m/d/Y',
+        //  'DATE_DIVORCE' => 'nullable|date_format:m/d/Y',
+        //  'SPOUSE_DATE' => 'nullable|date_format:m/d/Y',
+        //  'BENE_DOB1' => 'nullable|date_format:m/d/Y',
+        //  'BENE_DOB2' => 'nullable|date_format:m/d/Y',
+        //  'BENE_DOB3' => 'nullable|date_format:m/d/Y',
+        //  'BENE_DOB4' => 'nullable|date_format:m/d/Y',
+        //  'SPOUSE_EMPLOYER_NUMBER' => 'nullable|size:14',
+        //  'FAMILY_SSN1' => 'nullable|size:11',
+        //  'FAMILY_SSN2' => 'nullable|size:11',
+        //  'FAMILY_SSN3' => 'nullable|size:11',
+        //  'FAMILY_SSN4' => 'nullable|size:11',
+        //  'FAMILY_SSN5' => 'nullable|size:11',
+        //  'FAMILY_SSN6' => 'nullable|size:11',
+        //  'FAMILY_SSN7' => 'nullable|size:11',
+        //  'FAMILY_SSN8' => 'nullable|size:11',
+        //  'BENE_SSN1' => 'nullable|size:11',
+        //  'BENE_SSN2' => 'nullable|size:11',
+        //  'BENE_SSN3' => 'nullable|size:11',
+        // ]);
+
+        //  File paths
+        $tmp = env('TMP_PATH', 'tmp/');
+        $sig = $tmp . 'sig.png';
+        $sigpdf = $tmp . 'sig.pdf';
+        $pdftmp = $tmp . 'form.pdf';
+        $first = $tmp . 'first.pdf';
+        $fdf = $tmp . 'fdf.pdf';
+
+        //  Signature image processing
+        $data_uri = $request->uri;
+        $encoded_image = explode(",", $data_uri)[1];
+        $decoded_image = base64_decode($encoded_image);
+        
+        //  Copying image to tmp file
+        file_put_contents($sig, $decoded_image);
+
+        //  Check if using mobile
+        if($request->lang > 0){
+            $x = 107;
+            $y = 240;
+        }
+        else{
+            $x = 105;
+            $y = 258;
+        }
+
+        $mobile = new \App\Services\Mobile_Detect();
+        if($mobile->isMobile()){
+            $x += 6;
+            $y -= 14;
+        }
+        
+        //  Creating signature PDF file
+        $pdf = new \App\Services\FPDF('P', 'mm', 'A4');
+        $pdf->AddPage();
+        $pdf->Image($sig,$x,$y,-300);
+        file_put_contents($sigpdf, $pdf->output('S'));
+
+        $pdf = file_get_contents('forms/BF_'. $lang .'_Fillable.pdf');
+
+        try {
+            file_put_contents($pdftmp, $pdf);
+
+            exec(getenv("LIB_PATH") . 'pdftk '. $pdftmp .' stamp ' . $sigpdf . ' output ' . $first);
+
+        } catch (Exception $e) {
+            return $e; 
+        }
+
+        $data = $request->all();
+        $data["DATE"] = date("m/d/Y");
+        unset($data['_token']);
+
+        $dfdf = toFDF($data);
+
+        file_put_contents($fdf, $dfdf);
+
+        exec(getenv("LIB_PATH") . "pdftk ". $first ." fill_form ". $fdf . " output tmp/final.pdf flatten");
+
+        return;
+
+        \Mail::raw('New application from '. $data['FIRST_NAME'] . ' ' . $data['LAST_NAME'], function($message)
+        {
+            $message->subject('Horsepower - Building Trades Benefit Funds Enrollment');
+            $message->to('claudempserrano@gmail.com');
+            $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
+            $message->attach('tmp/final.pdf');
+        });
+
+        $request->session()->put('bf', 0);
+
+        return redirect('dashboard');
     }
     
 }

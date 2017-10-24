@@ -10,8 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-use Illuminate\Http\Request;
-use mikehaertl\pdftk\Pdf;
 
 Route::middleware(['horsepower'])->group(function () {
     
@@ -28,8 +26,11 @@ Route::post('/admin/generate/key', 'UsersController@generateKey')->name('generat
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 Route::get('/files', 'DashboardController@files');
+
 Route::get('/reg/{lang}', 'DashboardController@registration');
 Route::get('/bf/{lang}', 'DashboardController@bf');
+Route::post('/regpdf/{lang}', 'DashboardController@sendReg')->name('regpdf');
+Route::post('/bfpdf/{lang}', 'DashboardController@sendBF')->name('bfpdf');
 
 Route::post('/upload', function(Request $request){
 
@@ -110,161 +111,6 @@ function toFDF($arr){
 
 	return $header . $fdf . $footer;
 }
-
-Route::post('/regpdf/{lang}', 'DashboardController@sendReg')->name('regpdf');
-
-Route::post('/bfpdf', function (Request $request) {
-
-	// $request->validate([
-	// 	'LAST_NAME' => 'required',
-	// 	'FIRST_NAME' => 'required',
-	// 	'SSN' => 'required|size:11',
-	// 	'NUMBER' => 'required|size:14',
-	// 	'DOB' => 'required|size:10|date_format:m/d/Y',
-	// 	'EMAIL' => 'required|email',
-	// 	'STREET_ADDRESS' => 'required',
-	// 	'CITY' => 'required',
-	// 	'STATE' => 'required',
-	// 	'ZIP' => 'required',
-	// 	'JOB_CLASS' => 'required',
-	// 	'DATE_HIRED' => 'required|date_format:m/d/Y',
-	// 	'FAMILY_DOB1' => 'nullable|date_format:m/d/Y',
-	// 	'FAMILY_DOB2' => 'nullable|date_format:m/d/Y',
-	// 	'FAMILY_DOB3' => 'nullable|date_format:m/d/Y',
-	// 	'FAMILY_DOB4' => 'nullable|date_format:m/d/Y',
-	// 	'FAMILY_DOB5' => 'nullable|date_format:m/d/Y',
-	// 	'FAMILY_DOB6' => 'nullable|date_format:m/d/Y',
-	// 	'FAMILY_DOB7' => 'nullable|date_format:m/d/Y',
-	// 	'FAMILY_DOB8' => 'nullable|date_format:m/d/Y',
-	// 	'DATE_MARRIED' => 'nullable|date_format:m/d/Y',
-	// 	'DATE_DIVORCE' => 'nullable|date_format:m/d/Y',
-	// 	'SPOUSE_DATE' => 'nullable|date_format:m/d/Y',
-	// 	'BENE_DOB1' => 'nullable|date_format:m/d/Y',
-	// 	'BENE_DOB2' => 'nullable|date_format:m/d/Y',
-	// 	'BENE_DOB3' => 'nullable|date_format:m/d/Y',
-	// 	'BENE_DOB4' => 'nullable|date_format:m/d/Y',
-	// 	'SPOUSE_EMPLOYER_NUMBER' => 'nullable|size:14',
-	// 	'FAMILY_SSN1' => 'nullable|size:11',
-	// 	'FAMILY_SSN2' => 'nullable|size:11',
-	// 	'FAMILY_SSN3' => 'nullable|size:11',
-	// 	'FAMILY_SSN4' => 'nullable|size:11',
-	// 	'FAMILY_SSN5' => 'nullable|size:11',
-	// 	'FAMILY_SSN6' => 'nullable|size:11',
-	// 	'FAMILY_SSN7' => 'nullable|size:11',
-	// 	'FAMILY_SSN8' => 'nullable|size:11',
-	// 	'BENE_SSN1' => 'nullable|size:11',
-	// 	'BENE_SSN2' => 'nullable|size:11',
-	// 	'BENE_SSN3' => 'nullable|size:11',
-	// ]);
-
-	$data_uri = $request->uri;
-	$encoded_image = explode(",", $data_uri)[1];
-	$decoded_image = base64_decode($encoded_image);
-
-	$sig = @tempnam("/tmp", 'sig');
- 	rename($sig, $sig .= '.png');
-
-	$handle = fopen($sig, "w");
-	fwrite($handle, $decoded_image);
-	fclose($handle);
-
-	if($request->lang > 0){
-		$x = 107;
-		$y = 240;
-	}
-	else{
-		$x = 105;
-		$y = 258;
-	}
-
-	$mobile = new App\Services\Mobile_Detect();
-
-	if($mobile->isMobile()){
-		$x += 6;
-		$y -= 14;
-	}
-	
-	unset($request['lang']);
-
-	$pdf = new App\Services\FPDF('P', 'mm', 'A4');
-	$pdf->AddPage();
-	$pdf->Image($sig,$x,$y,-300);
-
-	$sig = @tempnam("/tmp", 'sig');
- 	rename($sig, $sig .= '.png');
-
-	$handle = fopen($sig, "w");
-	fwrite($handle, $pdf->output('S'));
-	fclose($handle);
-
-	$pdf = file_get_contents('forms/BF_English_Fillable.pdf');
-	$fin = '';
-
-	try {
-		$pdftmp = @tempnam("/tmp", 'pdftmp');
-	 	rename($pdftmp, $pdftmp .= '.pdf');
-
-		$handle = fopen($pdftmp, "w");
-		fwrite($handle, $pdf);
-		fclose($handle);
-
-		$pdftmp = "forms/Bf_English_Fillable.pdf";
-
-		exec(getenv("LIB_PATH") . 'pdftk '. $pdftmp .' stamp ' . $sig . ' output -', $output);
-
-		foreach($output as $out){
-			$fin .= (string) $out . "\n";
-		}
-
-		$pdftmp = @tempnam("/tmp", 'newtmp');
-		$handle = fopen($pdftmp, "wb");
-		fwrite($handle, $fin);
-		fclose($handle);
-
-	} catch (Exception $e) {
-		return $e; 
-	}
-
-	$data = $request->all();
-	$data["DATE"] = date("m/d/Y");
-	unset($data['_token']);
-
-	$dfdf = toFDF($data);
-
-	$fdf = @tempnam("/tmp", 'fdf');
- 	rename($fdf, $fdf .= '.pdf');
-
-	$handle = fopen($fdf, "w");
-	fwrite($handle, $dfdf);
-	fclose($handle);
-
-	exec(getenv("LIB_PATH") . "pdftk ". $pdftmp ." fill_form ". $fdf . " output -", $out);
-
-	$last = "";
-	foreach($out as $sin){
-		$last .= (string) $sin . "\r\n";
-	}
-
-	$final = @tempnam("/tmp", 'final');
- 	rename($final, $final .= '.pdf');
-
-	$handle = fopen($final, "w");
-	fwrite($handle, $last);
-	fclose($handle);
-
-	Mail::raw('New application from '. $data['FIRST_NAME'] . ' ' . $data['LAST_NAME'], function($message) use($last)
-	{
-		$message->subject('Horsepower - Building Trades Benefit Funds Enrollment');
-		$message->to('claudempserrano@gmail.com');
-		$message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-		$message->attachData($last, 'Final.pdf', ['mime' => 'application/pdf',]);
-	});
-
-	$request->session()->put('bf', 0);
-
-	return redirect('home');
-
-})->name('bfpdf');
 
 Route::get('/success', function(){
 	return view('success');

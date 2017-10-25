@@ -39,30 +39,28 @@ class UltiPro
         curl_close($curl);
 
         if ($err) {
-          echo "cURL Error #:" . $err;
+          return "cURL Error #:" . $err;
         } else {
-          echo $response;
+          return $response;
         }
 
-        return $response;
+		// $client = new \SoapClient(self::LOGIN_URL, array('soap_version' => SOAP_1_2, 'exceptions' => TRUE, 'trace' => TRUE));
 
-		$client = new \SoapClient(self::LOGIN_URL, array('soap_version' => SOAP_1_2, 'exceptions' => TRUE, 'trace' => TRUE));
+  //       $headers = array();
+  //       $headers[0] = new \SoapHeader('http://www.w3.org/2005/08/addressing', 'Action', 'http://www.ultipro.com/services/loginservice/ILoginService/Authenticate', true);
+  //       $headers[1] = new \SoapHeader('http://www.ultipro.com/services/loginservice', 'ClientAccessKey', env('ULTIPRO_CKEY'));
+		// $headers[2] = new \SoapHeader('http://www.ultipro.com/services/loginservice', 'Password', env('ULTIPRO_PW'));
+		// $headers[3] = new \SoapHeader('http://www.ultipro.com/services/loginservice', 'UserAccessKey', env('ULTIPRO_UKEY'));
+  //       $headers[4] = new \SoapHeader('http://www.ultipro.com/services/loginservice', 'UserName', env('ULTIPRO_USER'));
 
-        $headers = array();
-        $headers[0] = new \SoapHeader('http://www.w3.org/2005/08/addressing', 'Action', 'http://www.ultipro.com/services/loginservice/ILoginService/Authenticate', true);
-        $headers[1] = new \SoapHeader('http://www.ultipro.com/services/loginservice', 'ClientAccessKey', env('ULTIPRO_CKEY'));
-		$headers[2] = new \SoapHeader('http://www.ultipro.com/services/loginservice', 'Password', env('ULTIPRO_PW'));
-		$headers[3] = new \SoapHeader('http://www.ultipro.com/services/loginservice', 'UserAccessKey', env('ULTIPRO_UKEY'));
-        $headers[4] = new \SoapHeader('http://www.ultipro.com/services/loginservice', 'UserName', env('ULTIPRO_USER'));
+  //       $client->__setSoapHeaders($headers);
+		// $response = $client->Authenticate();
 
-        $client->__setSoapHeaders($headers);
-		$response = $client->Authenticate();
-
-		try {
-			return $response->Token;
-		} catch (Exception $e) {
-			return $e;	
-		}
+		// try {
+		// 	return $response->Token;
+		// } catch (Exception $e) {
+		// 	return $e;	
+		// }
         
 	}
 

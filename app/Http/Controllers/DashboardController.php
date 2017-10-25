@@ -350,7 +350,6 @@ class DashboardController extends Controller
         return redirect('dashboard');
     }
 
-
     function checkDrive($filename){
         foreach(\Storage::disk('google')->listContents() as $item){
             if(!strcmp($item['filename'], $filename))

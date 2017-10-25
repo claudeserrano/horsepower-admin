@@ -38,10 +38,10 @@ Route::get('/ultipro/login', function(){
 
     $headers = array();
     $headers[0] = new \SoapHeader('http://www.w3.org/2005/08/addressing', 'Action', 'http://www.ultipro.com/services/loginservice/ILoginService/Authenticate', true);
-    $headers[1] = new \SoapHeader('http://www.ultipro.com/services/loginservice', 'ClientAccessKey', env('ULTIPRO_CKEY'));
-	$headers[2] = new \SoapHeader('http://www.ultipro.com/services/loginservice', 'Password', env('ULTIPRO_PW'));
-	$headers[3] = new \SoapHeader('http://www.ultipro.com/services/loginservice', 'UserAccessKey', env('ULTIPRO_UKEY'));
-    $headers[4] = new \SoapHeader('http://www.ultipro.com/services/loginservice', 'UserName', env('ULTIPRO_USER'));
+    $headers[1] = new \SoapHeader('http://www.ultipro.com/services/loginservice', 'ClientAccessKey', getenv('ULTIPRO_CKEY'));
+	$headers[2] = new \SoapHeader('http://www.ultipro.com/services/loginservice', 'Password', getenv('ULTIPRO_PW'));
+	$headers[3] = new \SoapHeader('http://www.ultipro.com/services/loginservice', 'UserAccessKey', getenv('ULTIPRO_UKEY'));
+    $headers[4] = new \SoapHeader('http://www.ultipro.com/services/loginservice', 'UserName', getenv('ULTIPRO_USER'));
 
     $client->__setSoapHeaders($headers);
 	$response = $client->Authenticate();

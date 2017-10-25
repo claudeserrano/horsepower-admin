@@ -143,7 +143,19 @@
                             </h5>
                         </div>
                         <div class="panel-body">
-                            
+                            <div class="col-lg-12" style="padding-bottom: 15px">
+                                <button class="btn btn-default" id="add_cert"><span class="glyphicon glyphicon-plus"></span>  Add Certificate </button>
+                            </div>
+
+                            <div class="col-lg-12" id="certificates">
+                                <table id="cert_tb" class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -187,6 +199,20 @@
 
             if($('#error').val())
                 alert($('#error').val())
+
+            var cert_index = 1;
+
+            $('#add_cert').click(function(event){
+                event.preventDefault();
+                $('#cert_tb > tbody:last-child').append('<tr id="'+cert_index+'"><td style="width:20%"><button class="btn btn-danger btn-remove-row" style="width:100%;height:100%" target="'+cert_index+'"><span class="glyphicon glyphicon-minus"></span> Remove </button></td><td style="width:80%"><center><input type="file" accept=".jpg,.png" name="cert'+cert_index+'" id="cert'+cert_index+'" class="form-control-file"/></center></td></tr>');
+                cert_index++;
+            });
+
+            $(document).on("click",".btn-remove-row", function(){
+                event.preventDefault();
+                id = $(this).attr('target');
+                $('#'+id).remove();
+             });
         });
     </script>
 @stop

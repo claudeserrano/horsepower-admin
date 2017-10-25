@@ -107,7 +107,7 @@ class UsersController extends Controller
                 $key->full_name = $emp['FirstName'] . ' ' . $emp['LastName'];
                 $key->save();
 
-                $msg = 'Your Horsepower employee number is '. $emp['EmployeeIdentifier']['EmployeeNumber'] .'. Please click on this link localhost/horsepower/public/token/'.$key->id.'/'.$token.' to finish your enrollment.';
+                $msg = 'Your Horsepower employee number is '. $emp['EmployeeIdentifier']['EmployeeNumber'] .'. Please click on this link '. getenv('URL_PREFIX') .'/public/token/'.$key->id.'/'.$token.' to finish your enrollment.';
 
                 \Mail::raw($msg, function($message) use($emp)
                 {

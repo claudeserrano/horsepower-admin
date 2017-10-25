@@ -79,9 +79,9 @@ class DashboardController extends Controller
     
     public function files(Request $request)
     {
-        if(session('progress') == 2)
+        // if(session('progress') == 2)
             return view('files');
-        else
+        // else
             return redirect('dashboard');
     }
 

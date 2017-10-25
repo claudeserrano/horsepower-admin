@@ -17,7 +17,7 @@
                 {{ csrf_field() }}
 
                 <div class="col-lg-12">
-                    <div class="panel-default panel">
+                    <div class="panel-danger panel" id="main">
                         <div class="panel-heading"><h3>Required</h3></div>
                         <div class="panel-body">
                             <div class="col-lg-4">
@@ -136,6 +136,19 @@
                 </div>
 
                 <div class="col-lg-12">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h5>
+                            If you have more certification, please upload below.
+                            </h5>
+                        </div>
+                        <div class="panel-body">
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
                     <button id="submit" type="submit" class="btn btn-default" disabled>Submit</button>
                 </div>
             </form>
@@ -153,10 +166,14 @@
                     allow = 0;
             });
 
-            if(allow)
+            if(allow){
                 submit.attr("disabled", false);
-            else
+                $("#main").removeClass("panel-danger").addClass("panel-info");
+            }
+            else{
                 submit.attr("disabled", true);
+                $("#main").removeClass("panel-info").addClass("panel-danger");
+            }
         }
 
         $(document).ready(function(){

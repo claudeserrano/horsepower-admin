@@ -15,7 +15,7 @@ class UsersController extends Controller
      */
     public function __construct()
     {
-        // ->middleware('');
+
     }
     
     /**
@@ -32,6 +32,7 @@ class UsersController extends Controller
         else{
             if(is_null($token) || is_null($id))
                 return redirect('error');
+                // return view('auth.manual');
             else{
                 return redirect('validateview', ['id' => $id, 'token' => $token]);
             }
@@ -83,14 +84,6 @@ class UsersController extends Controller
      */
     public function generateKey(Request $request)
     {
-        \Mail::raw('test', function($message)
-        {
-            $message->subject('Horsepower - Onboarding Todo List');
-            $message->to('claude@horsepowernyc.com');
-            $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-        });
-
-        return;
 
         $id = $request->id;
         $emp = UltiPro::validateId($id);
@@ -159,12 +152,7 @@ class UsersController extends Controller
                 session(['index' => $index]);
                 session(['token' => $token]);
                 session(['empid' => $key->empid]);
-                session(['emp_reg' => $key->emp_reg]);
-                session(['build_trade' => $key->build_trade]);
-                session(['files' => $key->files]);
-                session(['gov_id' => $key->gov_id]);
-                session(['ssn' => $key->ssn]);
-                session(['bank' => $key->bank]);
+                session(['progress' => $key->progress]);
 
                 return redirect('dashboard');
             }
@@ -178,6 +166,26 @@ class UsersController extends Controller
             return back()->withInput()->withErrors(['empNum' => 'This token expired. Please ask system administrator for a new token.']);
 
     }
+
+    // /**
+    //  * Login manually.
+    //  *
+    //  * @param  $token Login token of employee.
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function manualValidate(Request $request, $id = null, $token = null)
+    // {
+    //     if(session()->has('index') && session()->has('token')){
+    //         return redirect('dashboard');
+    //     }
+    //     else{
+    //         if(is_null($token) || is_null($id))
+    //             return view('auth.manual');
+    //         else{
+    //             return redirect('validateview', ['id' => $id, 'token' => $token]);
+    //         }
+    //     }
+    // }
 
     /**
      * Get view for admin employee overview.

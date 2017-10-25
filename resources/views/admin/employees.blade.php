@@ -15,11 +15,7 @@
 				<tr>
 					<th>Full Name</th>
 					<th>Employee Number</th>
-					<th>EMPREG</th>
-					<th>BF</th>
-					<th>GOVID</th>
-					<th>SSN</th>
-					<th>BANK</th>
+					<th>Progress</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -27,11 +23,7 @@
 					<tr>
 						<td>{{ $key->full_name }}</td>
 						<td>{{ $key->empid }}</td>
-						<td>@if($key->emp_reg == 1) <span class="glyphicon glyphicon-remove"/> @else <span class="glyphicon glyphicon-ok"/> @endif</td>
-						<td>@if($key->build_trade == 1) <span class="glyphicon glyphicon-remove"/> @else <span class="glyphicon glyphicon-ok"/> @endif</td>
-						<td>@if($key->gov_id == 1) <span class="glyphicon glyphicon-remove"/> @else <span class="glyphicon glyphicon-ok"/> @endif</td>
-						<td>@if($key->ssn == 1) <span class="glyphicon glyphicon-remove"/> @else <span class="glyphicon glyphicon-ok"/> @endif</td>
-						<td>@if($key->bank == 1) <span class="glyphicon glyphicon-remove"/> @else <span class="glyphicon glyphicon-ok"/> @endif</td>						
+						<td></td>						
 					</tr>
 				@endforeach
 			</tbody>
@@ -47,9 +39,9 @@
             tb = $("#tb").DataTable({
             	"language": { "emptyTable": "No employees found." },
             	"columnDefs": [
-            		{ "width": "8%", "targets": [2,3,4,5,6] },
             		{ "width": "40%", "targets": 0 },
             		{ "width": "20%", "targets": 1 },
+            		{ "width": "40%", "targets": 2 },
             	]
             });
     	})

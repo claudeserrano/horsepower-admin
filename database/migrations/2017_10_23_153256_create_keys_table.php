@@ -20,12 +20,7 @@ class CreateKeysTable extends Migration
             $table->string('value', 64)->unique();
             $table->string('token', 64)->unique();
             $table->integer('throttle')->default(0);
-            $table->integer('emp_reg')->default(1);
-            $table->integer('build_trade')->default(1);
-            $table->integer('files')->default(1);
-            $table->integer('gov_id')->default(1);
-            $table->integer('ssn')->default(1);
-            $table->integer('bank')->default(1);
+            $table->integer('progress')->default(0);
         });
     }
 

@@ -15,10 +15,9 @@ class HorsepowerMiddleWare
      */
     public function handle($request, Closure $next)
     {
-        // if ($request->age <= 200) {
-        //     return view('error');
-        // }
-
-        return $next($request);
+        if($request->session()->has('index') && $request->session()->has('token'))
+            return $next($request);
+        else
+            return redirect('error');
     }
 }

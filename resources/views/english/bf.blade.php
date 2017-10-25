@@ -598,3 +598,18 @@
             </div>
         </div>
  @stop
+
+@section('scripts')
+    
+    <script>
+        var canvas = document.querySelector("canvas");
+
+        var signaturePad = new SignaturePad(canvas);
+
+        function signature(){
+            var hidden = document.getElementById('uri');
+            hidden.value = signaturePad.toDataURL();
+        }            
+    </script>
+    
+@endsection

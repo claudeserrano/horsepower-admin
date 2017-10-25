@@ -17,7 +17,9 @@
 				<input type="hidden" name="token" value={{$token}}/>
 
 				<h2>Enter your employee ID below:</h2>
+				
 				<br>
+
 				<div class="col-lg-6 col-lg-offset-3">
 				    {!! Form::number('id', '',
 				        ['class' => 'form-control',
@@ -25,7 +27,7 @@
 				        ]) 
 				    !!}
 				    @if($errors->has('empNum'))
-				        <p class="red">Invalid ID. Please input your employee ID.</p>
+				        <p class="red">{{$errors->first('empNum')}}</p>
 				    @endif
 				</div>
 

@@ -13,7 +13,7 @@
         	<br>
             <div class="col-lg-12">
                 <a href="reg/english" class="btn btn-default"><h5>
-                    @if(session('reg') > 0)
+                    @if(session('emp_reg') > 0)
                         <span style="color:red" class="glyphicon glyphicon-exclamation-sign"></span>
                     @else
                         <span style="color:green" class="glyphicon glyphicon-ok-circle"></span>
@@ -24,7 +24,7 @@
             <div class="col-lg-12"><br></div>
             <div class="col-lg-12">
                 <a href="bf/english" class="btn btn-default"><h5>
-                    @if(session('bf') > 0)
+                    @if(session('build_trade') > 0)
                         <span style="color:red" class="glyphicon glyphicon-exclamation-sign"></span>
                     @else
                         <span style="color:green" class="glyphicon glyphicon-ok-circle"></span>
@@ -34,7 +34,7 @@
             <div class="col-lg-12"><br></div>
             <div class="col-lg-12">
                 <a href="files" class="btn btn-default"><h5>
-                    @if(session('bf') > 0)
+                    @if(session('files') > 0)
                         <span style="color:red" class="glyphicon glyphicon-exclamation-sign"></span>
                     @else
                         <span style="color:green" class="glyphicon glyphicon-ok-circle"></span>

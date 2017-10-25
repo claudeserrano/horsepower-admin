@@ -7,7 +7,7 @@
 @section('content')
     <div class="container content">
         <center>
-            <div class="col-lg-12">
+            <div class="col-lg-12" style="padding-bottom:20px">
                 <h1>Please upload the following files:</h1>
             </div>
 
@@ -16,72 +16,91 @@
             
                 {{ csrf_field() }}
 
-                <div class="col-lg-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <span style="color:red" class="glyphicon glyphicon-exclamation-sign"></span>
-                            Government Issued I.D.
-                        </div>
+                <div class="col-lg-12">
+                    <div class="panel-default panel">
+                        <div class="panel-heading"><h3>Required</h3></div>
                         <div class="panel-body">
-                            <input type="file" accept=".jpg,.png" name="id" id="id" class="form-control-file"/>
+                            <div class="col-lg-4">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <span style="color:red" class="glyphicon glyphicon-exclamation-sign"></span>
+                                        Government Issued I.D.
+                                    </div>
+                                    <div class="panel-body">
+                                        <input type="file" accept=".jpg,.png" name="id" id="id" class="form-control-file"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <span style="color:red" class="glyphicon glyphicon-exclamation-sign"></span>
+                                        Social Securtiy Card
+                                    </div>
+                                    <div class="panel-body">
+                                        <input type="file" accept=".jpg,.png" name="ssn" id="ssn" class="form-control-file"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <span style="color:red" class="glyphicon glyphicon-exclamation-sign"></span>
+                                        Bank Statement
+                                    </div>
+                                    <div class="panel-body">
+                                        <input type="file" accept=".jpg,.png" name="dd" id="dd" class="form-control-file"/>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <span style="color:red" class="glyphicon glyphicon-exclamation-sign"></span>
-                            Green Card
-                        </div>
+
+                <div class="col-lg-4">
+                    <div class=" panel-info panel">
+                        <div class="panel-heading"><h5>If you are a permanent resident, provide the information below.</h5></div>
                         <div class="panel-body">
-                            <input type="file" accept=".jpg,.png" name="greencard" id="greencard" class="form-control-file"/>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Green Card
+                                </div>
+                                <div class="panel-body">
+                                    <input type="file" accept=".jpg,.png" name="greencard" id="greencard" class="form-control-file"/>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <span style="color:red" class="glyphicon glyphicon-exclamation-sign"></span>
-                            Social Securtiy Card
-                        </div>
+
+                <div class="col-lg-8">
+                    <div class=" panel-info panel">
+                        <div class="panel-heading"><h5>If you are a permanent resident, provide the information below.</h5></div>
                         <div class="panel-body">
-                            <input type="file" accept=".jpg,.png" name="ssn" id="ssn" class="form-control-file"/>
+                            <div class="col-lg-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        OSHA-10/OSHA-30
+                                    </div>
+                                    <div class="panel-body">
+                                        <input type="file" accept=".jpg,.png" name="osha" id="osha" class="form-control-file"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Scaffold Safety Certificate
+                                    </div>
+                                    <div class="panel-body">
+                                        <input type="file" accept=".jpg,.png" name="scaffold" id="scaffold" class="form-control-file"/>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <span style="color:red" class="glyphicon glyphicon-exclamation-sign"></span>
-                            OSHA-10/OSHA-30
-                        </div>
-                        <div class="panel-body">
-                            <input type="file" accept=".jpg,.png" name="osha" id="osha" class="form-control-file"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <span style="color:red" class="glyphicon glyphicon-exclamation-sign"></span>
-                            Scaffold Safety Certificate
-                        </div>
-                        <div class="panel-body">
-                            <input type="file" accept=".jpg,.png" name="scaffold" id="scaffold" class="form-control-file"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <span style="color:red" class="glyphicon glyphicon-exclamation-sign"></span>
-                            Bank Statement
-                        </div>
-                        <div class="panel-body">
-                            <input type="file" accept=".jpg,.png" name="dd" id="dd" class="form-control-file"/>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="col-lg-12">
                     <div class="panel panel-info">
                         <div class="panel-heading">

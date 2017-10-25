@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Key extends Model
 {
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are not mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'value', 'throttle', 'token', 'empid'
+    protected $guarded = [
+        'id'
     ];
 
     public $timestamps = false;

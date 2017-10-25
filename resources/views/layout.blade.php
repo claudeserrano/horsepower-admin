@@ -5,9 +5,11 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="stylesheet" href="{{ URL::asset('css/app.css') }}">
-        <link rel="stylesheet" href="{{ URL::asset('css/signature_pad.css') }}">
-        <link rel="stylesheet" href="{{ URL::asset('css/custom.css') }}">
+        {{ Html::style('css/app.css') }}
+        {{ Html::style('css/signature_pad.css') }}
+        {{ Html::style('css/custom.css') }}
+        {{ Html::style('css/datatable.min.css') }}
+        {{ Html::style('css/datatables.bootstrap.min.css') }}
 
         <title>@yield('title')</title>
 
@@ -35,22 +37,10 @@
         {{ Html::script('js/app.js') }}
         {{ Html::script('js/jquery.mask.js') }}
         {{ Html::script('js/custom.js') }}
-
-        <script>
-            var canvas = document.querySelector("canvas");
-
-            var signaturePad = new SignaturePad(canvas);
-
-            function signature(){
-                var hidden = document.getElementById('uri');
-                hidden.value = signaturePad.toDataURL();
-            }            
-        </script>
+        {{ Html::script('js/datatable.min.js') }}
+        {{ Html::script('js/datatables.bootstrap.min.js') }}
 
         @yield('scripts')
-
-
-
 
     </body>
 </html>

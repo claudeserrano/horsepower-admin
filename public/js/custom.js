@@ -1,4 +1,5 @@
 $(document).ready(function(){
+  
 	$(".ssn").mask("000-00-0000");
 	$(".date").mask("00/00/0000");
 	$(".phone").mask("(000) 000-0000");

@@ -26,8 +26,8 @@ class DashboardController extends Controller
     {
         $progress = session()->get('progress');
         $value = 0;
-        $next = '';
-        $route = '';
+        $next = null;
+        $route = null;
         $lang = 'english';
         $index = 0;
 

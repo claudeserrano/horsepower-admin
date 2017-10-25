@@ -33,16 +33,16 @@ class UltiPro
           ),
         ));
 
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
+        // $response = curl_exec($curl);
+        // $err = curl_error($curl);
 
         curl_close($curl);
 
-        if ($err) {
-          return "cURL Error #:" . $err;
-        } else {
-          return $response;
-        }
+        // if ($err) {
+        //   return "cURL Error #:" . $err;
+        // } else {
+        //   return $response;
+        // }
 
 		// $client = new \SoapClient(self::LOGIN_URL, array('soap_version' => SOAP_1_2, 'exceptions' => TRUE, 'trace' => TRUE));
 

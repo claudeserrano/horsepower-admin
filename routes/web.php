@@ -31,6 +31,10 @@ Route::post('/regpdf/{lang}', 'DashboardController@sendReg')->name('regpdf');
 Route::post('/bfpdf/{lang}', 'DashboardController@sendBF')->name('bfpdf');
 Route::post('/upload', 'DashboardController@uploadFiles')->name('upload');
 
+Route::get('/ultipro/login', function(){
+	return \App\Services\Ultipro::login();
+});
+
 Route::get('/success', function(){
 	return view('success');
 })->name('success');

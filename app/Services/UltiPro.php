@@ -13,7 +13,7 @@ class UltiPro
      * 
 	 * @return string $token
 	 */
-	private function login()
+	public static function login()
 	{
 		$client = new \SoapClient(self::LOGIN_URL, array('soap_version' => SOAP_1_2, 'exceptions' => TRUE, 'trace' => TRUE));
 

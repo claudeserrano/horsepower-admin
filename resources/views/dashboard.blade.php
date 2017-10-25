@@ -13,7 +13,8 @@
             </div>
             <div class="col-lg-12">
                 <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="{{$value}}" aria-valuemin="{{$value}}" aria-valuemax="100" style="width:{{$value}}%">
+                    <div class="progress-bar @if($index == 3) progress-bar-success @endif " role="progressbar" aria-valuenow="{{$value}}" aria-valuemin="{{$value}}" aria-valuemax="100" style="width:{{$value}}%">
+                        @if($index == 3) Complete @else {{$index}} / 3 @endif
                     </div>
                 </div>
 

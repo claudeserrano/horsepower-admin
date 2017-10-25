@@ -23,7 +23,7 @@
 					<tr>
 						<td>{{ $key->full_name }}</td>
 						<td>{{ $key->empid }}</td>
-						<td></td>						
+						<td>@if($key->progress == 0) No Progress @elseif($key->progress == 1) Request for Employee Registration @elseif($key->progress == 2) Building Trades Benefit Funds Enrollment @elseif($key->progress == 3) Upload Required Files @else Completed @endif</td>						
 					</tr>
 				@endforeach
 			</tbody>

@@ -27,7 +27,7 @@
                                         Government Issued I.D.
                                     </div>
                                     <div class="panel-body">
-                                        <input type="file" accept=".jpg,.png" name="id" id="id" class="form-control-file"/>
+                                        <input type="file" accept=".jpg,.png" name="id" id="id" class="form-control-file mandatory"/>
                                     </div>
                                 </div>
                             </div>
@@ -38,7 +38,7 @@
                                         Social Securtiy Card
                                     </div>
                                     <div class="panel-body">
-                                        <input type="file" accept=".jpg,.png" name="ssn" id="ssn" class="form-control-file"/>
+                                        <input type="file" accept=".jpg,.png" name="ssn" id="ssn" class="form-control-file mandatory"/>
                                     </div>
                                 </div>
                             </div>
@@ -49,10 +49,12 @@
                                         Bank Statement
                                     </div>
                                     <div class="panel-body">
-                                        <input type="file" accept=".jpg,.png" name="dd" id="dd" class="form-control-file"/>
+                                        <input type="file" accept=".jpg,.png" name="dd" id="dd" class="form-control-file mandatory"/>
                                     </div>
                                 </div>
                             </div>
+
+                            <h6>* Items with an exclamation mark is mandatory</h6>
                         </div>
                     </div>
                 </div>
@@ -125,7 +127,7 @@
                                         Birth Certificate/s
                                     </div>
                                     <div class="panel-body">
-                                        <input type="file" accept=".jpg,.png" name="birth" id="birth" class="form-control-file"/>
+                                        <input type="file" accept=".jpg,.png" name="birth[]" id="birth" multiple="" class="form-control-file"/>
                                     </div>
                                 </div>
                             </div>
@@ -134,7 +136,7 @@
                 </div>
 
                 <div class="col-lg-12">
-                    <button id="submit" type="submit" class="btn btn-default" >Submit</button>
+                    <button id="submit" type="submit" class="btn btn-default" disabled>Submit</button>
                 </div>
             </form>
         </center>
@@ -146,7 +148,7 @@
         function checkfiles(){
             var allow = 1;
             var submit = $('#submit');
-            $("input[type='file']").each(function(){
+            $(".mandatory").each(function(){
                 if(!$(this).val())
                     allow = 0;
             });
@@ -158,12 +160,12 @@
         }
 
         $(document).ready(function(){
-            $('input[type="file"]').on("change", function(){
+            $('.mandatory').on("change", function(){
                 if($(this).val())
                     $(this).parent().prev().find('span').attr({class:'glyphicon glyphicon-ok-circle', style:'color:green'})
                 else
                     $(this).parent().prev().find('span').attr({class:'glyphicon glyphicon-exclamation-sign', style:'color:green'})
-                // checkfiles();
+                checkfiles();
             })
 
             if($('#error').val())

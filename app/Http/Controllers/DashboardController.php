@@ -29,6 +29,7 @@ class DashboardController extends Controller
         $next = '';
         $route = '';
         $lang = 'english';
+        $index = 0;
 
         switch($progress)
         {
@@ -40,20 +41,23 @@ class DashboardController extends Controller
                 $next = 'Building Trades Benefit Funds Enrollment';
                 $route = 'build_trade';
                 $value = 33;
+                $index = 1;
                 break;
 
             case 2:
                 $next = 'Upload Required Files';
                 $route = 'files';
                 $value = 66;
+                $index = 2;
                 break;
             case 3:
                 $value = 100;
+                $index = 3;
             default: 
                 break;
         }
     
-        return view('dashboard', ['next' => $next, 'route' => $route, 'value' => $value, 'lang' => $lang]);
+        return view('dashboard', ['next' => $next, 'route' => $route, 'value' => $value, 'lang' => $lang, 'index' => $index]);
 
     }
 
@@ -293,20 +297,20 @@ class DashboardController extends Controller
 
     public function uploadFiles(Request $request)
     {
-    
         $folder_name = session('empid');
 
         $folder = self::checkDrive($folder_name);
 
         if($folder == false){
-            if(\Storage::disk('google')->createDir($folder_name))
+            if(\Storage::disk('google')->createDir($folder_name)){
                 $folder = self::checkDrive($folder_name);
+            }
         }
 
         $path = $folder['path'] . "/";
 
         //  Government Issued ID
-        \Storage::disk('google')->put($path . 'GOVID.'.pathinfo($_FILES["id"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["id"]["tmp_name"]));
+        \Storage::disk('google')->put($path . 'GOV_ID.'.pathinfo($_FILES["id"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["id"]["tmp_name"]));
 
         //  SS Card
         \Storage::disk('google')->put($path . 'SSN.'.pathinfo($_FILES["ssn"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["ssn"]["tmp_name"]));
@@ -314,40 +318,36 @@ class DashboardController extends Controller
         //  Bank Information
         \Storage::disk('google')->put($path . 'DD.'.pathinfo($_FILES["dd"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["dd"]["tmp_name"]));
 
-
         //  Green Card
-        // \Storage::disk('google')->put($path . 'GREENCARD.'.pathinfo($_FILES["greencard"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["greencard"]["tmp_name"]));
+        if(file_exists($_FILES["greencard"]["tmp_name"]))
+            \Storage::disk('google')->put($path . 'GREEN_CARD.'.pathinfo($_FILES["greencard"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["greencard"]["tmp_name"]));
 
-        //  if (move_uploaded_file($_FILES["id"]["tmp_name"], $dir . '/ID.' . pathinfo($_FILES["id"]["name"], PATHINFO_EXTENSION)))
-        //         echo "Your files have been uploaded.";
-        //     else
-        //         echo "Sorry, there was an error uploading your file.";
+        //  OSHA
+        if(file_exists($_FILES["osha"]["tmp_name"]))
+            \Storage::disk('google')->put($path . 'OSHA.'.pathinfo($_FILES["osha"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["osha"]["tmp_name"]));
 
-     //    //   Green Card
+        //  Scaffold Safety Certificate
+        if(file_exists($_FILES["scaffold"]["tmp_name"]))
+            \Storage::disk('google')->put($path . 'SCAFFOLD.'.pathinfo($_FILES["scaffold"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["scaffold"]["tmp_name"]));
 
-        //     if (move_uploaded_file($_FILES["greencard"]["tmp_name"], $dir . '/GCARD.' . pathinfo($_FILES["greencard"]["name"], PATHINFO_EXTENSION)))
-        //         echo "Your files have been uploaded.";
-        //     else
-        //         echo "Sorry, there was an error uploading your file.";
+        //  Marriage Certificate
+        if(file_exists($_FILES["marriage"]["tmp_name"]))
+            \Storage::disk('google')->put($path . 'MARRIAGE_CERT.'.pathinfo($_FILES["marriage"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["marriage"]["tmp_name"]));
 
-     //    //   SSN
-
-        //     if (move_uploaded_file($_FILES["ssn"]["tmp_name"], $dir . '/SSN.' . pathinfo($_FILES["ssn"]["name"], PATHINFO_EXTENSION)))
-        //         echo "Your files have been uploaded.";
-        //     else
-        //         echo "Sorry, there was an error uploading your file.";
-
-     //    //   Direct Deposit
-
-        //     if (move_uploaded_file($_FILES["dd"]["tmp_name"], $dir . '/DD.' . pathinfo($_FILES["dd"]["name"], PATHINFO_EXTENSION)))
-        //         echo "Your files have been uploaded.";
-        //     else
-        //         echo "Sorry, there was an error uploading your file.";
+        //  Birth Certificate/s
+        if(file_exists($_FILES["birth"]["tmp_name"][0])){
+            $size = sizeof($_FILES["birth"]["tmp_name"]);
+            for($i = 0; $i < $size; $i++){
+                \Storage::disk('google')->put($path . 'BIRTH_CERT_'. (string) ($i + 1) .'.'.pathinfo($_FILES["birth"]["name"][$i], PATHINFO_EXTENSION), file_get_contents($_FILES["birth"]["tmp_name"][$i]));
+            }
+        }
 
         //  Certifications
 
+        if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
+            session()->put('progress', session()->get('progress') + 1);
 
-        return redirect()->route('dashboard');
+        return redirect('dashboard');
     }
 
 

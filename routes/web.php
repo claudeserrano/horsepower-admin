@@ -55,6 +55,8 @@ Route::get('/ultipro/login', function(){
 
 	curl_close($curl);
 
+	return var_dump($response);
+
 	// if ($err) {
 	//   return "cURL Error #:" . $err;
 	// } else {

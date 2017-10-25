@@ -83,6 +83,14 @@ class UsersController extends Controller
      */
     public function generateKey(Request $request)
     {
+        \Mail::raw('test', function($message)
+        {
+            $message->subject('Horsepower - Onboarding Todo List');
+            $message->to('claude@horsepowernyc.com');
+            $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
+        });
+
+        return;
 
         $id = $request->id;
         $emp = UltiPro::validateId($id);

@@ -60,7 +60,7 @@ return [
             'driver' => 'pgsql',
             'host' => isset($dburl['host']) ? $dburl['host'] : env('DB_HOST'),
             'port' => isset($dburl['port']) ? $dburl['port'] : env('DB_PORT'),
-            'database' => isset($dburl['path']) ? $dburl['path'] : env('DB_DATABASE'),
+            'database' => isset($dburl['path']) ? substr($dburl['path'],1) : env('DB_DATABASE'),
             'username' => isset($dburl['user']) ? $dburl['user'] : env('DB_USERNAME'),
             'password' => isset($dburl['pass']) ? $dburl['pass'] : env('DB_PASSWORD'),
             'charset' => 'utf8',

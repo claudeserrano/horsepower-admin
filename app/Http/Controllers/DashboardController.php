@@ -50,10 +50,9 @@ class DashboardController extends Controller
                 $value = 66;
                 $index = 2;
                 break;
-            case 3:
+            default: 
                 $value = 100;
                 $index = 3;
-            default: 
                 break;
         }
     

@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if (env('APP_ENV') === 'production') {
+        if (env('IS_PRODUCTION', false) === 'true') {
                 $this->app['request']->server->set('HTTPS', true);
         }
     }

@@ -11,10 +11,10 @@
 				<form class="form-horizontal" role="form" method="POST" action="{{ route('generate') }}">
 				
 				{{ csrf_field() }}
-				<h2>Enter employee number to generate the key:</h2>
+				<h2>Enter employee number/email address to generate the key:</h2>
 				<br>
 				<div class="col-lg-6 col-lg-offset-3">
-				    {!! Form::number('id', '',
+				    {!! Form::text('id', '',
 				        ['class' => 'form-control',
 				       	 'placeholder' => ''
 				        ]) 

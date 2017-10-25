@@ -17,7 +17,7 @@ Route::get('/error', 'UsersController@getErrorView')->name('error');
 Route::post('/validate/key', 'UsersController@validateKey')->name('validate');
 Route::get('/token/{id}/{token}', 'UsersController@getValidateView')->name('validateview');
 
-Route::get('/admin/generate/', 'UsersController@getGenerateView');
+Route::get('/generate/', 'UsersController@getGenerateView');
 Route::post('/admin/generate/key', 'UsersController@generateKey')->name('generate');
 
 Route::get('/admin/employees/new', 'UsersController@getNewEmployeesView')->name('getnewview');

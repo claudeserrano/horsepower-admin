@@ -71,27 +71,45 @@ class UsersController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function getGenerateView()
+    public function getGenerateView(Request $request)
     {
+
+        if(!session()->has('ultipro_token')){
+            $token = false;
+            while($token == false)
+                $token = UltiPro::login();
+            session()->put('ultipro_token', $token);
+        }
         return view('admin.generate');
     }
 
     /**
      * Generate key for new hire.
      *
-     * @param Illuminate\Http\Request $request
+     * @param Illuminate\Http\Request $request, boolean $login
      * @return void
      */
-    public function generateKey(Request $request)
+    public function generateKey(Request $request, $login = false)
     {
-
         $id = $request->id;
-        $emp = UltiPro::validateId($id);
+        $flag = 0;
+
+        if(is_numeric($request->id))
+            $emp = UltiPro::validateId($id);
+        else{
+            $emp = UltiPro::validateEmail($id);
+            $flag = 1;
+        }
 
         $error = '';
 
         if($emp){
-            $empl = Key::where('empid', $request->id)->first();
+            if($flag)
+                $id = $emp["EmployeeNumber"];
+            else
+                $id = $request->id;
+
+            $empl = Key::where('empid', $id)->first();
 
             if(!is_null($empl))
                 $error = "There is a token assigned to this employee.";

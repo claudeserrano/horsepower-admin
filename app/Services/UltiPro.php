@@ -42,16 +42,20 @@ class UltiPro
             curl_close($curl);
 
             if ($err) {
-              return "cURL Error #:" . $err;
+              return false;
             }
 
             $xml = simplexml_load_string($response);
             $token = $xml->children('s', true)->Body->children('http://www.ultipro.com/contracts')->children('http://www.ultipro.com/services/loginservice')->Token;
+
+
+            $json = json_encode($token);
+            $array = json_decode($json,TRUE);
             
-            return $token;
+            return $array[0];
 
         } catch (Exception $e) {
-            return $e;
+            return false;
         }
         
 	}
@@ -64,8 +68,10 @@ class UltiPro
      */
     public function getEmpById($empid)
     {
+        if(!session()->has('ultipro_token'))
+            return 'There is no  UltiPro token!';
 
-        $token = self::login();
+        $token = session('ultipro_token');
         $ckey = env('ULTIPRO_CKEY');
         $ccode = env('ULTIPRO_COMPANY_CODE');
 
@@ -142,6 +148,27 @@ class UltiPro
     }
 
     /**
+     * Validate if employee ID is valid.
+     * 
+     * @param $empid employee ID to validate
+     * @return boolean true if validated, false if not validated
+     */
+    public function validateEmail($mail)
+    {
+        $emplist = UltiPro::findEmployees();
+        foreach($emplist as $emp)
+        {
+            $email = $emp["People"]["Person"]["EmailAddress"];
+            if(!is_array($email)){
+                if(strcmp($mail, $email) == 0)
+                    return $emp;
+            }
+        }
+        return false;
+    }
+
+
+    /**
      * Query employees.
      * 
      * @param $empid EmployeeID
@@ -150,7 +177,10 @@ class UltiPro
     public function findEmployees($start_date = null, $empid = null, $lastname = null)
     {
         
-        $token = self::login();
+        if(!session()->has('ultipro_token'))
+            return 'There is no  UltiPro token!';
+
+        $token = session('ultipro_token');
         $ckey = env('ULTIPRO_CKEY');
 
         $curl = curl_init();
@@ -196,7 +226,7 @@ class UltiPro
             $array = json_decode($json,TRUE);
             $arr = $array["EmployeePerson"];
 
-            return $array;
+            return $arr;
         }
 
     }
@@ -209,7 +239,10 @@ class UltiPro
     public function getBI()
     {
         
-        $token = self::login();
+        if(!session()->has('ultipro_token'))
+            return 'There is no  UltiPro token!';
+
+        $token = session('ultipro_token');
 
         $client = new \SoapClient(self::BI_URL, array('soap_version' => SOAP_1_2, 'exceptions' => TRUE, 'trace' => TRUE));
 

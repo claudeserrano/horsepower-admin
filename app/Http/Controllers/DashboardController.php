@@ -193,14 +193,14 @@ class DashboardController extends Controller
         file_put_contents($fdf, $dfdf);
 
         //  Fill up form with signature & flatten file to remove editing
-        exec(getenv('LIB_PATH', '') . 'pdftk '. $first .' fill_form '. $fdf . ' output tmp/final.pdf flatten');
+        exec(getenv('LIB_PATH', '') . 'pdftk '. $first .' fill_form '. $fdf . ' output '. $tmp .'final.pdf flatten');
 
         \Mail::raw('New application from ' . $data['Name'], function($message)
         {
             $message->subject('Horsepower - Request for Employee Registration');
             $message->to('claude@horsepowernyc.com');
             $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-            $message->attach('tmp/final.pdf');
+            $message->attach($tmp . 'final.pdf');
         });
 
         if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
@@ -320,14 +320,14 @@ class DashboardController extends Controller
 
         file_put_contents($fdf, $dfdf);
 
-        exec(getenv("LIB_PATH") . "pdftk ". $first ." fill_form ". $fdf . " output tmp/final.pdf flatten");
+        exec(getenv("LIB_PATH") . "pdftk ". $first ." fill_form ". $fdf . " output ". $tmp ."final.pdf flatten");
 
         \Mail::raw('New application from '. $data['FIRST_NAME'] . ' ' . $data['LAST_NAME'], function($message)
         {
             $message->subject('Horsepower - Building Trades Benefit Funds Enrollment');
             $message->to('claudempserrano@gmail.com');
             $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-            $message->attach('tmp/final.pdf');
+            $message->attach($tmp . 'final.pdf');
         });
 
         if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))

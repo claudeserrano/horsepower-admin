@@ -20,6 +20,7 @@ class DashboardController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -60,6 +61,13 @@ class DashboardController extends Controller
 
     }
 
+    /**
+     * Get registration form view.
+     * 
+     * @param  \Illuminate\Http\Request $request
+     * @param string $lang Language of the form.
+     * @return \Illuminate\Http\Response
+     */
     public function registration(Request $request, $lang)
     {
         if(session('progress') == 0)
@@ -68,6 +76,14 @@ class DashboardController extends Controller
             return redirect('dashboard');
     }
 
+
+    /**
+     * Get build trade form view.
+     * 
+     * @param  \Illuminate\Http\Request $request
+     * @param string $lang Language of the form.
+     * @return \Illuminate\Http\Response
+     */
     public function bf(Request $request, $lang)
     {
         if(session('progress') == 1)
@@ -76,6 +92,13 @@ class DashboardController extends Controller
             return redirect('dashboard');
     }
     
+
+    /**
+     * Get files upload view.
+     * 
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function files(Request $request)
     {
         // if(session('progress') == 2)
@@ -85,8 +108,10 @@ class DashboardController extends Controller
     }
 
     /**
+     * Submit registration form.
+     * 
      * @param  \Illuminate\Http\Request 
-     * @param  string
+     * @param  string $lang
      * @return \Illuminate\Http\Response
      */
     public function sendReg(Request $request, $lang) 
@@ -185,6 +210,14 @@ class DashboardController extends Controller
 
     }
 
+
+    /**
+     * Submit build trade.
+     * 
+     * @param  \Illuminate\Http\Request 
+     * @param  string $lang
+     * @return \Illuminate\Http\Response
+     */
     public function sendBF(Request $request, $lang)
     {
         
@@ -381,6 +414,12 @@ class DashboardController extends Controller
         return redirect('dashboard');
     }
 
+    /**
+     * Check google drive if filename exists.
+     * 
+     * @param  string $filename Filename to check.
+     * @return boolean/string
+     */
     function checkDrive($filename){
         foreach(\Storage::disk('google')->listContents() as $item){
             if(!strcmp($item['filename'], $filename))
@@ -389,6 +428,12 @@ class DashboardController extends Controller
         return false;
     }
 
+    /**
+     * Create a FDF file from array.
+     *    
+     * @param  array $arr Array of values to generate FDF.
+     * @return FDF raw data
+     */
     function toFDF($arr){
         $header = "%FDF-1.2 \n
             1 0 obj<</FDF<< /Fields[ \n";
@@ -406,6 +451,14 @@ class DashboardController extends Controller
         return $header . $fdf . $footer;
     }
 
+    /**
+     * Update a column for Key model.
+     * 
+     * @param  int $index  ID of the Key instance.
+     * @param  mixed $data   Data to be put into model.
+     * @param  string $column Column name.
+     * @return boolean
+     */
     function updateKeyModel($index, $data, $column)
     {
 

@@ -11,6 +11,8 @@
         {{ Html::style('css/datatable.min.css') }}
         {{ Html::style('css/datatables.bootstrap.min.css') }}
 
+        {{ Html::favicon('img/Horsepower_favicon.png') }}
+
         <title>@yield('title')</title>
 
     </head>

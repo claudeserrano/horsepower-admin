@@ -11,7 +11,7 @@
 				<form class="form-horizontal" role="form" method="POST" action="{{ route('generate') }}">
 				
 				{{ csrf_field() }}
-				<h2>Enter employee number/email address to generate the key:</h2>
+				<h2>Enter email address to generate the key:</h2>
 				<br>
 				<div class="col-lg-6 col-lg-offset-3">
 				    {!! Form::text('id', '',
@@ -19,8 +19,12 @@
 				       	 'placeholder' => ''
 				        ]) 
 				    !!}
-				    @if($errors->has('empNum'))
+				    @if($errors->has('email'))
 				        <p class="red">{{$errors->first('empNum')}}</p>
+				    @endif
+
+				    @if($errors->has('id'))
+				        <p class="red">Please input an appropriate email address.</p>
 				    @endif
 				</div>
 

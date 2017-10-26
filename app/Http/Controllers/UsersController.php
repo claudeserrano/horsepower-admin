@@ -21,7 +21,9 @@ class UsersController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  $token Login token of employee.
+     * @param \Illuminate\Http\Request $request
+     * @param int $id Employee ID.
+     * @param int $token Login token of employee.
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request, $id = null, $token = null)
@@ -32,7 +34,6 @@ class UsersController extends Controller
         else{
             if(is_null($token) || is_null($id))
                 return redirect('error');
-                // return view('auth.manual');
             else{
                 return redirect('validateview', ['id' => $id, 'token' => $token]);
             }
@@ -42,11 +43,15 @@ class UsersController extends Controller
     /**
      * Get validate token view.
      *
+     * @param int $id Employee ID.
+     * @param int $token Login token of employee.
      * @return \Illuminate\Http\Response
      */
     public function getValidateView($id, $token)
     {
         $key = Key::where('token', '=', $token)->first();
+
+        session()->put('generate_throttle', 0);
 
         if($key)
             return view('auth.validate', ['id' => $id, 'token' => $token]);
@@ -57,7 +62,6 @@ class UsersController extends Controller
     /**
      * Get error view.
      *
-     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function getErrorView()
@@ -68,7 +72,8 @@ class UsersController extends Controller
 
     /**
      * Get generate view.
-     * 
+     *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function getGenerateView(Request $request)
@@ -84,13 +89,52 @@ class UsersController extends Controller
     }
 
     /**
+     * Get view for admin employee overview.
+     * 
+     * @return Illuminate\Htpp\Response
+     */
+    public function getNewEmployeesView()
+    {
+        $keys = Key::all();
+
+        return view('admin.employees', ['keys' => $keys]);
+
+    }
+
+    /**
+     * Get all new employees.
+     * 
+     * @return json
+     */
+    public function getNewEmployees()
+    {
+
+        $keys = Key::all();
+        return json_encode($keys);
+        
+    }
+
+    /**
      * Generate key for new hire.
      *
-     * @param Illuminate\Http\Request $request, boolean $login
+     * @param Illuminate\Http\Request $request
      * @return void
      */
-    public function generateKey(Request $request, $login = false)
+    public function generateKey(Request $request)
     {
+        $request->validate([
+            'id' => 'required',
+        ]);
+
+        if(session('generate_throttle') > 5){
+            $error = 'Too many login attempts.';
+            return back()->withInput()->withErrors(['email' => $error]);
+        }
+
+        if(session()->has('index') && session()->has('token')){
+            return redirect('dashboard');
+        }
+
         $id = $request->id;
         $flag = 0;
 
@@ -104,15 +148,20 @@ class UsersController extends Controller
         $error = '';
 
         if($emp){
-            if($flag)
+            $email = '';
+            if($flag){
+                $email = $id;
                 $id = $emp["EmployeeNumber"];
-            else
+            }
+            else{
                 $id = $request->id;
+                $email = $emp["EmailAddress"];
+            }
 
             $empl = Key::where('empid', $id)->first();
 
             if(!is_null($empl))
-                $error = "There is a token assigned to this employee.";
+                $error = "There is a token assigned to this employee. Please contact the system administrator.";
             else{
                 $rand = str_random(32);
                 $token = openssl_encrypt($rand, 'AES-128-ECB', base64_encode($id));
@@ -121,26 +170,30 @@ class UsersController extends Controller
                 $key = new Key;
                 $key->value = $rand;
                 $key->token = $token;
-                $key->empid = $emp['EmployeeIdentifier']['EmployeeNumber'];
+                $key->empid = $id;
                 $key->full_name = $emp['FirstName'] . ' ' . $emp['LastName'];
                 $key->save();
 
-                $msg = 'Your Horsepower employee number is '. $emp['EmployeeIdentifier']['EmployeeNumber'] .'. Please click on this link '. getenv('URL_PREFIX') .'/token/'.$key->id.'/'.$token.' to finish your enrollment.';
+                // $msg = 'Your Horsepower employee number is '. $id .'. Please click on this link '. getenv('URL_PREFIX') .'/token/'.$key->id.'/'.$token.' to finish your enrollment.';
 
-                \Mail::raw($msg, function($message) use($emp)
-                {
-                    $message->subject('Horsepower - Onboarding Todo List');
-                    $message->to($emp['EmailAddress']);
-                    $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-                });
+                // \Mail::raw($msg, function($message) use($email)
+                // {
+                //     $message->subject('Horsepower - Onboarding Todo List');
+                //     $message->to($email);
+                //     $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
+                // });
 
+                return redirect()->route('queryvalidate', ['id' => $key->empid, 'token' => $key->token, 'index' => $key->id]);
                 return view('admin.success');
             }
         }
         else
             $error = 'Invalid employee.';
 
-        return back()->withInput()->withErrors(['empNum' => $error]);
+        $throttle = session('generate_throttle');
+        session()->put('generate_throttle', session()->get('generate_throttle') + 1);
+
+        return back()->withInput()->withErrors(['email' => $error]);
 
     }
 
@@ -152,13 +205,26 @@ class UsersController extends Controller
      */
     public function validateKey(Request $request)
     {
+        if(($request->query('id') !== null) && ($request->query('token') !== null) && ($request->query('index') !== null)){
+            $id = $request->query('id');
+            $token = $request->query('token');
+            $index = $request->query('index');
+        }
+        else{
+            if(is_null($request->id))
+                return view('auth.error', ['msg' => 'Invalid token.']);
 
-        $id = $request->id;
-
-        $token = rtrim($request->token, '/');
-        $index = rtrim($request->index, '/');
+            $id = $request->id;
+            $token = rtrim($request->token, '/');
+            $index = rtrim($request->index, '/');
+        }
 
         $key = Key::find($index);
+
+        if(!$key){
+            return view('auth.error', ['msg' => 'Invalid token.']);
+        }
+
         if($key->throttle < 10)
         {
             $value = $key->value;
@@ -183,53 +249,6 @@ class UsersController extends Controller
         else
             return back()->withInput()->withErrors(['empNum' => 'This token expired. Please ask system administrator for a new token.']);
 
-    }
-
-    // /**
-    //  * Login manually.
-    //  *
-    //  * @param  $token Login token of employee.
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function manualValidate(Request $request, $id = null, $token = null)
-    // {
-    //     if(session()->has('index') && session()->has('token')){
-    //         return redirect('dashboard');
-    //     }
-    //     else{
-    //         if(is_null($token) || is_null($id))
-    //             return view('auth.manual');
-    //         else{
-    //             return redirect('validateview', ['id' => $id, 'token' => $token]);
-    //         }
-    //     }
-    // }
-
-    /**
-     * Get view for admin employee overview.
-     * 
-     * @param  Illuminate\Http\Request $request
-     * @return Illuminate\Htpp\Response
-     */
-    public function getNewEmployeesView()
-    {
-        $keys = Key::all();
-
-        return view('admin.employees', ['keys' => $keys]);
-
-    }
-
-    /**
-     * Get all new employees.
-     * 
-     * @return json
-     */
-    public function getNewEmployees()
-    {
-
-        $keys = Key::all();
-        return json_encode($keys);
-        
     }
     	
 }

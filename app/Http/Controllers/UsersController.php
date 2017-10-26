@@ -165,14 +165,14 @@ class UsersController extends Controller
                 $key->full_name = $emp['FirstName'] . ' ' . $emp['LastName'];
                 $key->save();
 
-                // $msg = 'Your Horsepower employee number is '. $id .'. Please click on this link '. getenv('URL_PREFIX') .'/token/'.$key->id.'/'.$token.' to finish your enrollment.';
+                $msg = 'Your Horsepower employee number is '. $id .'. Please click on this link '. getenv('URL_PREFIX') .'/token/'.$key->id.'/'.$token.' to finish your enrollment.';
 
-                // \Mail::raw($msg, function($message) use($email)
-                // {
-                //     $message->subject('Horsepower - Onboarding Todo List');
-                //     $message->to($email);
-                //     $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-                // });
+                \Mail::raw($msg, function($message) use($email)
+                {
+                    $message->subject('Horsepower - Onboarding Todo List');
+                    $message->to($email);
+                    $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
+                });
 
                 return redirect()->route('queryvalidate', ['id' => $key->empid, 'token' => $key->token, 'index' => $key->id]);
                 return view('admin.success');

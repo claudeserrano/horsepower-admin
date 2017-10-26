@@ -14,9 +14,7 @@
 Route::get('/', 'UsersController@index')->name('home');
 Route::get('/error', 'UsersController@getErrorView')->name('error');
 
-Route::get('/drive', function(){
-	return redirect()->to(getenv('DRIVE_URL'));
-});
+Route::get('/drive', function(){ return redirect()->to(getenv('DRIVE_URL')); });
 
 Route::post('/validate/key', 'UsersController@validateKey')->name('validate');
 Route::get('/validate/key/query', 'UsersController@validateKey')->name('queryvalidate');
@@ -25,8 +23,8 @@ Route::get('/token/{id}/{token}', 'UsersController@getValidateView')->name('vali
 Route::get('/generate/', 'UsersController@getGenerateView');
 Route::post('/generate/key', 'UsersController@generateKey')->name('generate');
 
-Route::get('/admin/employees/new', 'UsersController@getNewEmployeesView')->name('getnewview');
-Route::get('/admin/employees/get', 'UsersController@getNewEmployees')->name('getnew');
+// Route::get('/admin/employees/new', 'UsersController@getNewEmployeesView')->name('getnewview');
+// Route::get('/admin/employees/get', 'UsersController@getNewEmployees')->name('getnew');
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 Route::get('/files', 'DashboardController@files')->name('files');

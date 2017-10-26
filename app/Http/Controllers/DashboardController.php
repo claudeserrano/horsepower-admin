@@ -325,7 +325,7 @@ class DashboardController extends Controller
         \Mail::raw('New application from '. $data['FIRST_NAME'] . ' ' . $data['LAST_NAME'], function($message) use($tmp)
         {
             $message->subject('Horsepower - Building Trades Benefit Funds Enrollment');
-            $message->to('claudempserrano@gmail.com');
+            $message->to('claude@horsepowernyc.com');
             $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
             $message->attach($tmp . 'final.pdf');
         });

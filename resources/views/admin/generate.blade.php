@@ -11,7 +11,7 @@
 				<form class="form-horizontal" role="form" method="POST" action="{{ route('generate') }}">
 				
 				{{ csrf_field() }}
-				<h2>Enter email address to generate the key:</h2>
+				<h2>Enter your email address below:</h2>
 				<br>
 				<div class="col-lg-6 col-lg-offset-3">
 				    {!! Form::text('id', '',

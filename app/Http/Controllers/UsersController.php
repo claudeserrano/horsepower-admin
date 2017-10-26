@@ -118,7 +118,7 @@ class UsersController extends Controller
         ]);
 
         if(session('generate_throttle') > 5){
-            $error = 'Too many login attempts.';
+            $error = 'Too many attempts.';
             return back()->withInput()->withErrors(['email' => $error]);
         }
 

@@ -20,7 +20,7 @@
 				        ]) 
 				    !!}
 				    @if($errors->has('email'))
-				        <p class="red">{{$errors->first('empNum')}}</p>
+				        <p class="red">{{$errors->first('email')}}</p>
 				    @endif
 
 				    @if($errors->has('id'))

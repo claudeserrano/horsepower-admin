@@ -307,8 +307,8 @@ class DashboardController extends Controller
             file_put_contents($pdftmp, $pdf);
 
             exec(getenv("LIB_PATH") . 'pdftk '. $pdftmp .' stamp ' . $sigpdf . ' output ' . $first);
-
-        } catch (Exception $e) {
+        } 
+        catch (Exception $e) {
             return $e; 
         }
 

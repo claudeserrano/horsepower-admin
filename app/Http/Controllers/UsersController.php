@@ -69,13 +69,18 @@ class UsersController extends Controller
      */
     public function getGenerateView(Request $request)
     {
-
         if(!session()->has('ultipro_token')){
             $token = false;
             while($token == false)
                 $token = UltiPro::login();
             session()->put('ultipro_token', $token);
         }
+
+        if($request->query('keyword') == 'horsepower' && $request->query('access') == 0){
+            session()->put('access', 0);
+            return view('admin.generate')->with(['access' => 0]);
+        }
+
         return view('admin.generate');
     }
 
@@ -106,7 +111,7 @@ class UsersController extends Controller
     }
 
     /**
-     * Generate key for new hire.
+     * Generate key for new hired employees.
      *
      * @param Illuminate\Http\Request $request
      * @return void
@@ -114,8 +119,46 @@ class UsersController extends Controller
     public function generateKey(Request $request)
     {
         $request->validate([
-            'id' => 'required',
+            'id' => 'required|email',
         ]);
+
+        //  Generate for public users
+        if(session()->has('access') && session('access') == 0){
+            $request->validate([
+                'full_name' => 'required',
+            ]);
+
+            //  Generate random temporary ID for employee
+            while(true){
+                $id = rand(100000, 999999);
+                if(!Key::find($id))
+                    break;
+            }
+
+            $email = $request->id;
+
+            $rand = str_random(32);
+            $token = openssl_encrypt($rand, 'AES-128-ECB', base64_encode($id));
+            $token = hash('sha256', $token);
+
+            $key = new Key;
+            $key->value = $rand;
+            $key->token = $token;
+            $key->empid = $id;
+            $key->full_name = $request->full_name;
+            $key->save();
+
+            $msg = 'Your temporary employee number is '. $id .'. Your URL will be '. getenv('URL_PREFIX') .'/token/'.$key->id.'/'.$token.' .';
+
+            \Mail::raw($msg, function($message) use($email)
+            {
+                $message->subject('Horsepower - Onboarding Todo List');
+                $message->to($email);
+                $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
+            });
+
+            return redirect()->route('queryvalidate', ['id' => $key->empid, 'token' => $key->token, 'index' => $key->id]);
+        }
 
         if(session('generate_throttle') > 5){
             $error = 'Too many attempts.';
@@ -162,10 +205,10 @@ class UsersController extends Controller
                 $key->value = $rand;
                 $key->token = $token;
                 $key->empid = $id;
-                $key->full_name = $emp['FirstName'] . ' ' . $emp['LastName'];
+                $key->full_name = $request->full_name;
                 $key->save();
 
-                $msg = 'Your Horsepower employee number is '. $id .'. Please click on this link '. getenv('URL_PREFIX') .'/token/'.$key->id.'/'.$token.' to finish your enrollment.';
+                $msg = 'Your Horsepower employee number is '. $id .'. Your URL will be '. getenv('URL_PREFIX') .'/token/'.$key->id.'/'.$token.' .';
 
                 \Mail::raw($msg, function($message) use($email)
                 {
@@ -175,7 +218,6 @@ class UsersController extends Controller
                 });
 
                 return redirect()->route('queryvalidate', ['id' => $key->empid, 'token' => $key->token, 'index' => $key->id]);
-                return view('admin.success');
             }
         }
         else
@@ -228,6 +270,7 @@ class UsersController extends Controller
                 session(['token' => $token]);
                 session(['empid' => $key->empid]);
                 session(['progress' => $key->progress]);
+                session(['full_name' => $key->full_name]);
 
                 return redirect('dashboard');
             }

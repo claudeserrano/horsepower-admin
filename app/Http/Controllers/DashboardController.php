@@ -58,7 +58,6 @@ class DashboardController extends Controller
         }
     
         return view('dashboard', ['next' => $next, 'route' => $route, 'value' => $value, 'lang' => $lang, 'index' => $index]);
-
     }
 
     /**
@@ -101,9 +100,9 @@ class DashboardController extends Controller
      */
     public function files(Request $request)
     {
-        // if(session('progress') == 2)
+        if(session('progress') == 2)
             return view('files');
-        // else
+        else
             return redirect('dashboard');
     }
 
@@ -209,7 +208,6 @@ class DashboardController extends Controller
         return redirect('dashboard');
 
     }
-
 
     /**
      * Submit build trade.
@@ -341,7 +339,7 @@ class DashboardController extends Controller
         $files = $request->all();
         unset($files['_token']);
 
-        $folder_name = session('empid');
+        $folder_name = session('full_name');
 
         $folder = self::checkDrive($folder_name);
 
@@ -364,7 +362,6 @@ class DashboardController extends Controller
         //  Bank Information
         \Storage::disk('google')->put($path . 'DD.'.pathinfo($_FILES["dd"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["dd"]["tmp_name"]));
         unset($files['dd']);
-
 
         //  Green Card
         if(file_exists($_FILES["greencard"]["tmp_name"])){
@@ -400,7 +397,6 @@ class DashboardController extends Controller
         }
 
         //  Certifications
-        
         $count = 1;
 
         foreach($files as $file){
@@ -461,7 +457,6 @@ class DashboardController extends Controller
      */
     function updateKeyModel($index, $data, $column)
     {
-
         try {
             $key = Key::find($index);
             $key->$column = $data;
@@ -472,7 +467,6 @@ class DashboardController extends Controller
         catch (Exception $e) {
             return false;
         }
-
     }
     
 }

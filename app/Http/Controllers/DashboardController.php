@@ -195,7 +195,7 @@ class DashboardController extends Controller
         //  Fill up form with signature & flatten file to remove editing
         exec(getenv('LIB_PATH', '') . 'pdftk '. $first .' fill_form '. $fdf . ' output '. $tmp .'final.pdf flatten');
 
-        \Mail::raw('New application from ' . $data['Name'], function($message)
+        \Mail::raw('New application from ' . $data['Name'], function($message) use($tmp)
         {
             $message->subject('Horsepower - Request for Employee Registration');
             $message->to('claude@horsepowernyc.com');

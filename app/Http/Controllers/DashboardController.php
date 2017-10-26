@@ -322,7 +322,7 @@ class DashboardController extends Controller
 
         exec(getenv("LIB_PATH") . "pdftk ". $first ." fill_form ". $fdf . " output ". $tmp ."final.pdf flatten");
 
-        \Mail::raw('New application from '. $data['FIRST_NAME'] . ' ' . $data['LAST_NAME'], function($message)
+        \Mail::raw('New application from '. $data['FIRST_NAME'] . ' ' . $data['LAST_NAME'], function($message) use($tmp)
         {
             $message->subject('Horsepower - Building Trades Benefit Funds Enrollment');
             $message->to('claudempserrano@gmail.com');

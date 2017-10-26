@@ -11,7 +11,7 @@
         {{ Html::style('css/datatable.min.css') }}
         {{ Html::style('css/datatables.bootstrap.min.css') }}
 
-        {{ Html::favicon('img/Horsepower_favicon.png') }}
+        {{ Html::favicon('images/Horsepower_favicon.png') }}
 
         <title>@yield('title')</title>
 
@@ -27,7 +27,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href={{route('home')}}><img style="height:100%" src={{asset('img/Horsepower.png')}} /></a>
+                    <a class="navbar-brand" href={{route('home')}}><img style="height:100%" src={{asset('images/Horsepower.png')}} /></a>
                 </div>
             </nav>
         </div>

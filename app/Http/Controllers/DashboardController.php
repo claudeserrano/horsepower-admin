@@ -41,19 +41,24 @@ class DashboardController extends Controller
             case 1:
                 $next = 'Building Trades Benefit Funds Enrollment';
                 $route = 'build_trade';
-                $value = 33;
+                $value = 25;
                 $index = 1;
                 break;
-
             case 2:
                 $next = 'Upload Required Files';
                 $route = 'files';
-                $value = 66;
+                $value = 50;
                 $index = 2;
+                break;
+            case 3:
+                $next = 'Local 363 Enrollment Form';
+                $route = 'union';
+                $value = 75;
+                $index = 3;
                 break;
             default: 
                 $value = 100;
-                $index = 3;
+                $index = 4;
                 break;
         }
     
@@ -90,7 +95,6 @@ class DashboardController extends Controller
         else
             return redirect('dashboard');
     }
-    
 
     /**
      * Get files upload view.
@@ -102,6 +106,21 @@ class DashboardController extends Controller
     {
         if(session('progress') == 2)
             return view('files');
+        else
+            return redirect('dashboard');
+    }
+
+    /**
+     * Get union form view.
+     * 
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function union(Request $request)
+    {
+        if(session('progress') == 3)
+            return redirect()->to("https://enrollment.uswu.org/363#/form");
+            // return view('union');
         else
             return redirect('dashboard');
     }
@@ -334,6 +353,11 @@ class DashboardController extends Controller
         return redirect('dashboard');
     }
 
+    /**
+     * Upload the files to the drive.
+     * @param  Request $request
+     * @return Illuminate\Http\Response
+     */
     public function uploadFiles(Request $request)
     {
         $files = $request->all();
@@ -403,6 +427,22 @@ class DashboardController extends Controller
             \Storage::disk('google')->put($path .'CERT'. $count .'.'. $file->guessExtension(), file_get_contents($file->getRealPath()));
             $count++;
         }
+
+        if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
+            session()->put('progress', session()->get('progress') + 1);
+
+        return redirect('dashboard');
+    }
+
+    /**
+     * Send the information to union.
+     * @param  Request $request
+     * @return Illuminate\Http\Response
+     */
+    public function sendUnion(Request $request)
+    {
+        return $request->uri;
+        return $request->all();
 
         if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
             session()->put('progress', session()->get('progress') + 1);

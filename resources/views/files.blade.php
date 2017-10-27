@@ -10,8 +10,6 @@
             <div class="col-lg-12" style="padding-bottom:20px">
                 <h1>Please upload the following files:</h1>
             </div>
-
-
             <form class="form-horizontal" enctype="multipart/form-data" role="form" method="POST" action="{{ route('upload') }}">
             
                 {{ csrf_field() }}

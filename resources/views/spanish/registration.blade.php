@@ -511,6 +511,17 @@
             var hidden = document.getElementById('uri');
             hidden.value = signaturePad.toDataURL();
         }            
+
+        $(document).ready(function(){
+            $(document).on("click", "button[type='submit']", function(event){
+                if(signaturePad.isEmpty()){
+                    alert('Please input your signature.');
+                    event.preventDefault();
+                }
+                else
+                    signature();
+            })
+        }); 
     </script>
     
 @endsection

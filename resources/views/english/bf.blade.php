@@ -13,9 +13,7 @@
                     <h1>
                         Building Trades Benefit Funds Enrollment
                     </h1>
-
                     <a class="btn btn-primary" href="spanish"><h6>To Spanish</h6></a>
-
                 </center>
             </div>
 
@@ -609,7 +607,18 @@
         function signature(){
             var hidden = document.getElementById('uri');
             hidden.value = signaturePad.toDataURL();
-        }            
+        }
+
+        $(document).ready(function(){
+            $(document).on("click", "button[type='submit']", function(event){
+                if(signaturePad.isEmpty()){
+                    alert('Please input your signature.');
+                    event.preventDefault();
+                }
+                else
+                    signature();
+            })
+        });
     </script>
     
 @endsection

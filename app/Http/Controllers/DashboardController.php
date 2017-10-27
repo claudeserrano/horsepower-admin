@@ -118,9 +118,13 @@ class DashboardController extends Controller
      */
     public function union(Request $request)
     {
-        if(session('progress') == 3)
+        if(session('progress') == 3){
+            if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
+                session()->put('progress', session()->get('progress') + 1);
+
             return redirect()->to("https://enrollment.uswu.org/363#/form");
             // return view('union');
+        }
         else
             return redirect('dashboard');
     }
@@ -157,8 +161,8 @@ class DashboardController extends Controller
             'StartMonth' => 'required|size:2',
             'StartDay' => 'required|size:2',
             'StartYear' => 'required|size:4',
-            'Classification' => 'required',
-            'SchoolClass' => 'required',
+            // 'Classification' => 'required',
+            // 'SchoolClass' => 'required',
         ]);
 
         //  File paths
@@ -211,7 +215,8 @@ class DashboardController extends Controller
         file_put_contents($fdf, $dfdf);
 
         //  Fill up form with signature & flatten file to remove editing
-        exec(getenv('LIB_PATH', '') . 'pdftk '. $first .' fill_form '. $fdf . ' output '. $tmp .'final.pdf flatten');
+        //  No flatten because they have to manually add school and classification
+        exec(getenv('LIB_PATH', '') . 'pdftk '. $first .' fill_form '. $fdf . ' output '. $tmp .'final.pdf');
 
         \Mail::raw('New application from ' . $data['Name'], function($message) use($tmp)
         {
@@ -261,7 +266,7 @@ class DashboardController extends Controller
          'FAMILY_DOB8' => 'nullable|date_format:m/d/Y',
          'DATE_MARRIED' => 'nullable|date_format:m/d/Y',
          'DATE_DIVORCE' => 'nullable|date_format:m/d/Y',
-         'SPOUSE_DATE' => 'nullable|date_format:m/d/Y',
+         'SPOUSE_DATE_HIRED' => 'nullable|date_format:m/d/Y',
          'BENE_DOB1' => 'nullable|date_format:m/d/Y',
          'BENE_DOB2' => 'nullable|date_format:m/d/Y',
          'BENE_DOB3' => 'nullable|date_format:m/d/Y',
@@ -439,16 +444,15 @@ class DashboardController extends Controller
      * @param  Request $request
      * @return Illuminate\Http\Response
      */
-    public function sendUnion(Request $request)
-    {
-        return $request->uri;
-        return $request->all();
+    // public function sendUnion(Request $request)
+    // {
+    //     return $request->all();
 
-        if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
-            session()->put('progress', session()->get('progress') + 1);
+    //     if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
+    //         session()->put('progress', session()->get('progress') + 1);
 
-        return redirect('dashboard');
-    }
+    //     return redirect('dashboard');
+    // }
 
     /**
      * Check google drive if filename exists.

@@ -17,6 +17,7 @@ class CreateKeysTable extends Migration
             $table->increments('id');
             $table->string('empid', 6)->unique();
             $table->string('full_name', 128);
+            $table->string('email', 128);
             $table->string('value', 64)->unique();
             $table->string('token', 64)->unique();
             $table->integer('throttle')->default(0);

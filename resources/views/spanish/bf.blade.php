@@ -470,13 +470,13 @@
                 </div>
 
                 <div class="col-lg-8">
-                    {!! Form::text('SPOUSE_DATE', '',
+                    {!! Form::text('SPOUSE_DATE_HIRED', '',
                         ['class' => 'form-control date',
                         ]) 
                     !!}
                 </div>
 
-                @if($errors->has('SPOUSE_DATE'))
+                @if($errors->has('SPOUSE_DATE_HIRED'))
                     <div class="col-lg-8 col-lg-offset-4">
                         <p class="red">Please input a valid date.</p>
                     </div>

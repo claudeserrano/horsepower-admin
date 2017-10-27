@@ -33,7 +33,7 @@
                 <div class="col-lg-2">
                     {!! Form::text('LAST_NAME', '',
                         ['class' => 'form-control',
-                        ]) 
+                        ])
                     !!}
                     @if($errors->has('LAST_NAME'))
                         <p class="red">Please input your last name.</p>
@@ -46,7 +46,7 @@
                 <div class="col-lg-3">
                     {!! Form::text('FIRST_NAME', '',
                         ['class' => 'form-control',
-                        ]) 
+                        ])
                     !!}
                     @if($errors->has('FIRST_NAME'))
                         <p class="red">Please input your first name.</p>
@@ -469,13 +469,13 @@
                 </div>
 
                 <div class="col-lg-8">
-                    {!! Form::text('SPOUSE_DATE', '',
+                    {!! Form::text('SPOUSE_DATE_HIRED', '',
                         ['class' => 'form-control date',
                         ]) 
                     !!}
                 </div>
 
-                @if($errors->has('SPOUSE_DATE'))
+                @if($errors->has('SPOUSE_DATE_HIRED'))
                     <div class="col-lg-8 col-lg-offset-4">
                         <p class="red">Please input a valid date.</p>
                     </div>

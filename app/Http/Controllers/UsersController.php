@@ -91,8 +91,8 @@ class UsersController extends Controller
      */
     public function getNewEmployeesView()
     {
+        
         $keys = Key::all();
-
         return view('admin.employees', ['keys' => $keys]);
 
     }
@@ -122,6 +122,11 @@ class UsersController extends Controller
             'id' => 'required|email',
         ]);
 
+        $check = Key::where('email', "=", $request->id)->first();
+
+        if($check)
+            return back()->withInput()->withErrors(['email' => 'There is already a token for this email address. Please check your email inbox.']);
+
         //  Generate for public users
         if(session()->has('access') && session('access') == 0){
             $request->validate([
@@ -146,6 +151,7 @@ class UsersController extends Controller
             $key->token = $token;
             $key->empid = $id;
             $key->full_name = $request->full_name;
+            $key->email = $email;
             $key->save();
 
             $msg = 'Your temporary employee number is '. $id .'. Your URL will be '. getenv('URL_PREFIX') .'/token/'.$key->id.'/'.$token.' .';
@@ -277,7 +283,7 @@ class UsersController extends Controller
             else{
                 $key->throttle++;
                 $key->save();
-                return back()->withInput()->withErrors(['empNum' => 'Invalid ID. Please input your Horsepower ID.']);
+                return back()->withInput()->withErrors(['empNum' => 'Invalid ID. Please check the email we sent for the employee ID.']);
             }
         }
         else

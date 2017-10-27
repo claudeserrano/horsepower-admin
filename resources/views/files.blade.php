@@ -75,7 +75,7 @@
 
                 <div class="col-lg-8">
                     <div class=" panel-info panel">
-                        <div class="panel-heading"><h5>If you are a permanent resident, provide the information below.</h5></div>
+                        <div class="panel-heading"><h5>If you are a <b>field employee</b>, provide the information below.</h5></div>
                         <div class="panel-body">
                             <div class="col-lg-6">
                                 <div class="panel panel-default">

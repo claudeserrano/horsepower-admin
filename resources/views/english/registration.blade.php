@@ -423,7 +423,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-12"></div>
+                {{-- <div class="col-lg-12"></div>
 
                 <div class="col-lg-4">
                     <h4>Classification</h4>
@@ -457,7 +457,7 @@
                     <div class="col-lg-8 col-lg-offset-4 red">
                         {{$errors->first('SchoolClass')}}
                     </div>
-                @endif
+                @endif --}}
 
                 <div class="col-lg-12"><br></div>
 

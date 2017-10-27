@@ -218,10 +218,7 @@ class DashboardController extends Controller
             $message->subject('Horsepower - Request for Employee Registration');
             $message->to('claude@horsepowernyc.com');
             $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-            $message->attach($tmp, [
-                        'as' => 'registration.pdf',
-                        'mime' => 'application/pdf',
-                    ]);
+            $message->attach($tmp . 'final.pdf', ['as' => 'registration.pdf', 'mime' => 'application/pdf']);
         });
 
         if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
@@ -347,10 +344,7 @@ class DashboardController extends Controller
             $message->subject('Horsepower - Building Trades Benefit Funds Enrollment');
             $message->to('claude@horsepowernyc.com');
             $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-            $message->attach($tmp, [
-                        'as' => 'registration.pdf',
-                        'mime' => 'application/pdf',
-                    ]);
+            $message->attach($tmp . 'final.pdf', ['as' => 'registration.pdf', 'mime' => 'application/pdf']);
         });
 
         if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))

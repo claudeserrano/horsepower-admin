@@ -122,6 +122,13 @@ class DashboardController extends Controller
             if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
                 session()->put('progress', session()->get('progress') + 1);
 
+            \Mail::raw('New application from '. session('full_name') . '. Please check https://webapp.horsepowernyc.com/drive for the employee information.', function($message)
+            {
+                $message->subject('New Application - Horsepower Web Application');
+                $message->to('claude@horsepowernyc.com');
+                $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
+            });
+
             return redirect()->to("https://enrollment.uswu.org/363#/form");
             // return view('union');
         }
@@ -218,13 +225,27 @@ class DashboardController extends Controller
         //  No flatten because they have to manually add school and classification
         exec(getenv('LIB_PATH', '') . 'pdftk '. $first .' fill_form '. $fdf . ' output '. $tmp .'final.pdf');
 
-        \Mail::raw('New application from ' . $data['Name'], function($message) use($tmp)
-        {
-            $message->subject('Horsepower - Request for Employee Registration');
-            $message->to('claude@horsepowernyc.com');
-            $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-            $message->attach($tmp . 'final.pdf', ['as' => 'registration.pdf', 'mime' => 'application/pdf']);
-        });
+        // \Mail::raw('New application from ' . $data['Name'], function($message) use($tmp)
+        // {
+        //     $message->subject('Horsepower - Request for Employee Registration');
+        //     $message->to('jpecikonis@horsepowernyc.com');
+        //     $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
+        //     $message->attach($tmp . 'final.pdf', ['as' => 'registration.pdf', 'mime' => 'application/pdf']);
+        // });
+
+        $folder_name = session('full_name');
+
+        $folder = self::checkDrive($folder_name);
+
+        if($folder == false){
+            if(\Storage::disk('google')->createDir($folder_name)){
+                $folder = self::checkDrive($folder_name);
+            }
+        }
+
+        $path = $folder['path'] . "/";
+
+        \Storage::disk('google')->put($path . 'REG.pdf', file_get_contents($tmp . 'final.pdf'));
 
         if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
             session()->put('progress', session()->get('progress') + 1);
@@ -344,13 +365,27 @@ class DashboardController extends Controller
 
         exec(getenv("LIB_PATH") . "pdftk ". $first ." fill_form ". $fdf . " output ". $tmp ."final.pdf flatten");
 
-        \Mail::raw('New application from '. $data['FIRST_NAME'] . ' ' . $data['LAST_NAME'], function($message) use($tmp)
-        {
-            $message->subject('Horsepower - Building Trades Benefit Funds Enrollment');
-            $message->to('claude@horsepowernyc.com');
-            $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-            $message->attach($tmp . 'final.pdf', ['as' => 'registration.pdf', 'mime' => 'application/pdf']);
-        });
+        // \Mail::raw('New application from '. $data['FIRST_NAME'] . ' ' . $data['LAST_NAME'], function($message) use($tmp)
+        // {
+        //     $message->subject('Horsepower - Building Trades Benefit Funds Enrollment');
+        //     $message->to('jpecikonis@horsepowernyc.com');
+        //     $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
+        //     $message->attach($tmp . 'final.pdf', ['as' => 'registration.pdf', 'mime' => 'application/pdf']);
+        // });
+
+        $folder_name = session('full_name');
+
+        $folder = self::checkDrive($folder_name);
+
+        if($folder == false){
+            if(\Storage::disk('google')->createDir($folder_name)){
+                $folder = self::checkDrive($folder_name);
+            }
+        }
+
+        $path = $folder['path'] . "/";
+
+        \Storage::disk('google')->put($path . 'BUILD_TRADE.pdf', file_get_contents($tmp . 'final.pdf'));
 
         if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
             session()->put('progress', session()->get('progress') + 1);

@@ -125,7 +125,7 @@ class DashboardController extends Controller
             \Mail::raw('New application from '. session('full_name') . '. Please check https://webapp.horsepowernyc.com/drive for the employee information.', function($message)
             {
                 $message->subject('New Application - Horsepower Web Application');
-                $message->to('claude@horsepowernyc.com');
+                $message->to('jpecikonis@horsepowernyc.com');
                 $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
             });
 

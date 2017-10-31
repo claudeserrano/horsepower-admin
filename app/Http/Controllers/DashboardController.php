@@ -119,18 +119,18 @@ class DashboardController extends Controller
     public function union(Request $request)
     {
         if(session('progress') == 3){
-            if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
-                session()->put('progress', session()->get('progress') + 1);
+        //     if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
+        //         session()->put('progress', session()->get('progress') + 1);
 
-            \Mail::raw('New application from '. session('full_name') . '. Please check https://webapp.horsepowernyc.com/drive for the employee information.', function($message)
-            {
-                $message->subject('New Application - Horsepower Web Application');
-                $message->to('jpecikonis@horsepowernyc.com');
-                $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-            });
+        //     \Mail::raw('New application from '. session('full_name') . '. Please check https://webapp.horsepowernyc.com/drive for the employee information.', function($message)
+        //     {
+        //         $message->subject('New Application - Horsepower Web Application');
+        //         $message->to('jpecikonis@horsepowernyc.com');
+        //         $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
+        //     });
 
-            return redirect()->to("https://enrollment.uswu.org/363#/form");
-            // return view('union');
+        //     return redirect()->to("https://enrollment.uswu.org/363#/form");
+            return view('union');
         }
         else
             return redirect('dashboard');
@@ -479,15 +479,121 @@ class DashboardController extends Controller
      * @param  Request $request
      * @return Illuminate\Http\Response
      */
-    // public function sendUnion(Request $request)
-    // {
-    //     return $request->all();
+    public function sendUnion(Request $request)
+    {
 
-    //     if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
-    //         session()->put('progress', session()->get('progress') + 1);
+        $request->validate([
+            'last_name' => 'required',
+            'first_name' => 'required',
+            'dob' => 'required|date',
+            'ssn' => 'required|size:11',
+            'street_address' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'home_zip' => 'required|size:5',
+            'home_phone' => 'required|size:14',
+            'email' => 'required|email',
+            'date_of_hire' => 'required|date',
+            'primary_name' => 'required',
+            'primary_relationship' => 'required',
+            'primary_address' => 'required'
+        ]);
 
-    //     return redirect('dashboard');
-    // }
+        if((!is_null($request->secondary_name)) || (!is_null($request->secondary_relationship)) || (!is_null($request->secondary_address))){
+            $request->validate([
+                'secondary_name' => 'required',
+                'secondary_relationship' => 'required',
+                'secondary_address' => 'required'
+            ]);
+        }
+
+        if((!is_null($request->tertiary_name)) || (!is_null($request->tertiary_relationship)) || (!is_null($request->tertiary_address))){
+            $request->validate([
+                'tertiary_name' => 'required',
+                'tertiary_relationship' => 'required',
+                'tertiary_address' => 'required'
+            ]);
+        }
+
+        //  File paths
+        $tmp = env('TMP_PATH', 'tmp/');
+        $sig = $tmp . 'sig.png';
+        $sigpdf = $tmp . 'sig.pdf';
+        $pdftmp = $tmp . 'form.pdf';
+        $first = $tmp . 'first.pdf';
+        $fdf = $tmp . 'fdf.pdf';
+
+        //  Signature image processing
+        $data_uri = $request->uri;
+        $encoded_image = explode(",", $data_uri)[1];
+        $decoded_image = base64_decode($encoded_image);
+
+        //  Copying image to tmp file
+        file_put_contents($sig, $decoded_image);
+
+        //  Check if using mobile
+        $x1 = 8.75;
+        $x2 = 3;
+        $y1 = 3.15;
+        $y2 = 5;
+        $y3 = 7.40;
+
+        $mobile = new \App\Services\Mobile_Detect();
+        if($mobile->isMobile()){
+            // $x1 += 6;
+            // $y -= 14;
+        }
+        
+        //  Creating signature PDF file
+        $pdf = new \App\Services\FPDF('L', 'in', [11, 8.52]);
+        $pdf->AddPage();
+        $pdf->Image($sig,$x1,$y1,-300);
+        $pdf->Image($sig,$x1,$y2,-300);
+        $pdf->Image($sig,$x2,$y3,-300);
+        file_put_contents($sigpdf, $pdf->output('S'));
+
+        $pdf = file_get_contents('forms/Local363.pdf');
+
+        try {
+            file_put_contents($pdftmp, $pdf);
+
+            exec(getenv("LIB_PATH") . 'pdftk '. $pdftmp .' stamp ' . $sigpdf . ' output ' . $first);
+        } 
+        catch (Exception $e) {
+            return $e; 
+        }
+
+        $data = $request->all();
+        $data["date1"] = date("m/d/Y");
+        $data["date2"] = date("m/d/Y");
+        $data["date3"] = date("m/d/Y");
+        unset($data['_token']);
+
+        $dfdf = self::toFDF($data);
+
+        file_put_contents($fdf, $dfdf);
+
+        exec(getenv("LIB_PATH") . "pdftk ". $first ." fill_form ". $fdf . " output ". $tmp ."final.pdf flatten");
+
+        $folder_name = session('full_name');
+
+        $folder = self::checkDrive($folder_name);
+
+        if($folder == false){
+            if(\Storage::disk('google')->createDir($folder_name)){
+                $folder = self::checkDrive($folder_name);
+            }
+        }
+
+        $path = $folder['path'] . "/";
+
+        \Storage::disk('google')->put($path . 'LOCAL363.pdf', file_get_contents($tmp . 'final.pdf'));
+
+        if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
+            session()->put('progress', session()->get('progress') + 1);
+
+        return redirect('dashboard');
+    }
 
     /**
      * Check google drive if filename exists.

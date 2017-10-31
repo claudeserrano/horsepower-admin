@@ -35,7 +35,7 @@ Route::get('/union', 'DashboardController@union')->name('union');
 
 Route::post('/regpdf/{lang}', 'DashboardController@sendReg')->name('regpdf');
 Route::post('/bfpdf/{lang}', 'DashboardController@sendBF')->name('bfpdf');
-// Route::post('/union/send', 'DashboardController@sendUnion')->name('sendunion');
+Route::post('/union/send', 'DashboardController@sendUnion')->name('sendunion');
 Route::post('/upload', 'DashboardController@uploadFiles')->name('upload');
 
 Route::get('/success', function(){

@@ -74,10 +74,10 @@ class DashboardController extends Controller
      */
     public function registration(Request $request, $lang)
     {
-        // if(session('progress') == 0)
+        if(session('progress') == 0)
             return view($lang . '/registration');
-        // else
-            // return redirect('dashboard');
+        else
+            return redirect('dashboard');
     }
 
 
@@ -90,10 +90,10 @@ class DashboardController extends Controller
      */
     public function bf(Request $request, $lang)
     {
-        // if(session('progress') == 1)
+        if(session('progress') == 1)
             return view($lang . '/bf');
-        // else
-            // return redirect('dashboard');
+        else
+            return redirect('dashboard');
     }
 
     /**
@@ -104,10 +104,10 @@ class DashboardController extends Controller
      */
     public function files(Request $request)
     {
-        // if(session('progress') == 2)
+        if(session('progress') == 2)
             return view('files');
-        // else
-            // return redirect('dashboard');
+        else
+            return redirect('dashboard');
     }
 
     /**
@@ -118,7 +118,7 @@ class DashboardController extends Controller
      */
     public function union(Request $request)
     {
-        // if(session('progress') == 3){
+        if(session('progress') == 3){
         //     if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
         //         session()->put('progress', session()->get('progress') + 1);
 
@@ -131,9 +131,9 @@ class DashboardController extends Controller
 
         //     return redirect()->to("https://enrollment.uswu.org/363#/form");
             return view('union');
-        // }
-        // else
-        //     return redirect('dashboard');
+        }
+        else
+            return redirect('dashboard');
     }
 
     /**

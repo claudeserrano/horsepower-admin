@@ -668,22 +668,22 @@ class DashboardController extends Controller
         $x = 0;
       }
 
-      $new = imagecreatetruecolor($width, $height);
+      $new = \imagecreatetruecolor($width, $height);
 
       // preserve transparency
       if($type == "gif" or $type == "png"){
-        imagecolortransparent($new, imagecolorallocatealpha($new, 0, 0, 0, 127));
-        imagealphablending($new, false);
-        imagesavealpha($new, true);
+        \imagecolortransparent($new, \imagecolorallocatealpha($new, 0, 0, 0, 127));
+        \imagealphablending($new, false);
+        \imagesavealpha($new, true);
       }
 
-      imagecopyresampled($new, $img, 0, 0, $x, 0, $width, $height, $w, $h);
+      \imagecopyresampled($new, $img, 0, 0, $x, 0, $width, $height, $w, $h);
 
       switch($type){
-        case 'bmp': imagewbmp($new, $dst); break;
-        case 'gif': imagegif($new, $dst); break;
-        case 'jpg': imagejpeg($new, $dst); break;
-        case 'png': imagepng($new, $dst); break;
+        case 'bmp': \imagewbmp($new, $dst); break;
+        case 'gif': \imagegif($new, $dst); break;
+        case 'jpg': \imagejpeg($new, $dst); break;
+        case 'png': \imagepng($new, $dst); break;
       }
 
       return true;

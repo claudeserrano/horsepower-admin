@@ -138,7 +138,7 @@
                             <h4>Apartment No.</h4>
                         </div>
                         <div class="col-lg-3">
-                            {!! Form::number('apartment_no', '',
+                            {!! Form::text('apartment_no', '',
                                 ['class' => 'form-control',
                                 ]) 
                             !!}
@@ -247,7 +247,7 @@
                             <h4>Company Address</h4>
                         </div>
                         <div class="col-lg-6">
-                            {!! Form::text('company_address', '4101 1st Avenue, Brooklyn, NJ',
+                            {!! Form::text('company_address', '4101 1st Avenue, Brooklyn, NY',
                                 ['class' => 'form-control',
                                  'readonly' => true
                                 ]) 

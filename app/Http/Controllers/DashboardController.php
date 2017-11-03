@@ -45,14 +45,14 @@ class DashboardController extends Controller
                 $index = 1;
                 break;
             case 2:
-                $next = 'Upload Required Files';
-                $route = 'files';
+                $next = 'Local 363 Enrollment Form';
+                $route = 'union';
                 $value = 50;
                 $index = 2;
                 break;
             case 3:
-                $next = 'Local 363 Enrollment Form';
-                $route = 'union';
+                $next = 'Upload Required Files';
+                $route = 'files';
                 $value = 75;
                 $index = 3;
                 break;
@@ -97,20 +97,6 @@ class DashboardController extends Controller
     }
 
     /**
-     * Get files upload view.
-     * 
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function files(Request $request)
-    {
-        if(session('progress') == 2)
-            return view('files');
-        else
-            return redirect('dashboard');
-    }
-
-    /**
      * Get union form view.
      * 
      * @param  \Illuminate\Http\Request $request
@@ -118,19 +104,31 @@ class DashboardController extends Controller
      */
     public function union(Request $request)
     {
-        if(session('progress') == 3){
-        //     if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
-        //         session()->put('progress', session()->get('progress') + 1);
-
-        //     \Mail::raw('New application from '. session('full_name') . '. Please check https://webapp.horsepowernyc.com/drive for the employee information.', function($message)
-        //     {
-        //         $message->subject('New Application - Horsepower Web Application');
-        //         $message->to('jpecikonis@horsepowernyc.com');
-        //         $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-        //     });
-
-        //     return redirect()->to("https://enrollment.uswu.org/363#/form");
+        // if(session('progress') == 2){
             return view('union');
+        // }
+        // else
+            return redirect('dashboard');
+    }
+
+    /**
+     * Get files upload view.
+     * 
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function files(Request $request)
+    {
+        if(session('progress') == 3){
+
+        \Mail::raw('New application from '. session('full_name') . '. Please check https://webapp.horsepowernyc.com/drive for the employee information.', function($message)
+        {
+            $message->subject('New Application - Horsepower Web Application');
+            $message->to('jpecikonis@horsepowernyc.com');
+            $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
+        });
+
+            return view('files');
         }
         else
             return redirect('dashboard');
@@ -481,7 +479,6 @@ class DashboardController extends Controller
      */
     public function sendUnion(Request $request)
     {
-
         $request->validate([
             'last_name' => 'required',
             'first_name' => 'required',
@@ -490,7 +487,7 @@ class DashboardController extends Controller
             'street_address' => 'required',
             'city' => 'required',
             'state' => 'required',
-            'home_zip' => 'required|size:5',
+            'home_zip' => 'required',
             'home_phone' => 'required|size:14',
             'email' => 'required|email',
             'date_of_hire' => 'required|date',
@@ -540,8 +537,9 @@ class DashboardController extends Controller
 
         $mobile = new \App\Services\Mobile_Detect();
         if($mobile->isMobile()){
-            // $x1 += 6;
-            // $y -= 14;
+            $y1 -= .25;
+            $y2 -= .25;
+            $y3 -= .25;
         }
         
         //  Creating signature PDF file

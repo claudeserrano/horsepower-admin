@@ -608,6 +608,8 @@
         var canvas = document.getElementById("canvas");
 
         var signaturePad = new SignaturePad(canvas, {
+            minWidth: 1,
+            maxWidth: 2,
         });
 
         function signature(){

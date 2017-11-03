@@ -7,6 +7,9 @@ use \App\Key;
 
 class DashboardController extends Controller
 {
+
+    private $validate = false;
+
 	/**
      * Create a new controller instance.
      *
@@ -104,9 +107,8 @@ class DashboardController extends Controller
      */
     public function union(Request $request)
     {
-        if(session('progress') == 2){
+        if(session('progress') == 2)
             return view('union');
-        }
         else
             return redirect('dashboard');
     }
@@ -120,14 +122,6 @@ class DashboardController extends Controller
     public function files(Request $request)
     {
         if(session('progress') == 3){
-
-        \Mail::raw('New application from '. session('full_name') . '. Please check https://webapp.horsepowernyc.com/drive for the employee information.', function($message)
-        {
-            $message->subject('New Application - Horsepower Web Application');
-            $message->to('jpecikonis@horsepowernyc.com');
-            $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-        });
-
             return view('files');
         }
         else
@@ -144,60 +138,60 @@ class DashboardController extends Controller
     public function sendReg(Request $request, $lang) 
     {
 
-        $request->validate([
-            'Name' => 'required',
-            'SSN1' => 'required|size:3',
-            'SSN2' => 'required|size:2',
-            'SSN3' => 'required|size:4',
-            'Address1' => 'required',
-            'City' => 'required',
-            'State' => 'required',
-            'Zip' => 'required',
-            'AreaCode' => 'required|size:3',
-            'TelNo1' => 'required|size:3',
-            'TelNo2' => 'required|size:4',
-            'AreaCodePhone' => 'required|size:3',
-            'CellNo1' => 'required|size:3',
-            'CellNo2' => 'required|size:4',
-            'DOBMonth' => 'required|size:2',
-            'DOBDay' => 'required|size:2',
-            'DOBYear' => 'required|size:4',
-            'Email' => 'required|email',
-            'StartMonth' => 'required|size:2',
-            'StartDay' => 'required|size:2',
-            'StartYear' => 'required|size:4',
-            // 'Classification' => 'required',
-            // 'SchoolClass' => 'required',
-        ]);
+        if($this->validate){
+            $request->validate([
+                'Name' => 'required',
+                'SSN1' => 'required|size:3',
+                'SSN2' => 'required|size:2',
+                'SSN3' => 'required|size:4',
+                'Address1' => 'required',
+                'City' => 'required',
+                'State' => 'required',
+                'Zip' => 'required',
+                'AreaCode' => 'required|size:3',
+                'TelNo1' => 'required|size:3',
+                'TelNo2' => 'required|size:4',
+                'AreaCodePhone' => 'required|size:3',
+                'CellNo1' => 'required|size:3',
+                'CellNo2' => 'required|size:4',
+                'DOBMonth' => 'required|size:2',
+                'DOBDay' => 'required|size:2',
+                'DOBYear' => 'required|size:4',
+                'Email' => 'required|email',
+                'StartMonth' => 'required|size:2',
+                'StartDay' => 'required|size:2',
+                'StartYear' => 'required|size:4',
+                // 'Classification' => 'required',
+                // 'SchoolClass' => 'required',
+            ]);
+        }
 
         //  File paths
         $tmp = env('TMP_PATH', 'tmp/');
-        $sig = $tmp . 'sig.png';
-        $sigpdf = $tmp . 'sig.pdf';
-        $pdftmp = $tmp . 'form.pdf';
-        $first = $tmp . 'first.pdf';
-        $fdf = $tmp . 'fdf.pdf';
+        $sig = $tmp . 'sigreg.png';
+        $sigpdf = $tmp . 'sigreg.pdf';
+        $pdftmp = $tmp . 'formreg.pdf';
+        $first = $tmp . 'firstreg.pdf';
+        $fdf = $tmp . 'fdfreg.pdf';
 
         //  Signature image processing
         $data_uri = $request->uri;
         $encoded_image = explode(",", $data_uri)[1];
         $decoded_image = base64_decode($encoded_image);
 
+
         //  Copying image to tmp file
         file_put_contents($sig, $decoded_image);
 
-        $y = 265;
+        self::image_resize($sig, $sig, 350, 200);
 
-        //  Check if using mobile
-        $mobile = new \App\Services\Mobile_Detect();
-        if($mobile->isMobile()){
-            $y -= 10;
-        }
+        $x = 175;
+        $y = 270;
 
         //  Creating signature PDF file
         $pdf = new \App\Services\FPDF('P', 'mm', 'A4');
         $pdf->AddPage();
-        $pdf->Image($sig,165,$y,-300);
+        $pdf->Image($sig,$x,$y,-300);
         file_put_contents($sigpdf, $pdf->output('S'));
 
         $pdf = file_get_contents('forms/Registration_'.$lang.'_Fillable.pdf');
@@ -221,15 +215,7 @@ class DashboardController extends Controller
 
         //  Fill up form with signature & flatten file to remove editing
         //  No flatten because they have to manually add school and classification
-        exec(getenv('LIB_PATH', '') . 'pdftk '. $first .' fill_form '. $fdf . ' output '. $tmp .'final.pdf');
-
-        // \Mail::raw('New application from ' . $data['Name'], function($message) use($tmp)
-        // {
-        //     $message->subject('Horsepower - Request for Employee Registration');
-        //     $message->to('jpecikonis@horsepowernyc.com');
-        //     $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-        //     $message->attach($tmp . 'final.pdf', ['as' => 'registration.pdf', 'mime' => 'application/pdf']);
-        // });
+        exec(getenv('LIB_PATH', '') . 'pdftk '. $first .' fill_form '. $fdf . ' output '. $tmp .'finalreg.pdf');
 
         $folder_name = session('full_name');
 
@@ -243,7 +229,7 @@ class DashboardController extends Controller
 
         $path = $folder['path'] . "/";
 
-        \Storage::disk('google')->put($path . 'REG.pdf', file_get_contents($tmp . 'final.pdf'));
+        \Storage::disk('google')->put($path . 'REG.pdf', file_get_contents($tmp . 'finalreg.pdf'));
 
         if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
             session()->put('progress', session()->get('progress') + 1);
@@ -261,56 +247,58 @@ class DashboardController extends Controller
      */
     public function sendBF(Request $request, $lang)
     {
-        
-        $request->validate([
-         'LAST_NAME' => 'required',
-         'FIRST_NAME' => 'required',
-         'SSN' => 'required|size:11',
-         'NUMBER' => 'required|size:14',
-         'DOB' => 'required|size:10|date_format:m/d/Y',
-         'EMAIL' => 'required|email',
-         'STREET_ADDRESS' => 'required',
-         'CITY' => 'required',
-         'STATE' => 'required',
-         'ZIP' => 'required',
-         'JOB_CLASS' => 'required',
-         'DATE_HIRED' => 'required|date_format:m/d/Y',
-         'FAMILY_DOB1' => 'nullable|date_format:m/d/Y',
-         'FAMILY_DOB2' => 'nullable|date_format:m/d/Y',
-         'FAMILY_DOB3' => 'nullable|date_format:m/d/Y',
-         'FAMILY_DOB4' => 'nullable|date_format:m/d/Y',
-         'FAMILY_DOB5' => 'nullable|date_format:m/d/Y',
-         'FAMILY_DOB6' => 'nullable|date_format:m/d/Y',
-         'FAMILY_DOB7' => 'nullable|date_format:m/d/Y',
-         'FAMILY_DOB8' => 'nullable|date_format:m/d/Y',
-         'DATE_MARRIED' => 'nullable|date_format:m/d/Y',
-         'DATE_DIVORCE' => 'nullable|date_format:m/d/Y',
-         'SPOUSE_DATE_HIRED' => 'nullable|date_format:m/d/Y',
-         'BENE_DOB1' => 'nullable|date_format:m/d/Y',
-         'BENE_DOB2' => 'nullable|date_format:m/d/Y',
-         'BENE_DOB3' => 'nullable|date_format:m/d/Y',
-         'BENE_DOB4' => 'nullable|date_format:m/d/Y',
-         'SPOUSE_EMPLOYER_NUMBER' => 'nullable|size:14',
-         'FAMILY_SSN1' => 'nullable|size:11',
-         'FAMILY_SSN2' => 'nullable|size:11',
-         'FAMILY_SSN3' => 'nullable|size:11',
-         'FAMILY_SSN4' => 'nullable|size:11',
-         'FAMILY_SSN5' => 'nullable|size:11',
-         'FAMILY_SSN6' => 'nullable|size:11',
-         'FAMILY_SSN7' => 'nullable|size:11',
-         'FAMILY_SSN8' => 'nullable|size:11',
-         'BENE_SSN1' => 'nullable|size:11',
-         'BENE_SSN2' => 'nullable|size:11',
-         'BENE_SSN3' => 'nullable|size:11',
-        ]);
+
+        if($this->validate){
+            $request->validate([
+             'LAST_NAME' => 'required',
+             'FIRST_NAME' => 'required',
+             'SSN' => 'required|size:11',
+             'NUMBER' => 'required|size:14',
+             'DOB' => 'required|size:10|date_format:m/d/Y',
+             'EMAIL' => 'required|email',
+             'STREET_ADDRESS' => 'required',
+             'CITY' => 'required',
+             'STATE' => 'required',
+             'ZIP' => 'required',
+             'JOB_CLASS' => 'required',
+             'DATE_HIRED' => 'required|date_format:m/d/Y',
+             'FAMILY_DOB1' => 'nullable|date_format:m/d/Y',
+             'FAMILY_DOB2' => 'nullable|date_format:m/d/Y',
+             'FAMILY_DOB3' => 'nullable|date_format:m/d/Y',
+             'FAMILY_DOB4' => 'nullable|date_format:m/d/Y',
+             'FAMILY_DOB5' => 'nullable|date_format:m/d/Y',
+             'FAMILY_DOB6' => 'nullable|date_format:m/d/Y',
+             'FAMILY_DOB7' => 'nullable|date_format:m/d/Y',
+             'FAMILY_DOB8' => 'nullable|date_format:m/d/Y',
+             'DATE_MARRIED' => 'nullable|date_format:m/d/Y',
+             'DATE_DIVORCE' => 'nullable|date_format:m/d/Y',
+             'SPOUSE_DATE_HIRED' => 'nullable|date_format:m/d/Y',
+             'BENE_DOB1' => 'nullable|date_format:m/d/Y',
+             'BENE_DOB2' => 'nullable|date_format:m/d/Y',
+             'BENE_DOB3' => 'nullable|date_format:m/d/Y',
+             'BENE_DOB4' => 'nullable|date_format:m/d/Y',
+             'SPOUSE_EMPLOYER_NUMBER' => 'nullable|size:14',
+             'FAMILY_SSN1' => 'nullable|size:11',
+             'FAMILY_SSN2' => 'nullable|size:11',
+             'FAMILY_SSN3' => 'nullable|size:11',
+             'FAMILY_SSN4' => 'nullable|size:11',
+             'FAMILY_SSN5' => 'nullable|size:11',
+             'FAMILY_SSN6' => 'nullable|size:11',
+             'FAMILY_SSN7' => 'nullable|size:11',
+             'FAMILY_SSN8' => 'nullable|size:11',
+             'BENE_SSN1' => 'nullable|size:11',
+             'BENE_SSN2' => 'nullable|size:11',
+             'BENE_SSN3' => 'nullable|size:11',
+            ]);
+        }
 
         //  File paths
         $tmp = env('TMP_PATH', 'tmp/');
-        $sig = $tmp . 'sig.png';
-        $sigpdf = $tmp . 'sig.pdf';
-        $pdftmp = $tmp . 'form.pdf';
-        $first = $tmp . 'first.pdf';
-        $fdf = $tmp . 'fdf.pdf';
+        $sig = $tmp . 'sigbf.png';
+        $sigpdf = $tmp . 'sigbf.pdf';
+        $pdftmp = $tmp . 'formbf.pdf';
+        $first = $tmp . 'firstbf.pdf';
+        $fdf = $tmp . 'fdfbf.pdf';
 
         //  Signature image processing
         $data_uri = $request->uri;
@@ -320,20 +308,21 @@ class DashboardController extends Controller
         //  Copying image to tmp file
         file_put_contents($sig, $decoded_image);
 
-        //  Check if using mobile
+        self::image_resize($sig, $sig, 350, 200);
+
         if($request->lang > 0){
-            $x = 107;
-            $y = 240;
+            $x = 127;
+            $y = 245;
         }
         else{
-            $x = 105;
+            $x = 125;
             $y = 258;
         }
 
+        //  Check if using mobile
         $mobile = new \App\Services\Mobile_Detect();
         if($mobile->isMobile()){
-            $x += 6;
-            $y -= 14;
+            $y -= 3;
         }
         
         //  Creating signature PDF file
@@ -361,15 +350,7 @@ class DashboardController extends Controller
 
         file_put_contents($fdf, $dfdf);
 
-        exec(getenv("LIB_PATH") . "pdftk ". $first ." fill_form ". $fdf . " output ". $tmp ."final.pdf flatten");
-
-        // \Mail::raw('New application from '. $data['FIRST_NAME'] . ' ' . $data['LAST_NAME'], function($message) use($tmp)
-        // {
-        //     $message->subject('Horsepower - Building Trades Benefit Funds Enrollment');
-        //     $message->to('jpecikonis@horsepowernyc.com');
-        //     $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-        //     $message->attach($tmp . 'final.pdf', ['as' => 'registration.pdf', 'mime' => 'application/pdf']);
-        // });
+        exec(getenv("LIB_PATH") . "pdftk ". $first ." fill_form ". $fdf . " output ". $tmp ."finalbf.pdf");
 
         $folder_name = session('full_name');
 
@@ -383,7 +364,7 @@ class DashboardController extends Controller
 
         $path = $folder['path'] . "/";
 
-        \Storage::disk('google')->put($path . 'BUILD_TRADE.pdf', file_get_contents($tmp . 'final.pdf'));
+        \Storage::disk('google')->put($path . 'BUILD_TRADE.pdf', file_get_contents($tmp . 'finalbf.pdf'));
 
         if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
             session()->put('progress', session()->get('progress') + 1);
@@ -469,6 +450,13 @@ class DashboardController extends Controller
         if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
             session()->put('progress', session()->get('progress') + 1);
 
+        // \Mail::raw('New application from '. session('full_name') . '. Please check https://webapp.horsepowernyc.com/drive for the employee information.', function($message)
+        // {
+        //     $message->subject('New Application - Horsepower Web Application');
+        //     $message->to('jpecikonis@horsepowernyc.com');
+        //     $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
+        // });
+
         return redirect('dashboard');
     }
 
@@ -479,46 +467,49 @@ class DashboardController extends Controller
      */
     public function sendUnion(Request $request)
     {
-        $request->validate([
-            'last_name' => 'required',
-            'first_name' => 'required',
-            'dob' => 'required|date',
-            'ssn' => 'required|size:11',
-            'street_address' => 'required',
-            'city' => 'required',
-            'state' => 'required',
-            'home_zip' => 'required',
-            'home_phone' => 'required|size:14',
-            'email' => 'required|email',
-            'date_of_hire' => 'required|date',
-            'primary_name' => 'required',
-            'primary_relationship' => 'required',
-            'primary_address' => 'required'
-        ]);
 
-        if((!is_null($request->secondary_name)) || (!is_null($request->secondary_relationship)) || (!is_null($request->secondary_address))){
+        if($this->validate){
             $request->validate([
-                'secondary_name' => 'required',
-                'secondary_relationship' => 'required',
-                'secondary_address' => 'required'
+                'last_name' => 'required',
+                'first_name' => 'required',
+                'dob' => 'required|date',
+                'ssn' => 'required|size:11',
+                'street_address' => 'required',
+                'city' => 'required',
+                'state' => 'required',
+                'home_zip' => 'required',
+                'home_phone' => 'required|size:14',
+                'email' => 'required|email',
+                'date_of_hire' => 'required|date',
+                'primary_name' => 'required',
+                'primary_relationship' => 'required',
+                'primary_address' => 'required'
             ]);
-        }
 
-        if((!is_null($request->tertiary_name)) || (!is_null($request->tertiary_relationship)) || (!is_null($request->tertiary_address))){
-            $request->validate([
-                'tertiary_name' => 'required',
-                'tertiary_relationship' => 'required',
-                'tertiary_address' => 'required'
-            ]);
+            if((!is_null($request->secondary_name)) || (!is_null($request->secondary_relationship)) || (!is_null($request->secondary_address))){
+                $request->validate([
+                    'secondary_name' => 'required',
+                    'secondary_relationship' => 'required',
+                    'secondary_address' => 'required'
+                ]);
+            }
+
+            if((!is_null($request->tertiary_name)) || (!is_null($request->tertiary_relationship)) || (!is_null($request->tertiary_address))){
+                $request->validate([
+                    'tertiary_name' => 'required',
+                    'tertiary_relationship' => 'required',
+                    'tertiary_address' => 'required'
+                ]);
+            }
         }
 
         //  File paths
         $tmp = env('TMP_PATH', 'tmp/');
-        $sig = $tmp . 'sig.png';
-        $sigpdf = $tmp . 'sig.pdf';
-        $pdftmp = $tmp . 'form.pdf';
-        $first = $tmp . 'first.pdf';
-        $fdf = $tmp . 'fdf.pdf';
+        $sig = $tmp . 'sig363.png';
+        $sigpdf = $tmp . 'sig363.pdf';
+        $pdftmp = $tmp . 'form363.pdf';
+        $first = $tmp . 'first363.pdf';
+        $fdf = $tmp . 'fdf363.pdf';
 
         //  Signature image processing
         $data_uri = $request->uri;
@@ -528,19 +519,14 @@ class DashboardController extends Controller
         //  Copying image to tmp file
         file_put_contents($sig, $decoded_image);
 
-        //  Check if using mobile
-        $x1 = 8.75;
-        $x2 = 3;
-        $y1 = 3.15;
-        $y2 = 5;
-        $y3 = 7.40;
+        self::image_resize($sig, $sig, 350, 200);
 
-        $mobile = new \App\Services\Mobile_Detect();
-        if($mobile->isMobile()){
-            $y1 -= .25;
-            $y2 -= .25;
-            $y3 -= .25;
-        }
+        //  Check if using mobile
+        $x1 = 9.25;
+        $x2 = 3.5;
+        $y1 = 3.30;
+        $y2 = 5.15;
+        $y3 = 7.55;
         
         //  Creating signature PDF file
         $pdf = new \App\Services\FPDF('L', 'in', [11, 8.52]);
@@ -571,7 +557,7 @@ class DashboardController extends Controller
 
         file_put_contents($fdf, $dfdf);
 
-        exec(getenv("LIB_PATH") . "pdftk ". $first ." fill_form ". $fdf . " output ". $tmp ."final.pdf flatten");
+        exec(getenv("LIB_PATH") . "pdftk ". $first ." fill_form ". $fdf . " output ". $tmp ."final363.pdf");
 
         $folder_name = session('full_name');
 
@@ -585,17 +571,10 @@ class DashboardController extends Controller
 
         $path = $folder['path'] . "/";
 
-        \Storage::disk('google')->put($path . 'LOCAL363.pdf', file_get_contents($tmp . 'final.pdf'));
+        \Storage::disk('google')->put($path . 'LOCAL363.pdf', file_get_contents($tmp . 'final363.pdf'));
 
         if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
             session()->put('progress', session()->get('progress') + 1);
-
-        \Mail::raw('New application from '. session('full_name') . '. Please check https://webapp.horsepowernyc.com/drive for the employee information.', function($message)
-        {
-            $message->subject('New Application - Horsepower Web Application');
-            $message->to('jpecikonis@horsepowernyc.com');
-            $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-        });
 
         return redirect('dashboard');
     }
@@ -657,6 +636,58 @@ class DashboardController extends Controller
         catch (Exception $e) {
             return false;
         }
+    }
+
+    function image_resize($src, $dst, $width, $height, $crop=0){
+
+      if(!list($w, $h) = getimagesize($src)) return "Unsupported picture type!";
+
+      $type = strtolower(substr(strrchr($src,"."),1));
+      if($type == 'jpeg') $type = 'jpg';
+      switch($type){
+        case 'bmp': $img = imagecreatefromwbmp($src); break;
+        case 'gif': $img = imagecreatefromgif($src); break;
+        case 'jpg': $img = imagecreatefromjpeg($src); break;
+        case 'png': $img = imagecreatefrompng($src); break;
+        default : return "Unsupported picture type!";
+      }
+
+      // resize
+      if($crop){
+        if($w < $width or $h < $height) return "Picture is too small!";
+        $ratio = max($width/$w, $height/$h);
+        $h = $height / $ratio;
+        $x = ($w - $width / $ratio) / 2;
+        $w = $width / $ratio;
+      }
+      else{
+        if($w < $width and $h < $height) return "Picture is too small!";
+        $ratio = min($width/$w, $height/$h);
+        $width = $w * $ratio;
+        $height = $h * $ratio;
+        $x = 0;
+      }
+
+      $new = imagecreatetruecolor($width, $height);
+
+      // preserve transparency
+      if($type == "gif" or $type == "png"){
+        imagecolortransparent($new, imagecolorallocatealpha($new, 0, 0, 0, 127));
+        imagealphablending($new, false);
+        imagesavealpha($new, true);
+      }
+
+      imagecopyresampled($new, $img, 0, 0, $x, 0, $width, $height, $w, $h);
+
+      switch($type){
+        case 'bmp': imagewbmp($new, $dst); break;
+        case 'gif': imagegif($new, $dst); break;
+        case 'jpg': imagejpeg($new, $dst); break;
+        case 'png': imagepng($new, $dst); break;
+      }
+
+      return true;
+
     }
     
 }

@@ -8,6 +8,7 @@ use \App\Key;
 
 class UsersController extends Controller
 {
+    private $validate = true;
     
     /**
      * Display a listing of the resource.

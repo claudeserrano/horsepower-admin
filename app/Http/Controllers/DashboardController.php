@@ -104,10 +104,10 @@ class DashboardController extends Controller
      */
     public function union(Request $request)
     {
-        // if(session('progress') == 2){
+        if(session('progress') == 2){
             return view('union');
-        // }
-        // else
+        }
+        else
             return redirect('dashboard');
     }
 

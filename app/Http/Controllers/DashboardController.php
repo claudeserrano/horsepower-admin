@@ -645,10 +645,10 @@ class DashboardController extends Controller
       $type = strtolower(substr(strrchr($src,"."),1));
       if($type == 'jpeg') $type = 'jpg';
       switch($type){
-        case 'bmp': $img = imagecreatefromwbmp($src); break;
-        case 'gif': $img = imagecreatefromgif($src); break;
-        case 'jpg': $img = imagecreatefromjpeg($src); break;
-        case 'png': $img = imagecreatefrompng($src); break;
+        case 'bmp': $img = \imagecreatefromwbmp($src); break;
+        case 'gif': $img = \imagecreatefromgif($src); break;
+        case 'jpg': $img = \imagecreatefromjpeg($src); break;
+        case 'png': $img = \imagecreatefrompng($src); break;
         default : return "Unsupported picture type!";
       }
 

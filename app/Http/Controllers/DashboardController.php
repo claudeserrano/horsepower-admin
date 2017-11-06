@@ -450,12 +450,12 @@ class DashboardController extends Controller
         if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
             session()->put('progress', session()->get('progress') + 1);
 
-        // \Mail::raw('New application from '. session('full_name') . '. Please check https://webapp.horsepowernyc.com/drive for the employee information.', function($message)
-        // {
-        //     $message->subject('New Application - Horsepower Web Application');
-        //     $message->to('jpecikonis@horsepowernyc.com');
-        //     $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-        // });
+        \Mail::raw('New application from '. session('full_name') . '. Please check https://webapp.horsepowernyc.com/drive for the employee information.', function($message)
+        {
+            $message->subject('New Application - Horsepower Web Application');
+            $message->to('jpecikonis@horsepowernyc.com');
+            $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
+        });
 
         return redirect('dashboard');
     }

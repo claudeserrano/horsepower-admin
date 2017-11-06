@@ -8,7 +8,7 @@ use \App\Key;
 class DashboardController extends Controller
 {
 
-    private $validate = false;
+    private $validate = true;
 
 	/**
      * Create a new controller instance.
@@ -247,7 +247,6 @@ class DashboardController extends Controller
      */
     public function sendBF(Request $request, $lang)
     {
-
         if($this->validate){
             $request->validate([
              'LAST_NAME' => 'required',

@@ -372,94 +372,6 @@ class DashboardController extends Controller
     }
 
     /**
-     * Upload the files to the drive.
-     * @param  Request $request
-     * @return Illuminate\Http\Response
-     */
-    public function uploadFiles(Request $request)
-    {
-        $files = $request->all();
-        unset($files['_token']);
-
-        $folder_name = session('full_name');
-
-        $folder = self::checkDrive($folder_name);
-
-        if($folder == false){
-            if(\Storage::disk('google')->createDir($folder_name)){
-                $folder = self::checkDrive($folder_name);
-            }
-        }
-
-        $path = $folder['path'] . "/";
-
-        //  Government Issued ID
-        \Storage::disk('google')->put($path . 'GOV_ID.'.pathinfo($_FILES["id"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["id"]["tmp_name"]));
-        unset($files['id']);
-
-        //  SS Card
-        \Storage::disk('google')->put($path . 'SSN.'.pathinfo($_FILES["ssn"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["ssn"]["tmp_name"]));
-        unset($files['ssn']);
-
-        //  Bank Information
-        \Storage::disk('google')->put($path . 'DD.'.pathinfo($_FILES["dd"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["dd"]["tmp_name"]));
-        unset($files['dd']);
-
-        //  Green Card
-        if(file_exists($_FILES["greencard"]["tmp_name"])){
-            \Storage::disk('google')->put($path . 'GREEN_CARD.'.pathinfo($_FILES["greencard"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["greencard"]["tmp_name"]));
-            unset($files['greencard']);
-        }
-
-        //  OSHA
-        if(file_exists($_FILES["osha"]["tmp_name"])){
-            \Storage::disk('google')->put($path . 'OSHA.'.pathinfo($_FILES["osha"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["osha"]["tmp_name"]));
-            unset($files['osha']);
-        }
-
-        //  Scaffold Safety Certificate
-        if(file_exists($_FILES["scaffold"]["tmp_name"])){
-            \Storage::disk('google')->put($path . 'SCAFFOLD.'.pathinfo($_FILES["scaffold"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["scaffold"]["tmp_name"]));
-            unset($files['scaffold']);
-        }
-
-        //  Marriage Certificate
-        if(file_exists($_FILES["marriage"]["tmp_name"])){
-            \Storage::disk('google')->put($path . 'MARRIAGE_CERT.'.pathinfo($_FILES["marriage"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["marriage"]["tmp_name"]));
-            unset($files['marriage']);
-        }
-
-        //  Birth Certificate/s
-        if(file_exists($_FILES["birth"]["tmp_name"][0])){
-            $size = sizeof($_FILES["birth"]["tmp_name"]);
-            for($i = 0; $i < $size; $i++){
-                \Storage::disk('google')->put($path . 'BIRTH_CERT_'. (string) ($i + 1) .'.'.pathinfo($_FILES["birth"]["name"][$i], PATHINFO_EXTENSION), file_get_contents($_FILES["birth"]["tmp_name"][$i]));
-            }
-            unset($files['birth']);
-        }
-
-        //  Certifications
-        $count = 1;
-
-        foreach($files as $file){
-            \Storage::disk('google')->put($path .'CERT'. $count .'.'. $file->guessExtension(), file_get_contents($file->getRealPath()));
-            $count++;
-        }
-
-        if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
-            session()->put('progress', session()->get('progress') + 1);
-
-        \Mail::raw('New application from '. session('full_name') . '. Please check https://webapp.horsepowernyc.com/drive for the employee information.', function($message)
-        {
-            $message->subject('New Application - Horsepower Web Application');
-            $message->to('jpecikonis@horsepowernyc.com');
-            $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
-        });
-
-        return redirect('dashboard');
-    }
-
-    /**
      * Send the information to union.
      * @param  Request $request
      * @return Illuminate\Http\Response
@@ -574,6 +486,94 @@ class DashboardController extends Controller
 
         if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
             session()->put('progress', session()->get('progress') + 1);
+
+        return redirect('dashboard');
+    }
+
+    /**
+     * Upload the files to the drive.
+     * @param  Request $request
+     * @return Illuminate\Http\Response
+     */
+    public function uploadFiles(Request $request)
+    {
+        $files = $request->all();
+        unset($files['_token']);
+
+        $folder_name = session('full_name');
+
+        $folder = self::checkDrive($folder_name);
+
+        if($folder == false){
+            if(\Storage::disk('google')->createDir($folder_name)){
+                $folder = self::checkDrive($folder_name);
+            }
+        }
+
+        $path = $folder['path'] . "/";
+
+        //  Government Issued ID
+        \Storage::disk('google')->put($path . 'GOV_ID.'.pathinfo($_FILES["id"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["id"]["tmp_name"]));
+        unset($files['id']);
+
+        //  SS Card
+        \Storage::disk('google')->put($path . 'SSN.'.pathinfo($_FILES["ssn"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["ssn"]["tmp_name"]));
+        unset($files['ssn']);
+
+        //  Bank Information
+        \Storage::disk('google')->put($path . 'DD.'.pathinfo($_FILES["dd"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["dd"]["tmp_name"]));
+        unset($files['dd']);
+
+        //  Green Card
+        if(file_exists($_FILES["greencard"]["tmp_name"])){
+            \Storage::disk('google')->put($path . 'GREEN_CARD.'.pathinfo($_FILES["greencard"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["greencard"]["tmp_name"]));
+            unset($files['greencard']);
+        }
+
+        //  OSHA
+        if(file_exists($_FILES["osha"]["tmp_name"])){
+            \Storage::disk('google')->put($path . 'OSHA.'.pathinfo($_FILES["osha"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["osha"]["tmp_name"]));
+            unset($files['osha']);
+        }
+
+        //  Scaffold Safety Certificate
+        if(file_exists($_FILES["scaffold"]["tmp_name"])){
+            \Storage::disk('google')->put($path . 'SCAFFOLD.'.pathinfo($_FILES["scaffold"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["scaffold"]["tmp_name"]));
+            unset($files['scaffold']);
+        }
+
+        //  Marriage Certificate
+        if(file_exists($_FILES["marriage"]["tmp_name"])){
+            \Storage::disk('google')->put($path . 'MARRIAGE_CERT.'.pathinfo($_FILES["marriage"]["name"], PATHINFO_EXTENSION), file_get_contents($_FILES["marriage"]["tmp_name"]));
+            unset($files['marriage']);
+        }
+
+        //  Birth Certificate/s
+        if(file_exists($_FILES["birth"]["tmp_name"][0])){
+            $size = sizeof($_FILES["birth"]["tmp_name"]);
+            for($i = 0; $i < $size; $i++){
+                \Storage::disk('google')->put($path . 'BIRTH_CERT_'. (string) ($i + 1) .'.'.pathinfo($_FILES["birth"]["name"][$i], PATHINFO_EXTENSION), file_get_contents($_FILES["birth"]["tmp_name"][$i]));
+            }
+            unset($files['birth']);
+        }
+
+        //  Certifications
+        $count = 1;
+
+        foreach($files as $file){
+            \Storage::disk('google')->put($path .'CERT'. $count .'.'. $file->guessExtension(), file_get_contents($file->getRealPath()));
+            $count++;
+        }
+
+        if(self::updateKeyModel(session('index'), session()->get('progress') + 1, 'progress'))
+            session()->put('progress', session()->get('progress') + 1);
+
+        \Mail::raw('New application from '. session('full_name') . '. Please check https://webapp.horsepowernyc.com/drive for the employee information.', function($message)
+        {
+            $message->subject('New Application - Horsepower Web Application');
+            $message->to('jpecikonis@horsepowernyc.com');
+            $message->from('no-reply@horsepowernyc.com', 'Horsepower Electric');
+        });
 
         return redirect('dashboard');
     }

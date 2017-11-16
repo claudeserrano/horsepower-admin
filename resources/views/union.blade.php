@@ -199,7 +199,7 @@
     	    			        ]) 
     	    			    !!}
     	    			    
-    	    			    @if($errors->has('phone'))
+    	    			    @if($errors->has('home_phone'))
     	    			        <p class="red">Please input your phone number.</p>
     	    			    @endif
     	    			</div>
@@ -680,18 +680,17 @@
         $(document).ready(function(){
             var b_index = 1;
 
-            $(document).on("click", "#add_beneficiary", function(event){
-                event.preventDefault();
-                $('#beneficiaries').append('<div id="'+b_index+'" class="panel panel-default"> <div class="panel-body"> <div class="col-lg-12" style="padding-bottom:20px"> <h4><span class="pull-left"><span class="glyphicon glyphicon-user"></span> Beneficiary</span> <button class="btn btn-danger btn-remove-row pull-right" target="'+b_index+'"><span class="glyphicon glyphicon-minus"></span></button> </h4> </div><div class="col-lg-12"> <div class="col-lg-2"> <h4>Type</h4> </div><div class="col-lg-2"> <select class="form-control type" name="type'+b_index+'"><option value="Primary">Primary</option><option value="Secondary">Secondary</option></select> </div><div class="col-lg-2"> <h4>Full Name</h4> </div><div class="col-lg-6"> <input class="form-control" name="b_name'+b_index+'" type="text" value=""> </div><div class="col-lg-12"></div><div class="col-lg-2"> <h4>Relationship</h4> </div><div class="col-lg-4"> <input class="form-control" name="relationship'+b_index+'" type="text" value=""> </div><div class="col-lg-2"> <h4>Share (%)</h4> </div><div class="col-lg-4"> <input class="form-control" name="share'+b_index+'" type="number" value=""> </div><div class="col-lg-12"></div><div class="col-lg-2"> <h4>Street Address</h4> </div><div class="col-lg-4"> <input class="form-control" name="street'+b_index+'" type="" value=""> </div><div class="col-lg-2"> <h4>City</h4> </div><div class="col-lg-4"> <input class="form-control" name="city'+b_index+'" type="" value=""> </div><div class="col-lg-12"></div><div class="col-lg-2"> <h4>State</h4> </div><div class="col-lg-4"> <input class="form-control" name="state'+b_index+'" type="" value=""> </div><div class="col-lg-2"> <h4>Zip</h4> </div><div class="col-lg-4"> <input class="form-control" name="zip'+b_index+'" type="number" value=""> </div></div></div></div>');
-                b_index++;
-                
-            });
+            // $(document).on("click", "#add_beneficiary", function(event){
+            //     event.preventDefault();
+            //     $('#beneficiaries').append('<div id="'+b_index+'" class="panel panel-default"> <div class="panel-body"> <div class="col-lg-12" style="padding-bottom:20px"> <h4><span class="pull-left"><span class="glyphicon glyphicon-user"></span> Beneficiary</span> <button class="btn btn-danger btn-remove-row pull-right" target="'+b_index+'"><span class="glyphicon glyphicon-minus"></span></button> </h4> </div><div class="col-lg-12"> <div class="col-lg-2"> <h4>Type</h4> </div><div class="col-lg-2"> <select class="form-control type" name="type'+b_index+'"><option value="Primary">Primary</option><option value="Secondary">Secondary</option></select> </div><div class="col-lg-2"> <h4>Full Name</h4> </div><div class="col-lg-6"> <input class="form-control" name="b_name'+b_index+'" type="text" value=""> </div><div class="col-lg-12"></div><div class="col-lg-2"> <h4>Relationship</h4> </div><div class="col-lg-4"> <input class="form-control" name="relationship'+b_index+'" type="text" value=""> </div><div class="col-lg-2"> <h4>Share (%)</h4> </div><div class="col-lg-4"> <input class="form-control" name="share'+b_index+'" type="number" value=""> </div><div class="col-lg-12"></div><div class="col-lg-2"> <h4>Street Address</h4> </div><div class="col-lg-4"> <input class="form-control" name="street'+b_index+'" type="" value=""> </div><div class="col-lg-2"> <h4>City</h4> </div><div class="col-lg-4"> <input class="form-control" name="city'+b_index+'" type="" value=""> </div><div class="col-lg-12"></div><div class="col-lg-2"> <h4>State</h4> </div><div class="col-lg-4"> <input class="form-control" name="state'+b_index+'" type="" value=""> </div><div class="col-lg-2"> <h4>Zip</h4> </div><div class="col-lg-4"> <input class="form-control" name="zip'+b_index+'" type="number" value=""> </div></div></div></div>');
+            //     b_index++;
+            // });
 
-            $(document).on("click", ".btn-remove-row", function(event){
-                event.preventDefault();
-                id = $(this).attr('target');
-                $('#'+id).remove();
-            });
+            // $(document).on("click", ".btn-remove-row", function(event){
+            //     event.preventDefault();
+            //     id = $(this).attr('target');
+            //     $('#'+id).remove();
+            // });
 
             $(document).on("click", "button[type='submit']", function(event){
                 pass = checkBeneficiaries();

@@ -51,11 +51,14 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
+        'admin' => \App\Http\Middleware\Custom\AdminMiddleware::class,
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'exam' => \App\Http\Middleware\Custom\ExamMiddleware::class,
+        'form' => \App\Http\Middleware\Custom\FormMiddleware::class,
+        'guest' => \App\Http\Middleware\Custom\RedirectIfAuthenticated::class,
         'horsepower' => \App\Http\Middleware\HorsepowerMiddleware::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
     ];

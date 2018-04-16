@@ -24,7 +24,7 @@
 
             <div class="col-lg-12">
 
-                <div class="col-lg-4">
+                {{-- <div class="col-lg-4">
                     <h4>Name</h4>
                 </div>
                 <div class="col-lg-8">
@@ -32,13 +32,43 @@
                         ['class' => 'form-control',
                         ]) 
                     !!}
+                </div> --}}
+
+                <div class="col-lg-2">
+                    <h4>Last Name</h4>
+                </div>
+                <div class="col-lg-2">
+                    {!! Form::text('LName', '',
+                        ['class' => 'form-control',
+                        ]) 
+                    !!}
+                </div>
+
+                <div class="col-lg-2">
+                    <h4>First Name</h4>
+                </div>
+                <div class="col-lg-3">
+                    {!! Form::text('FName', '',
+                        ['class' => 'form-control',
+                        ]) 
+                    !!}
+                </div>
+
+                <div class="col-lg-2">
+                    <h4>Middle Initial</h4>
+                </div>
+                <div class="col-lg-1">
+                    {!! Form::text('MI', '',
+                        ['class' => 'form-control',
+                        ]) 
+                    !!}
                 </div>
                 
-                @if($errors->has('Name'))
+                {{-- @if($errors->has('Name'))
                     <div class="col-lg-8 col-lg-offset-4 red">
                         {{$errors->first('Name')}}
                     </div>
-                @endif
+                @endif --}}
 
                 <div class="col-lg-12"></div>
 
@@ -79,7 +109,7 @@
 
                 <div class="col-lg-12"></div>
 
-                <div class="col-lg-4">
+                {{-- <div class="col-lg-4">
                     <h4>Address (No. and Street)</h4>
                 </div>
 
@@ -94,7 +124,33 @@
                     <div class="col-lg-8 col-lg-offset-4 red">
                         The address field is required.
                     </div>
-                @endif
+                @endif --}}
+
+                <div class="col-lg-2">
+                    <h4>Address</h4>
+                </div>
+
+                <div class="col-lg-2">
+                    <h4>Number</h4>
+                </div>
+
+                <div class="col-lg-1">
+                    {!! Form::text('Number', '',
+                        ['class' => 'form-control',
+                        ]) 
+                    !!}
+                </div>
+
+                <div class="col-lg-2">
+                    <h4>Street</h4>
+                </div>
+
+                <div class="col-lg-5">
+                    {!! Form::text('Street', '',
+                        ['class' => 'form-control',
+                        ]) 
+                    !!}
+                </div>
 
                 <div class="col-lg-12"></div>
 

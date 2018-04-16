@@ -79,10 +79,13 @@ class UsersController extends Controller
 
         if($request->query('keyword') == 'horsepower' && $request->query('access') == 0){
             session()->put('access', 0);
-            return view('admin.generate')->with(['access' => 0]);
+            $string = file_get_contents('en.json');
+            $json = json_decode($string, true);
+            return view('registration')->with(['json' => $json]);
+            // return view('generate')->with(['access' => 0]);
         }
 
-        return view('admin.generate');
+        return view('generate');
     }
 
     /**

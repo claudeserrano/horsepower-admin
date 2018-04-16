@@ -13,8 +13,43 @@
 
 Route::get('/', 'UsersController@index')->name('home');
 Route::get('/error', 'UsersController@getErrorView')->name('error');
-
 Route::get('/drive', function(){ return redirect()->to(getenv('DRIVE_URL')); });
+
+//-----------------------------------------------------------------------------------//
+
+Route::prefix('admin')->group(function(){
+	Route::get('/', 'AdminController@index');
+	Route::get('/exam/results', 'AdminController@getExamResults');
+	Route::get('/exam/results/{id}', 'AdminController@getEmployeeResults');
+	Route::get('/form/list', 'AdminController@getNewHireList');
+	Route::get('/form/data/{id}', 'AdminController@getNewHireData');
+});
+
+// Route::get('/admin/employees/new', 'UsersController@getNewEmployeesView')->name('getnewview');
+// Route::get('/admin/employees/get', 'UsersController@getNewEmployees')->name('getnew');
+
+
+//-----------------------------------------------------------------------------------//
+
+Route::prefix('exam')->group(function(){
+	Route::get('/', 'ExamController@index');
+	Route::post('/submit', 'ExamController@submit')->name('submitExam');
+	Route::post('/start', 'ExamController@start')->name('startExam');
+	Route::get('/resume', 'ExamController@resume')->name('resumeExam');
+	Route::get('/complete', 'ExamController@complete');
+});
+
+//-----------------------------------------------------------------------------------//
+
+Route::prefix('form')->group(function(){
+	Route::get('/', 'FormController@index');
+	Route::get('/flush', 'FormController@flush');
+	Route::get('/resume/{id}', 'FormController@resume');
+	Route::post('/submit', 'FormController@submit')->name('submitForm');
+	Route::get('/lang/{lang}', 'FormController@changeLanguage');
+});
+
+//-----------------------------------------------------------------------------------//
 
 Route::post('/validate/key', 'UsersController@validateKey')->name('validate');
 Route::get('/validate/key/query', 'UsersController@validateKey')->name('queryvalidate');
@@ -22,9 +57,6 @@ Route::get('/token/{id}/{token}', 'UsersController@getValidateView')->name('vali
 
 Route::get('/generate/', 'UsersController@getGenerateView');
 Route::post('/generate/key', 'UsersController@generateKey')->name('generate');
-
-// Route::get('/admin/employees/new', 'UsersController@getNewEmployeesView')->name('getnewview');
-// Route::get('/admin/employees/get', 'UsersController@getNewEmployees')->name('getnew');
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 Route::get('/files', 'DashboardController@files')->name('files');

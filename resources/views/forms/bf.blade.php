@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('title')
-    Horsepower - Building Trades Benefit Funds Enrollment
+    Horsepower - {{$lang->bif}}
 @stop
 
 @section('content')
@@ -11,13 +11,13 @@
             <div class="col-lg-12"> 
                 <center>
                     <h1>
-                        Building Trades Benefit Funds Enrollment
+                        {{$lang->bif}}
                     </h1>
-                    <a class="btn btn-primary" href="spanish"><h6>To Spanish</h6></a>
+                    <a href="form/lang/{{$lang->alt}}" class="btn btn-primary"><h6>{{$lang->alt_text}}</h6></a>
                 </center>
             </div>
 
-            <form class="form-horizontal" role="form" method="POST" action="{{ route('bfpdf', ['lang' => 'English']) }}">
+            <form class="form-horizontal" role="form" method="POST" action="{{ route('submitForm', ['form' => 'bf']) }}">
             
             {{ csrf_field() }}
 
@@ -25,13 +25,13 @@
 
             <div class="col-lg-12">
 
-                <div class="col-lg-12"><h3>Member's Full Name</h3></div>
+                <div class="col-lg-12"><h3>{{$lang->member_full_name}}</h3></div>
 
                 <div class="col-lg-2">
-                    <h4>Last Name</h4>
+                    <h4>{{$lang->last_name}}</h4>
                 </div>
                 <div class="col-lg-2">
-                    {!! Form::text('LAST_NAME', '',
+                    {!! Form::text('LAST_NAME', $data->LName,
                         ['class' => 'form-control',
                         ])
                     !!}
@@ -41,10 +41,10 @@
                 </div>
                 
                 <div class="col-lg-2">
-                    <h4>First Name</h4>
+                    <h4>{{$lang->first_name}}</h4>
                 </div>
                 <div class="col-lg-3">
-                    {!! Form::text('FIRST_NAME', '',
+                    {!! Form::text('FIRST_NAME', $data->FName,
                         ['class' => 'form-control',
                         ])
                     !!}
@@ -54,10 +54,10 @@
                 </div>
 
                 <div class="col-lg-1">
-                    <h4>Initials</h4>
+                    <h4>{{$lang->initials}}</h4>
                 </div>
                 <div class="col-lg-2">
-                    {!! Form::text('INITIALS', '',
+                    {!! Form::text('INITIALS', $data->MI,
                         ['class' => 'form-control',
                         ]) 
                     !!}
@@ -66,11 +66,11 @@
                 <div class="col-lg-12"><br></div>
 
                 <div class="col-lg-4">
-                    <h4>Social Security Number</h4>
+                    <h4>{{$lang->ssn}}</h4>
                 </div>
 
                 <div class="col-lg-8">
-                    {!! Form::text('SSN', '',
+                    {!! Form::text('SSN', $data->SSN1 . '-' . $data->SSN2 . '-' . $data->SSN3,
                         ['class' => 'form-control ssn',
                         ]) 
                     !!}
@@ -82,11 +82,11 @@
                 <div class="col-lg-12"><br></div>
 
                 <div class="col-lg-4">
-                    <h4>Home or Cellphone Number</h4>
+                    <h4>{{$lang->cell_no}}</h4>
                 </div>
 
                 <div class="col-lg-8">
-                    {!! Form::text('NUMBER', '',
+                    {!! Form::text('NUMBER', '(' . $data->AreaCodePhone . ') ' . $data->CellNo1 . '-' . $data->CellNo2,
                         ['class' => 'form-control phone',
                         ]) 
                     !!}
@@ -101,11 +101,11 @@
                 <div class="col-lg-12"><br></div>
 
                 <div class="col-lg-4">
-                    <h4>Date of Birth</h4>
+                    <h4>{{$lang->dob}}</h4>
                 </div>
 
                 <div class="col-lg-8">
-                    {!! Form::text('DOB', '',
+                    {!! Form::text('DOB', $data->DOBMonth . '-' . $data->DOBDay . '-' . $data->DOBYear,
                         ['class' => 'form-control date',
                         ]) 
                     !!}
@@ -120,11 +120,11 @@
                 <div class="col-lg-12"><br></div>
 
                 <div class="col-lg-4">
-                    <h4>E-mail</h4>
+                    <h4>{{$lang->email}}</h4>
                 </div>
 
                 <div class="col-lg-8">
-                    {!! Form::email('EMAIL', '',
+                    {!! Form::email('EMAIL', $data->Email,
                         ['class' => 'form-control email',
                         ]) 
                     !!}
@@ -139,63 +139,63 @@
                 <div class="col-lg-12"><br></div>
 
                 <div class="col-lg-3">
-                    <h4>Sex</h4>
+                    <h4>{{$lang->sex}}</h4>
                 </div>
                 
                 <div class="col-lg-3">
                     <div class="form-check">
                       <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="SEX" value="M" checked>
-                        Male
+                        <input class="form-check-input" type="radio" name="SEX" value="M" @if($data->Sex == 'Male') checked @endif>
+                        {{$lang->male}}
                       </label>
                     </div>
                     <div class="form-check">
                       <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="SEX" value="F">
-                        Female
+                        <input class="form-check-input" type="radio" name="SEX" value="F" @if($data->Sex == 'Female') checked @endif>
+                        {{$lang->female}}
                       </label>
                     </div>
                 </div>
 
                 <div class="col-lg-3">
-                    <h4>Marital Status</h4>
+                    <h4>{{$lang->marital_status}}</h4>
                 </div>
                 
                 <div class="col-lg-3">
                     <div class="form-check">
                       <label class="form-check-label">
                         <input class="form-check-input" type="radio" name="Status" value="Married" checked>
-                        Married
+                        {{$lang->married}}
                       </label>
                     </div>
                     <div class="form-check">
                       <label class="form-check-label">
                         <input class="form-check-input" type="radio" name="Status" value="Single">
-                        Single
+                        {{$lang->single}}
                       </label>
                     </div>
                     <div class="form-check">
                       <label class="form-check-label">
                         <input class="form-check-input" type="radio" name="Status" value="Divorced">
-                        Divorced
+                        {{$lang->divorced}}
                       </label>
                     </div>
                     <div class="form-check">
                       <label class="form-check-label">
                         <input class="form-check-input" type="radio" name="Status" value="Widow">
-                        Widower
+                        {{$lang->widower}}
                       </label>
                     </div>
                 </div>
 
-                <div class="col-lg-12"><h3>Member's Address</h3></div>
+                <div class="col-lg-12"><h3>{{$lang->member_add}}</h3></div>
 
                 <div class="col-lg-2">
-                    <h4>Street Address</h4>
+                    <h4>{{$lang->street}}</h4>
                 </div>
 
                 <div class="col-lg-3">
-                    {!! Form::text('STREET_ADDRESS', '',
+                    {!! Form::text('STREET_ADDRESS', $data->Street,
                         ['class' => 'form-control',
                         ]) 
                     !!}
@@ -205,10 +205,10 @@
                 </div>
 
                 <div class="col-lg-2">
-                    <h4>Apartment No</h4>
+                    <h4>{{$lang->number}}</h4>
                 </div>
                 <div class="col-lg-1">
-                    {!! Form::number('APT', '',
+                    {!! Form::number('APT', $data->Number,
                         ['class' => 'form-control',
                         ]) 
                     !!}
@@ -217,10 +217,10 @@
                 <div class="col-lg-12"></div>
                 
                 <div class="col-lg-2">
-                    <h4>City</h4>
+                    <h4>{{$lang->city}}</h4>
                 </div>
                 <div class="col-lg-3">
-                    {!! Form::text('CITY', '',
+                    {!! Form::text('CITY', $data->City,
                         ['class' => 'form-control',
                         ]) 
                     !!}
@@ -230,10 +230,10 @@
                 </div>
                 
                 <div class="col-lg-2">
-                    <h4>State</h4>
+                    <h4>{{$lang->state}}</h4>
                 </div>
                 <div class="col-lg-1">
-                    {!! Form::text('STATE', '',
+                    {!! Form::text('STATE', $data->State,
                         ['class' => 'form-control',
                         ]) 
                     !!}
@@ -243,10 +243,10 @@
                 </div>
 
                 <div class="col-lg-1">
-                    <h4>Zip</h4>
+                    <h4>{{$lang->zip}}</h4>
                 </div>
                 <div class="col-lg-3">
-                    {!! Form::number('ZIP', '',
+                    {!! Form::number('ZIP', $data->Zip,
                         ['class' => 'form-control',
                         ]) 
                     !!}
@@ -258,7 +258,7 @@
                 <div class="col-lg-12"><br></div>
                 
                 <div class="col-lg-4">
-                    <h4>Shop Name</h4>
+                    <h4>{{$lang->shop_name}}</h4>
                 </div>
 
                 <div class="col-lg-8">
@@ -271,17 +271,17 @@
                 <div class="col-lg-12"><br></div>
 
                 <div class="col-lg-4">
-                    <h4>Job Class</h4>
+                    <h4>{{$lang->job_class}}</h4>
                 </div>
 
                 <div class="col-lg-8">
-                    {!! Form::text('JOB_CLASS', '',
+                    {!! Form::text('JobClass', '',
                         ['class' => 'form-control',
                         ]) 
                     !!}
                 </div>
 
-                @if($errors->has('JOB_CLASS'))
+                @if($errors->has('JobClass'))
                     <div class="col-lg-8 col-lg-offset-4">
                         <p class="red">Please input your job classification.</p>
                     </div>
@@ -290,33 +290,33 @@
                 <div class="col-lg-12"><br></div>
 
                 <div class="col-lg-4">
-                    <h4>Date Hired</h4>
+                    <h4>{{$lang->date_hired}}</h4>
                 </div>
 
                 <div class="col-lg-8">
-                    {!! Form::text('DATE_HIRED', '',
+                    {!! Form::text('HireDate', '',
                         ['class' => 'form-control date',
                         ]) 
                     !!}
                 </div>
 
-                @if($errors->has('DATE_HIRED'))
+                @if($errors->has('HireDate'))
                     <div class="col-lg-8 col-lg-offset-4">
                         <p class="red">Please input a valid date.</p>
                     </div>
                 @endif
 
-                <div class="col-lg-12"><center><h3>Complete the following for your spouse, and all dependent children</h3></center></div>
+                <div class="col-lg-12"><center><h3>{{$lang->complete_the_following}}</h3><p class="red" id="fam_warning" hidden>Please check your dependents information. Please fill all information for a dependent.</p></center></div>
 
                 <div class="col-lg-12" style="min-width:700px">
                     <table class="table table-bordered">
                         <thead>
                             <td class="col-lg-1">#</td>
-                            <td class="col-lg-4">Full Name</td>
-                            <td class="col-lg-2">Date of Birth</td>
-                            <td class="col-lg-1">Sex</td>
-                            <td class="col-lg-2">SSN</td>
-                            <td class="col-lg-2">Relationship</td>
+                            <td class="col-lg-4">{{$lang->full_name}}</td>
+                            <td class="col-lg-2">{{$lang->dob}}</td>
+                            <td class="col-lg-1">{{$lang->sex}}</td>
+                            <td class="col-lg-2">{{$lang->ssn}}</td>
+                            <td class="col-lg-2">{{$lang->relationship}}</td>
                         </thead>
                         <tbody>
                             @for($i = 1; $i <= 8; $i++)
@@ -364,20 +364,20 @@
                     </table>
                 </div>
 
-                <div class="col-lg-12"><center><h3>If married, complete this section</h3></center></div>
+                <div class="col-lg-12"><center><h3>{{$lang->if_married}}</h3></center></div>
 
                 <div class="col-lg-4">
-                    <h4>Date Married</h4>
+                    <h4>{{$lang->date_married}}</h4>
                 </div>
 
                 <div class="col-lg-8">
-                    {!! Form::text('DATE_MARRIED', '',
+                    {!! Form::text('DateMarried', '',
                         ['class' => 'form-control date',
                         ]) 
                     !!}
                 </div>
 
-                @if($errors->has('DATE_MARRIED'))
+                @if($errors->has('DateMarried'))
                     <div class="col-lg-8 col-lg-offset-4">
                         <p class="red">Please input a valid date.</p>
                     </div>
@@ -386,30 +386,30 @@
                 <div class="col-lg-12"><br></div>
 
                 <div class="col-lg-4">
-                    <h4>City, State, and Country Married</h4>
+                    <h4>{{$lang->place_married}}</h4>
                 </div>
 
                 <div class="col-lg-8">
-                    {!! Form::text('PLACE_MARRIED', '',
+                    {!! Form::text('PlaceMarried', '',
                         ['class' => 'form-control',
                         ]) 
                     !!}
                 </div>
 
-                <div class="col-lg-12"><center><h3>If ever divorced or legally separated, complete this section</h3></center></div>
+                <div class="col-lg-12"><center><h3>{{$lang->if_divorced}}</h3></center></div>
 
                 <div class="col-lg-4">
-                    <h4>Date of Divorce</h4>
+                    <h4>{{$lang->date_divorced}}</h4>
                 </div>
 
                 <div class="col-lg-8">
-                    {!! Form::text('DATE_DIVORCE', '',
+                    {!! Form::text('DateDivorced', '',
                         ['class' => 'form-control date',
                         ]) 
                     !!}
                 </div>
 
-                @if($errors->has('DATE_DIVORCE'))
+                @if($errors->has('DateDivorced'))
                     <div class="col-lg-8 col-lg-offset-4">
                         <p class="red">Please input a valid date.</p>
                     </div>
@@ -418,32 +418,32 @@
                 <div class="col-lg-12"><br></div>
 
                 <div class="col-lg-4">
-                    <h4>Is there a court order for you to provide health coverage for your dependents?</h4>
+                    <h4>{{$lang->coverage_dependents}}</h4>
                 </div>
                 
                 <div class="col-lg-8">
                     <div class="form-check">
                       <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="COURT_ORDER" value="Y">
-                        Yes
+                        <input class="form-check-input" type="radio" name="CourtOrder" value="Y">
+                        {{$lang->yes}}
                       </label>
                     </div>
                     <div class="form-check">
                       <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="COURT_ORDER" value="N">
-                        No
+                        <input class="form-check-input" type="radio" name="CourtOrder" value="N" checked>
+                        {{$lang->no}}
                       </label>
                     </div>
                 </div>
 
-                <div class="col-lg-12"><center><h3>If your spouse is employed, complete this section</h3></center></div>
+                <div class="col-lg-12"><center><h3>{{$lang->spouse_employed}}</h3></center></div>
 
                 <div class="col-lg-4">
-                    <h4>Full Name of Spouse's Employer</h4>
+                    <h4>{{$lang->name_spouse_employer}}</h4>
                 </div>
 
                 <div class="col-lg-8">
-                    {!! Form::text('SPOUSE_EMPLOYER', '',
+                    {!! Form::text('SpouseEmployer', '',
                         ['class' => 'form-control',
                         ]) 
                     !!}
@@ -452,11 +452,11 @@
                 <div class="col-lg-12"></div>
 
                 <div class="col-lg-4">
-                    <h4>Address of Spouse's Employer</h4>
+                    <h4>{{$lang->address_spouse_employer}}r</h4>
                 </div>
 
                 <div class="col-lg-8">
-                    {!! Form::text('SPOUSE_EMPLOYER_ADDRESS', '',
+                    {!! Form::text('SpouseEmployerAddress', '',
                         ['class' => 'form-control',
                         ]) 
                     !!}
@@ -465,17 +465,17 @@
                 <div class="col-lg-12"></div>
 
                 <div class="col-lg-4">
-                    <h4>Date of Spouse's Hiring</h4>
+                    <h4>{{$lang->date_spouse_hired}}</h4>
                 </div>
 
                 <div class="col-lg-8">
-                    {!! Form::text('SPOUSE_DATE_HIRED', '',
+                    {!! Form::text('SpouseDateHired', '',
                         ['class' => 'form-control date',
                         ]) 
                     !!}
                 </div>
 
-                @if($errors->has('SPOUSE_DATE_HIRED'))
+                @if($errors->has('SpouseDateHired'))
                     <div class="col-lg-8 col-lg-offset-4">
                         <p class="red">Please input a valid date.</p>
                     </div>
@@ -484,32 +484,34 @@
                 <div class="col-lg-12"></div>
 
                 <div class="col-lg-4">
-                    <h4>Phone Number of Spouse's Employer</h4>
+                    <h4>{{$lang->phone_spouse_employer}}</h4>
                 </div>
 
                 <div class="col-lg-8">
-                    {!! Form::text('SPOUSE_EMPLOYER_NUMBER', '',
+                    {!! Form::text('SpouseEmployerNumber', '',
                         ['class' => 'form-control phone',
                         ]) 
                     !!}
                 </div>
 
-                @if($errors->has('SPOUSE_EMPLOYER_NUMBER'))
+                @if($errors->has('SpouseEmployerNumber'))
                     <div class="col-lg-8 col-lg-offset-4">
                         <p class="red">Please input a valid phone number.</p>
                     </div>
                 @endif
 
-                <div class="col-lg-12"><center><h3>I hereby designate the person(s) stated below to be the beneficiary(ies) of any benefits to which I may be entitled under the Building Trades Welfare Benefit Funds following my death.</h3></center></div>
+                <div class="col-lg-12"><center><h3>{{$lang->designation}}</h3>
+                <p class="red" id="bene_warning" hidden>Please check your beneficiary information. At least one beneficiary is needed.</p></center></div>
+
 
                 <div class="col-lg-12" style="min-width:700px">
                     <table class="table table-bordered">
                         <thead>
                             <td class="col-lg-1">#</td>
-                            <td class="col-lg-4">Full Name</td>
-                            <td class="col-lg-2">SSN</td>
-                            <td class="col-lg-2">Date of Birth</td>
-                            <td class="col-lg-2">Relationship</td>
+                            <td class="col-lg-4">{{$lang->full_name}}</td>
+                            <td class="col-lg-2">{{$lang->ssn}}</td>
+                            <td class="col-lg-2">{{$lang->dob}}</td>
+                            <td class="col-lg-2">{{$lang->relationship}}</td>
                             <td class="col-lg-1">PCT.</td>
                         </thead>
                         <tbody>
@@ -570,7 +572,7 @@
                             <div class="description">Sign above</div>
                             <div class="signature-pad--actions">
                                 <div>
-                                <button type="button" class="button clear" data-action="clear">Clear</button>
+                                <button type="button" class="button clear" data-action="clear">{{$lang->clear}}</button>
                                 </div>
                             </div>
                         </div>
@@ -585,7 +587,7 @@
                 <div class="col-lg-12">
                     <div class="col-lg-4 col-lg-offset-4">
                         <center>
-                        <button type="submit" onclick="signature()">Submit</button>
+                        <button type="submit" onclick="signature()">{{$lang->submit}}</button>
                         </center>
                     </div>
                     <br><br>
@@ -609,14 +611,78 @@
             hidden.value = signaturePad.toDataURL();
         }
 
+        function checkBeneficiaries(){
+            pass = true;
+            count = 0;
+
+            for(var i = 1; i <= 3; i++){
+                var bene = "input[name='BENEFICIARY" + i +"']";
+                var bene_ssn = "input[name='BENE_SSN" + i +"']";
+                var bene_dob = "input[name='BENE_DOB" + i +"']";
+                var bene_rel = "input[name='BENE_RELATIONSHIP" + i +"']";
+                var bene_pct = "input[name='PCT" + i +"']";
+                if($(bene).val() || $(bene_ssn).val() || $(bene_dob).val() || $(bene_rel).val() || $(bene_pct).val()){
+                    if(!$(bene).val() || !$(bene_ssn).val() || !$(bene_dob).val() || !$(bene_rel).val() || !$(bene_pct).val()){
+                        pass = false;
+                        alert('Please fill up everything under beneficiary # ' + i + '.');
+                    }
+                    else
+                        count++;
+                }
+            }
+
+            if(count == 0){
+                $('#bene_warning').show();
+                pass = false;
+            }
+            else
+                $('#bene_warning').hide();
+
+            return pass;
+        }
+
+        function checkDependents(){
+            pass = true;
+            count = 0;
+
+            for(var i = 1; i <= 8; i++){
+                var fam = "input[name='FAMILY" + i +"']";
+                var fam_ssn = "input[name='FAMILY_SSN" + i +"']";
+                var fam_dob = "input[name='FAMILY_DOB" + i +"']";
+                var fam_rel = "input[name='FAMILY_RELATIONSHIP" + i +"']";
+                var fam_sex = "input[name='SEX" + i +"']";
+                if($(fam).val() || $(fam_ssn).val() || $(fam_dob).val() || $(fam_rel).val() || $(fam_sex).val()){
+                    if(!$(fam).val() || !$(fam_ssn).val() || !$(fam_dob).val() || !$(fam_rel).val() || !$(fam_sex).val()){
+                        pass = false;
+                        alert('Please fill up everything under dependent # ' + i + '.');
+                        $('#fam_warning').show();
+                    }
+                    else
+                        count++;
+                }
+            }
+
+            return pass;
+        }
+
         $(document).ready(function(){
             $(document).on("click", "button[type='submit']", function(event){
+                pass_bene = checkBeneficiaries();
+                pass_dep = checkDependents();
+                pass = pass_bene && pass_dep;
+
+                if(!pass){
+                    // alert('Please check beneficiaries information!');
+                    event.preventDefault();
+                }
+
                 if(signaturePad.isEmpty()){
                     alert('Please input your signature.');
                     event.preventDefault();
                 }
-                else
+                else{
                     signature();
+                }
             })
         });
     </script>

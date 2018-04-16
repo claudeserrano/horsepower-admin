@@ -8,6 +8,7 @@
         "php": ">=7.0.0",
         "ext-gd": "^7.1",
         "aws/aws-sdk-php": "^3.36",
+        "doctrine/dbal": "^2.7",
         "fideloper/proxy": "~3.3",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "5.5.*",

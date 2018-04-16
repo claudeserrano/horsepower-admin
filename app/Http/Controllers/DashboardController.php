@@ -392,9 +392,6 @@ class DashboardController extends Controller
                 'home_phone' => 'required|size:14',
                 'email' => 'required|email',
                 'date_of_hire' => 'required|date',
-                'primary_name' => 'required',
-                'primary_relationship' => 'required',
-                'primary_address' => 'required'
             ]);
 
             if((!is_null($request->secondary_name)) || (!is_null($request->secondary_relationship)) || (!is_null($request->secondary_address))){

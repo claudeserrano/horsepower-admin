@@ -274,7 +274,7 @@
                     <h4>{{$lang->job_class}}</h4>
                 </div>
 
-                <div class="col-lg-8">
+                <{{-- div class="col-lg-8">
                     {!! Form::text('JobClass', '',
                         ['class' => 'form-control',
                         ]) 
@@ -285,7 +285,7 @@
                     <div class="col-lg-8 col-lg-offset-4">
                         <p class="red">Please input your job classification.</p>
                     </div>
-                @endif
+                @endif --}}
 
                 <div class="col-lg-12"><br></div>
 

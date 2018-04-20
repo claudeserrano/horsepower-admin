@@ -11,7 +11,7 @@
       <div class="panel panel-default">
           <div class="panel-heading">
               <center>
-              <h2> Forms Complete! </h2>
+              <h2> Exam Complete! </h2>
               </center>
           </div>
           <div class="panel-body">
@@ -19,7 +19,7 @@
  
               <span class="glyphicon glyphicon-thumbs-up" style="font-size:100px;color:green"></span>
               <br><br>
-              <p><a href='https://onboarding.ultipro.com/HOR1009' class="btn btn-default">Return to Onboarding</a></p>
+              <p>Please inform HR to proceed. Thank you!</p>
 
             </center>
           </div>

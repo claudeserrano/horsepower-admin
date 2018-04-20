@@ -13,6 +13,7 @@
     <table id='tb' class="table table-bordered display" cellspacing='0' width='100%'>
       <thead>
         <tr>
+          <th scope="col">Last Update</th>
           <th scope="col">Name</th>
           <th scope="col">Email</th>
           <th scope="col">Progress</th>
@@ -21,6 +22,7 @@
       <tbody>
         @foreach($data as $d)
           <tr>
+            <td>{{$d['date']}}</td>
             <td><a href="data/{{$d['id']}}">{{$d['name']}}</a></td>
             <td>{{$d['email']}}</td>
             <td>{{$d['progress']}}</td>

@@ -13,7 +13,7 @@ use App\Union;
 class FormController extends Controller
 {
 
-	private $validate = false;
+	private $validate = true;
 
 	/**
      * Create a new controller instance.
@@ -143,7 +143,7 @@ class FormController extends Controller
                      'CITY' => 'required',
                      'STATE' => 'required',
                      'ZIP' => 'required',
-                     'JobClass' => 'required',
+                     // 'JobClass' => 'required',
                      'HireDate' => 'required|date_format:m/d/Y',
                      'FAMILY_DOB1' => 'nullable|date_format:m/d/Y',
                      'FAMILY_DOB2' => 'nullable|date_format:m/d/Y',
@@ -278,6 +278,7 @@ class FormController extends Controller
                 break;
 
             case 'files':
+                return var_dump($_FILES);
 
                 $guest = Guest::find(session('id'));
 
@@ -290,13 +291,13 @@ class FormController extends Controller
                     $folder = 'forms/';
                     $path = $folder . $guest->id;
 
-                    $i = 1;
+                    // $i = 1;
 
-                    while(\Storage::disk('s3')->exists($path)){
-                        $path = $folder . $guest->id . $i;
-                        $i++;
+                    // while(\Storage::disk('s3')->exists($path)){
+                    //     $path = $folder . $guest->id . $i;
+                    //     $i++;
 
-                    }
+                    // }
                     
                     \Storage::disk('s3')->createDir($path);
 
@@ -407,69 +408,6 @@ class FormController extends Controller
         return redirect('form');
     }
 
-    public function generateReg(Request $request)
-    {
-        //  File paths
-        $tmp = env('TMP_PATH', 'tmp/');
-        $sig = $tmp . 'sigbf.png';
-        $sigpdf = $tmp . 'sigbf.pdf';
-        $pdftmp = $tmp . 'formbf.pdf';
-        $first = $tmp . 'firstbf.pdf';
-        $fdf = $tmp . 'fdfbf.pdf';
-
-        //  Signature image processing
-        $data_uri = $request->uri;
-        $encoded_image = explode(",", $data_uri)[1];
-        $decoded_image = base64_decode($encoded_image);
-        
-        //  Copying image to tmp file
-        file_put_contents($sig, $decoded_image);
-
-        self::image_resize($sig, $sig, 350, 200);
-
-        if($request->lang > 0){
-            $x = 127;
-            $y = 245;
-        }
-        else{
-            $x = 125;
-            $y = 258;
-        }
-
-        //  Check if using mobile
-        $mobile = new \App\Services\Mobile_Detect();
-        if($mobile->isMobile()){
-            $y -= 3;
-        }
-        
-        //  Creating signature PDF file
-        $pdf = new \App\Services\FPDF('P', 'mm', 'A4');
-        $pdf->AddPage();
-        $pdf->Image($sig,$x,$y,-300);
-        file_put_contents($sigpdf, $pdf->output('S'));
-
-        $pdf = file_get_contents('forms/BF_'. $lang .'_Fillable.pdf');
-
-        try {
-            file_put_contents($pdftmp, $pdf);
-
-            exec(getenv("LIB_PATH") . 'pdftk '. $pdftmp .' stamp ' . $sigpdf . ' output ' . $first);
-        } 
-        catch (Exception $e) {
-            return $e; 
-        }
-
-        $data = $request->all();
-        $data["DATE"] = date("m/d/Y");
-        unset($data['_token']);
-
-        $dfdf = self::toFDF($data);
-
-        file_put_contents($fdf, $dfdf);
-
-        exec(getenv("LIB_PATH") . "pdftk ". $first ." fill_form ". $fdf . " output ". $tmp ."finalbf.pdf");
-
-        $folder_name = session('full_name');
-    }
+    
 
 }

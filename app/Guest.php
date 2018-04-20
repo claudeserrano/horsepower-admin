@@ -11,7 +11,7 @@ class Guest extends Model
      *
      * @var bool
      */
-    public $timestamps = false;
+    public $timestamps = true;
 
     /**
     * Get the guest's scores
@@ -35,6 +35,14 @@ class Guest extends Model
     public function bf()
     {
         return $this->hasOne('App\Bf');
+    }
+
+    /**
+    * Get the guest's bf.
+    */
+    public function union()
+    {
+        return $this->hasOne('App\Union');
     }
 
     /**

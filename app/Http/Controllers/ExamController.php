@@ -160,4 +160,16 @@ class ExamController extends Controller
 
     }
 
+    /**
+     * Flush sessions.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function flush(Request $request)
+    {
+        $request->session()->flush();
+        return redirect('exam');
+    }
+
 }

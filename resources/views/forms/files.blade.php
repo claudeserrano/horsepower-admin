@@ -26,7 +26,7 @@
                                         {{$lang->gov_id}}
                                     </div>
                                     <div class="panel-body">
-                                        <input type="file" accept=".jpg,.png" name="id" id="id" class="form-control-file mandatory"/>
+                                        <input type="file" accept="image/*" name="id" id="id" class="form-control-file mandatory"/>
                                     </div>
                                 </div>
                             </div>
@@ -37,7 +37,7 @@
                                         {{$lang->ssc}}
                                     </div>
                                     <div class="panel-body">
-                                        <input type="file" accept=".jpg,.png" name="ssn" id="ssn" class="form-control-file mandatory"/>
+                                        <input type="file" accept="image/*" name="ssn" id="ssn" class="form-control-file mandatory"/>
                                     </div>
                                 </div>
                             </div>
@@ -48,7 +48,7 @@
                                         {{$lang->bank_statement}}
                                     </div>
                                     <div class="panel-body">
-                                        <input type="file" accept=".jpg,.png" name="dd" id="dd" class="form-control-file mandatory"/>
+                                        <input type="file" accept="image/*" name="dd" id="dd" class="form-control-file mandatory"/>
                                     </div>
                                 </div>
                             </div>
@@ -60,7 +60,7 @@
                                         OSHA-10/OSHA-30
                                     </div>
                                     <div class="panel-body">
-                                        <input type="file" accept=".jpg,.png" name="osha" id="osha" class="form-control-file mandatory"/>
+                                        <input type="file" accept="image/*" name="osha" id="osha" class="form-control-file mandatory"/>
                                     </div>
                                 </div>
                             </div>
@@ -71,7 +71,7 @@
                                         Scaffold Safety Certificate
                                     </div>
                                     <div class="panel-body">
-                                        <input type="file" accept=".jpg,.png" name="scaffold" id="scaffold" class="form-control-file mandatory"/>
+                                        <input type="file" accept="image/*" name="scaffold" id="scaffold" class="form-control-file mandatory"/>
                                     </div>
                                 </div>
                             </div>
@@ -95,7 +95,7 @@
                                     {{$lang->green_card}}
                                 </div>
                                 <div class="panel-body">
-                                    <input type="file" accept=".jpg,.png" name="greencard" id="greencard" class="form-control-file"/>
+                                    <input type="file" accept="image/*" name="greencard" id="greencard" class="form-control-file"/>
                                 </div>
                             </div>
                         </div>
@@ -116,7 +116,7 @@
                                         {{$lang->marriage_cert}}
                                     </div>
                                     <div class="panel-body">
-                                        <input type="file" accept=".jpg,.png" name="marriage" id="marriage" class="form-control-file"/>
+                                        <input type="file" accept="image/*" name="marriage" id="marriage" class="form-control-file"/>
                                     </div>
                                 </div>
                             </div>
@@ -126,7 +126,7 @@
                                         {{$lang->birth_cert}}
                                     </div>
                                     <div class="panel-body">
-                                        <input type="file" accept=".jpg,.png" name="birth[]" id="birth" multiple="" class="form-control-file"/>
+                                        <input type="file" accept="image/*" name="birth[]" id="birth" multiple="" class="form-control-file"/>
                                     </div>
                                 </div>
                             </div>
@@ -160,7 +160,7 @@
                 </div>
 
                 <div class="col-lg-12">
-                    <button id="submit" type="submit" class="btn btn-default" disabled>{{$lang->submit}}</button>
+                    <button id="submit" type="submit" class="btn btn-default" disabled>Done</button>
                 </div>
             </form>
         </center>
@@ -185,22 +185,23 @@
                 submit.attr("disabled", true);
                 $("#main").removeClass("panel-info").addClass("panel-danger");
             }
+
+            return true;
         }
 
         $(document).ready(function(){
             $('.mandatory').on("change", function(){
-                if($(this).val())
+                if(checkfiles())
                     $(this).parent().prev().find('span').attr({class:'glyphicon glyphicon-ok-circle', style:'color:green'})
                 else
                     $(this).parent().prev().find('span').attr({class:'glyphicon glyphicon-exclamation-sign', style:'color:red'})
-                checkfiles();
             })
 
             var cert_index = 1;
 
             $('#add_cert').click(function(event){
                 event.preventDefault();
-                $('#cert_tb > tbody:last-child').append('<tr id="'+cert_index+'"><td style="width:20%"><button class="btn btn-danger btn-remove-row" style="width:100%;height:100%" target="'+cert_index+'"><span class="glyphicon glyphicon-minus"></span> Remove </button></td><td style="width:80%"><center><input type="file" accept=".jpg,.png" name="cert'+cert_index+'" id="cert'+cert_index+'" class="form-control-file"/></center></td></tr>');
+                $('#cert_tb > tbody:last-child').append('<tr id="'+cert_index+'"><td style="width:20%"><button class="btn btn-danger btn-remove-row" style="width:100%;height:100%" target="'+cert_index+'"><span class="glyphicon glyphicon-minus"></span> Remove </button></td><td style="width:80%"><center><input type="file" accept="image/*" name="cert'+cert_index+'" id="cert'+cert_index+'" class="form-control-file"/></center></td></tr>');
                 cert_index++;
             });
 

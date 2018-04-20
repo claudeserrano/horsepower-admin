@@ -14,6 +14,7 @@
             </div>
             <div class="panel-body">
               <center>
+                <a class="btn btn-default" href="{{$guest->id}}/generate">To PDF</a>
                 <a class="btn btn-default" href="{{URL::previous()}}">Back</a>
               </center>
             </div>

@@ -13,7 +13,7 @@
 
 Route::get('/', 'UsersController@index')->name('home');
 Route::get('/error', 'UsersController@getErrorView')->name('error');
-// Route::get('/drive', function(){ return redirect()->to(getenv('DRIVE_URL')); });
+Route::get('/drive', function(){ return redirect()->to(getenv('DRIVE_URL')); });
 
 //-----------------------------------------------------------------------------------//
 

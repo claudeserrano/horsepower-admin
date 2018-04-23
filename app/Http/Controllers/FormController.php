@@ -278,7 +278,6 @@ class FormController extends Controller
                 break;
 
             case 'files':
-                return var_dump($_FILES);
 
                 $guest = Guest::find(session('id'));
 

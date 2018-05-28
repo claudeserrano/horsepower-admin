@@ -20,7 +20,6 @@
               <span class="glyphicon glyphicon-thumbs-up" style="font-size:100px;color:green"></span>
               <br><br>
               <p>Please inform HR to proceed. Thank you!</p>
-
             </center>
           </div>
 

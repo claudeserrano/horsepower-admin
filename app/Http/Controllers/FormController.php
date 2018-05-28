@@ -104,6 +104,7 @@ class FormController extends Controller
                         'StartDay' => 'required|size:2',
                         'StartYear' => 'required|size:4'
                     ]);
+                // return $request->all();
 
                 $guest = new Guest();
                 $guest->name = $request->LName . ', ' . $request->FName;

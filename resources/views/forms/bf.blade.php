@@ -195,7 +195,7 @@
                 </div>
 
                 <div class="col-lg-3">
-                    {!! Form::text('STREET_ADDRESS', $data->Street,
+                    {!! Form::text('STREET_ADDRESS', isset($data->Number) ? $data->Number . ' ' . $data->Street : $data->Street,
                         ['class' => 'form-control',
                         ]) 
                     !!}
@@ -207,8 +207,9 @@
                 <div class="col-lg-2">
                     <h4>{{$lang->number}}</h4>
                 </div>
+
                 <div class="col-lg-1">
-                    {!! Form::number('APT', $data->Number,
+                    {!! Form::text('APT', $data->aptNo,
                         ['class' => 'form-control',
                         ]) 
                     !!}
@@ -274,7 +275,7 @@
                     <h4>{{$lang->job_class}}</h4>
                 </div>
 
-                <{{-- div class="col-lg-8">
+                {{-- div class="col-lg-8">
                     {!! Form::text('JobClass', '',
                         ['class' => 'form-control',
                         ]) 

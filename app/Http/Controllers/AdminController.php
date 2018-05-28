@@ -321,15 +321,16 @@ class AdminController extends Controller
         if(file_exists('file.zip'))
           unlink('file.zip');
 
-
-        $uploads =  $this->getUploadedFiles($id, $tmp);
-
         $forms = array(
             ['path' => $regfile, 'name' => 'reg.pdf'], ['path' => $bffile, 'name' => 'bf.pdf'], ['path' => $unionfile, 'name' => 'union.pdf']
         );
 
-        foreach($uploads as $upload){
-            array_push($forms, $upload);
+        $uploads =  $this->getUploadedFiles($id, $tmp);
+
+        if($uploads){
+            foreach($uploads as $upload){
+                array_push($forms, $upload);
+            }
         }
 
         $zipname = 'file.zip';
@@ -359,16 +360,21 @@ class AdminController extends Controller
     {
 
         $path = 'forms/' . $id;
-        $files = Storage::disk('s3')->allFiles($path);
-        $uploads = array();
+        //  Check if path exists
+        if(Storage::disk('s3')->exists($path)){
+            $files = Storage::disk('s3')->allFiles($path);
+            $uploads = array();
 
-        foreach($files as $file){
-            $name = Storage::disk('s3')->getMetaData($file)['basename'];
-            file_put_contents($tmp . $name, Storage::disk('s3')->get($file));
-            array_push($uploads, ['path' => $tmp . $name, 'name' => $name]);
+            foreach($files as $file){
+                $name = Storage::disk('s3')->getMetaData($file)['basename'];
+                file_put_contents($tmp . $name, Storage::disk('s3')->get($file));
+                array_push($uploads, ['path' => $tmp . $name, 'name' => $name]);
+            }
+
+            return $uploads;
         }
-
-        return $uploads;
+        
+        return null;
 
     }
 
@@ -383,7 +389,7 @@ class AdminController extends Controller
                 'SSN1' => $info->SSN1,
                 'SSN2' => $info->SSN2,
                 'SSN3' => $info->SSN3,
-                'Address1' => $info->Number . ' ' . $info->Street,
+                'Address1' => $info->aptNo . ' ' . $info->Number . ' ' . $info->Street,
                 'City' => $info->City,
                 'State' => $info->State,
                 'Zip' => $info->Zip,
@@ -420,8 +426,8 @@ class AdminController extends Controller
                 'MI' => $info->MI,
                 'SSN' => $info->SSN1 . '-' . $info->SSN2 . '-' . $info->SSN3,
                 'Sex' => $info->Sex,
-                'Street' => $info->Street,
-                'Number' => $info->Number,
+                'Street' => isset($info->Number) ? $info->Number . ' ' . $info->Street : $info->Street,
+                'Number' => $info->aptNo,
                 'DOB' => $info->DOBMonth . '/' . $info->DOBDay . '/' . $info->DOBYear,
                 'HomeNumber' => '(' . $info->AreaCode . ') ' . $info->TelNo1 . '-' . $info->TelNo2,
                 'City' => $info->City,
@@ -480,8 +486,8 @@ class AdminController extends Controller
                 'MI' => $info->MI,
                 'SSN' => $info->SSN1 . '-' . $info->SSN2 . '-' . $info->SSN3,
                 'Sex' => $info->Sex,
-                'Street' => $info->Street,
-                'Number' => $info->Number,
+                'Street' => isset($info->Number) ? $info->Number . ' ' . $info->Street : $info->Street,
+                'Number' => $info->aptNo,
                 'DOB' => $info->DOBMonth . '/' . $info->DOBDay . '/' . $info->DOBYear,
                 'HomeNumber' => '(' . $info->AreaCode . ') ' . $info->TelNo1 . '-' . $info->TelNo2,
                 'Status' => $status,

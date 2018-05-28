@@ -9,15 +9,15 @@ $(document).ready(function(){
         pattern: /[MF]/
       }
     }
-  	});
+  });
 
-  	$('.sex').attr('placeholder', 'M/F');
-  	$('.date').attr('placeholder', 'mm/dd/yyyy');
-  	$('.ssn').attr('placeholder', 'xxx-xx-xxxx');
-  	$('.phone').attr('placeholder', '(xxx) xxx-xxxx');
-  	$('.email').attr('placeholder', 'yourmail@example.com');
+	$('.sex').attr('placeholder', 'M/F');
+	$('.date').attr('placeholder', 'mm/dd/yyyy');
+	$('.ssn').attr('placeholder', 'xxx-xx-xxxx');
+	$('.phone').attr('placeholder', '(xxx) xxx-xxxx');
+	$('.email').attr('placeholder', 'yourmail@example.com');
 
-    window.onresize = function(){
-    }
+  window.onresize = function(){
+  }
     
 })

@@ -46,7 +46,7 @@ Route::prefix('exam')->group(function(){
 Route::prefix('form')->group(function(){
 	Route::get('/', 'FormController@index');
 	Route::get('/flush', 'FormController@flush');
-	Route::get('/resume/{id}', 'FormController@resume');
+	// Route::get('/resume/{id}', 'FormController@resume');
 	Route::post('/submit', 'FormController@submit')->name('submitForm');
 	Route::get('/lang/{lang}', 'FormController@changeLanguage');
 });

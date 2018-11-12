@@ -389,7 +389,7 @@ class AdminController extends Controller
                 'SSN1' => $info->SSN1,
                 'SSN2' => $info->SSN2,
                 'SSN3' => $info->SSN3,
-                'Address1' => $info->aptNo . ' ' . $info->Number . ' ' . $info->Street,
+                'Address1' => $info->Number . ' ' . $info->Street . ' ' . $info->aptNo,
                 'City' => $info->City,
                 'State' => $info->State,
                 'Zip' => $info->Zip,

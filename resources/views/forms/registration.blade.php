@@ -111,18 +111,6 @@
                 </div>
 
                 <div class="col-lg-2">
-                    <h4>Apt. #</h4>
-                </div>
-
-                <div class="col-lg-1">
-                    {!! Form::text('aptNo', '',
-                        ['class' => 'form-control',
-                         'maxlength' => '8'
-                        ]) 
-                    !!}
-                </div>
-
-                <div class="col-lg-2">
                     <h4>Street #</h4>
                 </div>
 
@@ -140,6 +128,18 @@
                 <div class="col-lg-4">
                     {!! Form::text('Street', '',
                         ['class' => 'form-control',
+                        ]) 
+                    !!}
+                </div>
+
+                <div class="col-lg-2">
+                    <h4>Apt. #</h4>
+                </div>
+
+                <div class="col-lg-1">
+                    {!! Form::text('aptNo', '',
+                        ['class' => 'form-control',
+                         'maxlength' => '8'
                         ]) 
                     !!}
                 </div>

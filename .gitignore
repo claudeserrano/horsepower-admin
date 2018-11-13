@@ -1,6 +1,8 @@
 /node_modules
 /public/hot
 /public/storage
+/public/tmp
+/public/file.zip
 /storage/*.key
 /vendor
 /.idea

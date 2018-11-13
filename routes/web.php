@@ -18,7 +18,7 @@ Route::get('/error', 'UsersController@getErrorView')->name('error');
 //-----------------------------------------------------------------------------------//
 
 Route::prefix('admin')->group(function(){
-	Route::get('/', 'AdminController@index');
+	// Route::get('/', 'AdminController@index');
 	Route::get('/exam/results', 'AdminController@getExamResults');
 	Route::get('/exam/results/{id}', 'AdminController@getEmployeeResults');
 	Route::get('/form/list', 'AdminController@getNewHireList');

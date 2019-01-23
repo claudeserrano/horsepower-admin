@@ -32,7 +32,7 @@ class ExamController extends Controller
     public function index(Request $request)
     {
         if($request->session()->has('started'))
-            return redirect('exam/resume');
+            return redirect('exam/generate');
     	return view('exams.home');
     }
 
@@ -63,7 +63,7 @@ class ExamController extends Controller
         session(['page' => session('list')[session('progress')]]);
         session(['pages' => sizeof($examList)]);
 
-        return redirect('generate');
+        return redirect('exam/generate');
 
     }
 
@@ -138,7 +138,7 @@ class ExamController extends Controller
             return redirect('exam/complete');
         }
 
-        return view('exams.exam');
+        return redirect('exam/generate');
 
     }
 
@@ -150,9 +150,15 @@ class ExamController extends Controller
      */
     public function complete(Request $request)
     {
-        $request->session()->flush();
-        session(['progress' => 0]);
-        return view('exams.complete');
+        //  If progress is less than total pages, return exam page, else redirect to completion page
+        if(session('progress') < session('pages')){
+            return redirect('exam/generate');
+        }
+        else{
+            $request->session()->flush();
+            session(['progress' => 0]);
+            return view('exams.complete');
+        }
     }
 
     /**

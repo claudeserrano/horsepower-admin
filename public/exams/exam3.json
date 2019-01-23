@@ -1,0 +1,230 @@
+{
+    "description" : {
+        "title" : "Electrical Exam",
+        "subtitle" : "Level 3"
+    },
+    "questions" : [
+        {
+            "name" : "ans1",
+            "type" : "multiple",
+            "label" : "An overcurrent device (circuit breaker or fuse) must be size no less than 125 percent of the continous load. If the load is 16A, the overcurrent device will have to be sized at no less than :",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "17A"
+                },
+                {
+                    "value" : 2,
+                    "label" : "20A"
+                },
+                {
+                    "value" : 3,
+                    "label" : "23A"
+                },
+                {
+                    "value" : 4,
+                    "label" : "30A"
+                }
+            ]
+        },
+        {
+            "name" : "ans2",
+            "type" : "multiple",
+            "label" : "The improper wiring or mishandling of multiwire branch circuits can cause ________________ connected to the circuit.",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Overloading of the undergrounded conductors"
+                },
+                {
+                    "value" : 2,
+                    "label" : "Overloading of the grounded conductors"
+                },
+                {
+                    "value" : 3,
+                    "label" : "Destruction of equipment"
+                },
+                {
+                    "value" : 4,
+                    "label" : "B and C"
+                }
+            ]
+        },
+        {
+            "name" : "ans3",
+            "type" : "multiple",
+            "label" : "Which is a better electrical conductor?",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Copper"
+                },
+                {
+                    "value" : 2,
+                    "label" : "Silver"
+                },
+                {
+                    "value" : 3,
+                    "label" : "Nickel"
+                },
+                {
+                    "value" : 4,
+                    "label" : "They are the same"
+                }
+            ]
+        },
+        {
+            "name" : "ans4",
+            "type" : "multiple",
+            "label" : "How many watts is 1 horsepower?",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "835"
+                },
+                {
+                    "value" : 2,
+                    "label" : "24"
+                },
+                {
+                    "value" : 3,
+                    "label" : "746"
+                },
+                {
+                    "value" : 4,
+                    "label" : "208"
+                }
+            ]
+        },
+        {
+            "name" : "ans5",
+            "type" : "multiple",
+            "label" : "How many #10 THHN wires can you pull in a 3/4\" EMT pipe?",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "4"
+                },
+                {
+                    "value" : 2,
+                    "label" : "11"
+                },
+                {
+                    "value" : 3,
+                    "label" : "10"
+                },
+                {
+                    "value" : 4,
+                    "label" : "6"
+                }
+            ]
+        },
+        {
+            "name" : "ans6",
+            "type" : "multiple",
+            "label" : "When do you bond the neutral conductor to the enclosure?",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Never"
+                },
+                {
+                    "value" : 2,
+                    "label" : "In all main service switches"
+                },
+                {
+                    "value" : 3,
+                    "label" : "Always"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Only one in each building at the main service"
+                }
+            ]
+        },
+        {
+            "name" : "ans7",
+            "type" : "multiple",
+            "label" : "When a raceway doesn't exceed 24 in. in length, the raceway is permitted to be filled to ________________ percent of its cross sectional area.",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "31"
+                },
+                {
+                    "value" : 2,
+                    "label" : "40"
+                },
+                {
+                    "value" : 3,
+                    "label" : "53"
+                },
+                {
+                    "value" : 4,
+                    "label" : "60"
+                }
+            ]
+        },
+        {
+            "name" : "ans8",
+            "type" : "multiple",
+            "label" : "Fire pump branch wiring shall be protected by a fuse rated:",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "300% FLA"
+                },
+                {
+                    "value" : 2,
+                    "label" : "600% FLA"
+                },
+                {
+                    "value" : 3,
+                    "label" : "150% FLA"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Any of the above"
+                }
+            ]
+        },
+        {
+            "name" : "ans9",
+            "type" : "multiple",
+            "label" : "The combined voltage drop of branch circuits and feeders shall not exceed:",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "5%"
+                },
+                {
+                    "value" : 2,
+                    "label" : "3%"
+                },
+                {
+                    "value" : 3,
+                    "label" : "4%"
+                },
+                {
+                    "value" : 4,
+                    "label" : "None of the above"
+                }
+            ]
+        },
+        {
+            "name" : "ans10",
+            "type" : "tof",
+            "label" : "An individual 20A branch circuit can supply a single dwelling unit bathroom for receptacle outlet(s) and other equipment within the same bathroom.",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "True"
+                },
+                {
+                    "value" : 2,
+                    "label" : "False"
+                }
+            ]
+        }
+    ]
+}

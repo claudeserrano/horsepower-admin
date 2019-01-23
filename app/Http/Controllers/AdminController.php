@@ -10,7 +10,7 @@ use mikehaertl\pdftk\Pdf;
 class AdminController extends Controller
 {
 
-	private $validate = true;
+    private $validate = true;
 
 	/**
      * Create a new controller instance.
@@ -74,12 +74,17 @@ class AdminController extends Controller
         $scores = $guest->scores->where('level', '<>', 4);
         $final = $guest->scores->where('level', '=', 4)->first();
         $class = array();
-        $answers = $final->answers;
+        //  Temporary error checking
+        if(!is_null($final))
+            $answers = $final->answers;
 
         for($i = 0; $i <= 4; $i++){
             $temp = 0;
-            for($a = 1; $a <= 3; $a++){
-                $temp += $answers->where('question', '=', $a + (3 * $i))->first()->correct;
+            //  Temporary error checking
+            if(isset($answers)){
+                for($a = 1; $a <= 3; $a++){
+                    $temp += $answers->where('question', '=', $a + (3 * $i))->first()->correct;
+                }
             }
             array_push($class, ['year' => $i + 1, 'correct' => number_format($temp / 3 * 100,2)]);
         }
@@ -144,8 +149,6 @@ class AdminController extends Controller
     {
         // return $this->generateFormData($id);
         return $this->generateForms($id);
-
-        return 'wow';
     }
 
     public function generateForms($id)

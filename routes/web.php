@@ -36,6 +36,7 @@ Route::prefix('exam')->group(function(){
 	Route::get('/', 'ExamController@index');
 	Route::post('/submit', 'ExamController@submit')->name('submitExam');
 	Route::post('/start', 'ExamController@start')->name('startExam');
+	Route::get('/generate', 'ExamController@generate')->name('generate');
 	Route::get('/resume', 'ExamController@resume')->name('resumeExam');
 	Route::get('/complete', 'ExamController@complete');
 	Route::get('/flush', 'ExamController@flush');
@@ -43,6 +44,7 @@ Route::prefix('exam')->group(function(){
 
 //-----------------------------------------------------------------------------------//
 
+/*
 Route::prefix('form')->group(function(){
 	Route::get('/', 'FormController@index');
 	Route::get('/flush', 'FormController@flush');
@@ -50,6 +52,7 @@ Route::prefix('form')->group(function(){
 	Route::post('/submit', 'FormController@submit')->name('submitForm');
 	Route::get('/lang/{lang}', 'FormController@changeLanguage');
 });
+*/
 
 //-----------------------------------------------------------------------------------//
 

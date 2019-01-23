@@ -11,28 +11,44 @@ Electical Exam - Level {{session('page')}}
             <div class="panel-heading">
                 <center>
 
-                <div class="progress">
-                    <div class="progress-bar @if(session('progress') == sizeof(session('list'))) progress-bar-success @endif " role="progressbar" aria-valuenow="{{session('progress') / sizeof(session('list'))}}" aria-valuemin="0" aria-valuemax="100" style="width:{{sprintf("%.2f", session('progress')) / sprintf("%.2f", sizeof(session('list'))) * 100}}%">
-                      <p style="color:black">
-                        @if(session('progress') == session('pages')) Complete @else {{session('progress') . '/' . session('pages')}} @endif
-                      </p>
-                    </div>
-                </div>
 
-                <h1> Electrical Exam </h1>
-                @if(session('page') == 4)
-                        <h4> Final Level </h4>
-                @else
-                        <h4> Level {{session('page')}} </h4>
-                @endif
+                <h1> {{$data->description->title}} </h1>
+                <h4> {{$data->description->subtitle}} </h4>
+
                 </center>
             </div>
             <div class="panel-body">
                 <form class="form-horizontal" id="examForm" role="form" method="POST" action="{{ route('submitExam', ['level' => session('page')]) }}">
                     
                 {{ csrf_field() }}
+                
+              
 
-                @include('exams.templates.level' . session('page'))
+                <div class="col-lg-12">
+                    <center>
+                        @foreach($data->questions as $q)
+                            <div class="col-lg-12"><h3 name="{{$q->name}}">{{$q->label}}</h3></div>
+                            @foreach($q->choices as $choice)
+                                <div class="col-lg-6">
+                                    <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="{{$q->name}}" value="{{$choice->value}}">
+                                        {{$choice->label}}
+                                    </label>
+                                    </div>
+                                </div>
+                            @endforeach
+
+                            <div class="col-lg-12"><hr></div>
+                        @endforeach
+
+                        <div class="col-lg-12">
+                            <button type="submit">Submit</button>
+                        </div>
+
+                        <div class="col-lg-12"><br></div>
+                    </center>
+                </div>
 
                 </form>
             </div>

@@ -26,7 +26,8 @@ class ExamHelper
 
 	public function getExamList($job)
 	{
-		return $this->examList[$job];
+		return [1,2,3,4];
+		//return $this->examList[$job];
 	}
 
 }

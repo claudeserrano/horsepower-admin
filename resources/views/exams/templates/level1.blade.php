@@ -296,7 +296,7 @@
         <div class="form-check">
           <label class="form-check-label">
             <input class="form-check-input" type="radio" name="ans9" value="4">
-            20 amp
+            20 amps
           </label>
         </div>
     </div>

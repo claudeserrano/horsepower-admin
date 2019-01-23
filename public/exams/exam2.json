@@ -1,0 +1,280 @@
+{
+    "description" : {
+        "title" : "Electrical Exam",
+        "subtitle" : "Level 2"
+    },
+    "questions" : [
+        {
+            "name" : "ans1",
+            "type" : "multiple",
+            "label" : "What size wire should be used for a 50 amp household oven?",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "#6"
+                },
+                {
+                    "value" : 2,
+                    "label" : "#8"
+                },
+                {
+                    "value" : 3,
+                    "label" : "#4"
+                },
+                {
+                    "value" : 4,
+                    "label" : "#1/0"
+                }
+            ]
+        },
+
+        {
+            "name" : "ans2",
+            "type" : "multiple",
+            "label" : "How many inches do you deduct for a 1/2\" EMT 90 &deg;?",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "4 1/2\""
+                },
+                {
+                    "value" : 2,
+                    "label" : "5 1/2\""
+                },
+                {
+                    "value" : 3,
+                    "label" : "5\""
+                },
+                {
+                    "value" : 4,
+                    "label" : "6\""
+                }
+            ]
+        },
+            
+        {
+            "name" : "ans3",
+            "type" : "multiple",
+            "label" : "What size ciruit breaker do you put on a #10 wire?",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "100"
+                },
+                {
+                    "value" : 2,
+                    "label" : "25"
+                },
+                {
+                    "value" : 3,
+                    "label" : "40"
+                },
+                {
+                    "value" : 4,
+                    "label" : "30"
+                }
+            ]
+        },
+            
+        {
+            "name" : "ans4",
+            "type" : "multiple",
+            "label" : "In a house kitchen for a refrigerator, what type of receptable do you install, regular or GFI?",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Regular"
+                },
+                {
+                    "value" : 2,
+                    "label" : "GFCI"
+                },
+                {
+                    "value" : 3,
+                    "label" : "Either is regular or GFCI"
+                },
+                {
+                    "value" : 4,
+                    "label" : "GFCI if it comes with an ice maker"
+                }
+            ]
+        },
+            
+        {
+            "name" : "ans5",
+            "type" : "multiple",
+            "label" : "How do you reverse the rotation of a motor?",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "You turn the motor around"
+                },
+                {
+                    "value" : 2,
+                    "label" : "You swap any of the phases"
+                },
+                {
+                    "value" : 3,
+                    "label" : "A motor is made to run in one direction only"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Change the frequency (Hz) of the power"
+                }
+            ]
+        },
+            
+        {
+            "name" : "ans6",
+            "type" : "tof",
+            "label" : "You have two 90&deg; and two 45&deg; on a EMT. Can you add another 90&deg;?",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Yes"
+                },
+                {
+                    "value" : 2,
+                    "label" : "No"
+                }
+            ]
+        },
+            
+            
+        {
+            "name" : "ans7",
+            "type" : "multiple",
+            "label" : "A run of electrical conduit may not have more than _________________ quarter bends between fittings and outlets.",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "2"
+                },
+                {
+                    "value" : 2,
+                    "label" : "3"
+                },
+                {
+                    "value" : 3,
+                    "label" : "4"
+                },
+                {
+                    "value" : 4,
+                    "label" : "5"
+                }
+            ]
+        },
+            
+            
+        {
+            "name" : "ans8",
+            "type" : "tof",
+            "label" : "The total load on any single overcurrent device in a panel board must not exceed 80% of its capacity where the load continues for 3 or more hours to avoid overheating of the conductor.",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "True"
+                },
+                {
+                    "value" : 2,
+                    "label" : "False"
+                }
+            ]
+        },
+            
+        {
+            "name" : "ans9",
+            "type" : "multiple",
+            "label" : "The wiring method permitted by the NYC electrical code for wiring branch circuits on the outside of the building is?",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "EMT"
+                },
+                {
+                    "value" : 2,
+                    "label" : "PVC Conduit"
+                },
+                {
+                    "value" : 3,
+                    "label" : "NMC Cable"
+                },
+                {
+                    "value" : 4,
+                    "label" : "None of the above"
+                }
+            ]
+        },
+            
+        {
+            "name" : "ans10",
+            "type" : "multiple",
+            "label" : "Dwelling unit balconies are required to have at least one attachment reeptacle when:",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "It has an area of 25 sq. feet"
+                },
+                {
+                    "value" : 2,
+                    "label" : "It has an area of 16 sq. feet"
+                },
+                {
+                    "value" : 3,
+                    "label" : "It is accessible from inside the dwelling unit"
+                },
+                {
+                    "value" : 4,
+                    "label" : "None of the above"
+                }
+            ]
+        },
+            
+        {
+            "name" : "ans11",
+            "type" : "multiple","label" : "Two or more _______________ small-appliance branch circuits shall be provided to supply power for receptacle outlets in the dwelling unit kitchen, dining room, breakfast room, pantry, or similar dining areas.",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "15A"
+                },
+                {
+                    "value" : 2,
+                    "label" : "20A"
+                },
+                {
+                    "value" : 3,
+                    "label" : "30A"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Either 20A or 30A"
+                }
+            ]
+        },
+            
+            {
+            "name" : "ans12",
+            "type" : "multiple",
+            "label" : "The radius of the curve of the inner edge of any bend shall not be less than _____________ for type AC cable.",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Five times the largest conductor within the cable"
+                },
+                {
+                    "value" : 2,
+                    "label" : "Three times the diameter of the cable"
+                },
+                {
+                    "value" : 3,
+                    "label" : "Five times the diameter of the cable"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Six times the outside diameter of the conductors"
+                }
+            ]
+        }
+    ]
+}

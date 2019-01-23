@@ -48,6 +48,7 @@ class ExamController extends Controller
 
         session(['started' => 1]);
 
+        //  Get list of exams to take
         $examList = ExamHelper::getExamList($request->type);
 
         $guest = new Guest;
@@ -62,7 +63,7 @@ class ExamController extends Controller
         session(['page' => session('list')[session('progress')]]);
         session(['pages' => sizeof($examList)]);
 
-        return redirect('exam');
+        return redirect('generate');
 
     }
 
@@ -112,12 +113,24 @@ class ExamController extends Controller
         $scr->save();
 
         $guest = Guest::find(session('id'));
-        $guest->progress += 1;
+
+        //  If score is more than 7 or it's the last exam
+        if($score >= 70 || $guest->progress >= 3)
+            $guest->progress += 1;
+        //  Skip to school exam
+        else{
+            $guest->progress = 3;
+        }
+
         $guest->save();
 
-        $progress = session('progress');
-        session(['progress' => $progress + 1]);
+        //  $progress = session('progress');
+        //  session(['progress' => $progress + 1]);
 
+        //  Put progress in session data
+        session(['progress' => $guest->progress]);
+
+        //  If progress is less than total pages, return exam page, else redirect to completion page
         if(session('progress') < session('pages')){
             session(['page' => session('list')[session('progress')]]);
         }
@@ -150,14 +163,26 @@ class ExamController extends Controller
      */
     public function resume(Request $request)
     {
-
         if(session('progress') < session('pages')){
             return view('exams.exam');
         }
         else{
             return redirect('exam/complete');
         }
+    }
 
+    /**
+     * Generates the exam view.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function generate(Request $request)
+    {
+        $file = 'exams/exam' . (session('progress') + 1) . '.json';
+        $data = json_decode(file_get_contents($file));
+
+        return view('exams.exam')->with(['data' => $data]);
     }
 
     /**

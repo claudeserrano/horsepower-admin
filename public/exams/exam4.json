@@ -1,0 +1,353 @@
+{
+    "description" : {
+        "title" : "Electrical Exam",
+        "subtitle" : "Final Exam"
+    },
+    "questions" : [
+        {
+            "name" : "ans1",
+            "type" : "multiple",
+            "label" : "Ohms Law is the study of how ________________ interrelate to one another.",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Copper, Gold, and Zinc"
+                },
+                {
+                    "value" : 2,
+                    "label" : "Copper, Insulation, and AWG"
+                },
+                {
+                    "value" : 3,
+                    "label" : "Voltage, Resistance, and Amperage"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Electricians, Carpenters, and Masons"
+                }
+            ]
+        },
+        {
+            "name" : "ans2",
+            "type" : "multiple",
+            "label" : "The three items that will dictate the severity of an electrical shock are:",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Location on the jobsite where the accident occurred"
+                },
+                {
+                    "value" : 2,
+                    "label" : "Time and exposure and amount of amperage on the circuit"
+                },
+                {
+                    "value" : 3,
+                    "label" : "Location of where the body was hit"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Only (B) and (C)"
+                }
+            ]
+        },
+        {
+            "name" : "ans3",
+            "type" : "multiple",
+            "label" : "The National Electrical Code Book is revised every:",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "4 1/2 years"
+                },
+                {
+                    "value" : 2,
+                    "label" : "4 years"
+                },
+                {
+                    "value" : 3,
+                    "label" : "3 years"
+                },
+                {
+                    "value" : 4,
+                    "label" : "None of the above"
+                }
+            ]
+        },
+        {
+            "name" : "ans4",
+            "type" : "multiple",
+            "label" : "The resistance, in ohms, of a 25 ampere, 50 millivolt shunt is approximately:",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "2"
+                },
+                {
+                    "value" : 2,
+                    "label" : "0.2"
+                },
+                {
+                    "value" : 3,
+                    "label" : "0.02"
+                },
+                {
+                    "value" : 4,
+                    "label" : "0.002"
+                }
+            ]
+        },
+        {
+            "name" : "ans5",
+            "type" : "multiple",
+            "label" : "A cable composed of two insulated stranded conductors laid parallel, having a common cover, is called a:",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Twin cable"
+                },
+                {
+                    "value" : 2,
+                    "label" : "Duplex cable"
+                },
+                {
+                    "value" : 3,
+                    "label" : "Concentric cable"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Sector cable"
+                }
+            ]
+        },
+        {
+            "name" : "ans6",
+            "type" : "multiple",
+            "label" : "Of the following, the poorest conductor of electricity is:",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Carbon"
+                },
+                {
+                    "value" : 2,
+                    "label" : "Aluminum"
+                },
+                {
+                    "value" : 3,
+                    "label" : "Copper"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Silver"
+                }
+            ]
+        },
+        {
+            "name" : "ans7",
+            "type" : "multiple",
+            "label" : "A service drop refers to the:",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Wire from the power company pole to the side of the building"
+                },
+                {
+                    "value" : 2,
+                    "label" : "Wire from the secondary rack on the building to the meter"
+                },
+                {
+                    "value" : 3,
+                    "label" : "Wire from the building to the fuse or breaker panel"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Conductor voltage drop from the pole to the fuse or breaker panel"
+                }
+            ]
+        },
+        {
+            "name" : "ans8",
+            "type" : "multiple",
+            "label" : "A bell transformer changes:",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "A.C. to D.C."
+                },
+                {
+                    "value" : 2,
+                    "label" : "Low current to low voltage"
+                },
+                {
+                    "value" : 3,
+                    "label" : "High voltage to low voltage"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Low voltage to high current"
+                }
+            ]
+        },
+        {
+            "name" : "ans9",
+            "type" : "multiple",
+            "label" : "In a parallel of circuit lamps, the most current will flow in the branch whose lamp:",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Burns the dimmest"
+                },
+                {
+                    "value" : 2,
+                    "label" : "Has the least amount of resistance"
+                },
+                {
+                    "value" : 3,
+                    "label" : "Has the most resistance"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Has the least wattage"
+                }
+            ]
+        },
+        {
+            "name" : "ans10",
+            "type" : "multiple",
+            "label" : "Determining a positive wire on a single phase line is:",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Possible with a voltmeter"
+                },
+                {
+                    "value" : 2,
+                    "label" : "Possible with an ammeter"
+                },
+                {
+                    "value" : 3,
+                    "label" : "An impossibility"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Possible with a wattmeter"
+                }
+            ]
+        },
+        {
+            "name" : "ans11",
+            "type" : "multiple",
+            "label" : "A voltage of __________________ V is not considered a nominal voltage.",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "600"
+                },
+                {
+                    "value" : 2,
+                    "label" : "277"
+                },
+                {
+                    "value" : 3,
+                    "label" : "208"
+                },
+                {
+                    "value" : 4,
+                    "label" : "None of the above"
+                }
+            ]
+        },
+        {
+            "name" : "ans12",
+            "type" : "multiple",
+            "label" : "Multi-wire branch circuits shall supply only:",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Line to phase loads"
+                },
+                {
+                    "value" : 2,
+                    "label" : "Line to neutral loads"
+                },
+                {
+                    "value" : 3,
+                    "label" : "Line to ground loads"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Phase to phase loads"
+                }
+            ]
+        },
+        {
+            "name" : "ans13",
+            "type" : "multiple",
+            "label" : "Which part of the control circuit does a motor relay belong?",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Signal"
+                },
+                {
+                    "value" : 2,
+                    "label" : "Decision"
+                },
+                {
+                    "value" : 3,
+                    "label" : "Power"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Control"
+                }
+            ]
+        },
+        {
+            "name" : "ans14",
+            "type" : "multiple",
+            "label" : "Sparking at the brushes of a larger DC motor is reduced by:",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Commutators"
+                },
+                {
+                    "value" : 2,
+                    "label" : "Inter-poles"
+                },
+                {
+                    "value" : 3,
+                    "label" : "Additional main poles"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Insulators"
+                }
+            ]
+        },
+        {
+            "name" : "ans15",
+            "type" : "multiple",
+            "label" : "The speed of an AC squirrel cage motor can be changed by:",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Changing the number of poles"
+                },
+                {
+                    "value" : 2,
+                    "label" : "Changing the supply current"
+                },
+                {
+                    "value" : 3,
+                    "label" : "Changing the supply voltage"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Adding inter-poles"
+                }
+            ]
+        }
+    ]
+}

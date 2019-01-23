@@ -1,0 +1,223 @@
+{
+    "description" : {
+        "title" : "Electrical Exam",
+        "subtitle" : "Level 1"
+    },
+    "questions" : [
+        {    
+            "name" : "ans1",
+            "type" : "multiple",
+            "label" : "On a 110 Volt receptacle, on which color screw does the hot conductor go?",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Black"
+                },
+                {
+                    "value" : 2,
+                    "label" : "Gold"
+                },
+                {
+                    "value" : 3,
+                    "label" : "Silver"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Green"
+                }
+            ]
+        },
+        {    
+            "name" : "ans2",
+            "type" : "multiple",
+            "label" : "What is the most frequently used wire size for interior wiring in NYC?",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "8 AWG"
+                },
+                {
+                    "value" : 2,
+                    "label" : "12 AWG"
+                },
+                {
+                    "value" : 3,
+                    "label" : "15 AWG"
+                },
+                {
+                    "value" : 4,
+                    "label" : "18 AWG"
+                }
+            ]
+        },
+        {    
+            "name" : "ans3",
+            "type" : "multiple",
+            "label" : "Which of the following locations would most likely require installation of a GFI Receptacle?",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Living Room"
+                },
+                {
+                    "value" : 2,
+                    "label" : "Closet"
+                },
+                {
+                    "value" : 3,
+                    "label" : "Bedroom"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Bathroom"
+                }
+            ]
+        },
+        {    
+            "name" : "ans4",
+            "type" : "tof",
+            "label" : "All Electrical Metal Enclosures and conuit need to be grounded.",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "True"
+                },
+                {
+                    "value" : 2,
+                    "label" : "False"
+                }
+            ]
+            
+        },
+        {
+            "name" : "ans5",
+            "type" : "tof",
+            "label" : "A 110 volt heater does not need a neutral conductor.",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "True"
+                },
+                {
+                    "value" : 2,
+                    "label" : "False"
+                }
+            ]
+        },
+        {   
+            "name" : "ans6",
+            "type" : "multiple",
+            "label" : "A circuit breaker is a device designed to __________ the circuit automatically on a overcurrent ahead of the circuit breaker.",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Energize"
+                },
+                {
+                    "value" : 2,
+                    "label" : "Reset"
+                },
+                {
+                    "value" : 3,
+                    "label" : "Connect"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Open"
+                }
+            ]
+        },
+        {    
+            "name" : "ans7",
+            "type" : "multiple",
+            "label" : "Which location does not require the use of GFI?",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Bathroom"
+                },
+                {
+                    "value" : 2,
+                    "label" : "Living room"
+                },
+                {
+                    "value" : 3,
+                    "label" : "Kitchen counter tops"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Outdoor outlet"
+                }
+            ]
+        },
+        {    
+            "name" : "ans8",
+            "type" : "multiple",
+            "label" : "What is the maximum distance between two receptacles in a bedroom wall that is 20 foot long with not doors or windows on that wall?",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "8 feet"
+                },
+                {
+                    "value" : 2,
+                    "label" : "12 feet"
+                },
+                {
+                    "value" : 3,
+                    "label" : "10 feet"
+                },
+                {
+                    "value" : 4,
+                    "label" : "18 feet"
+                }
+            ]
+        },
+        {    
+            "name" : "ans9",
+            "type" : "multiple",
+            "label" : "The breaker size shall not exceed ___________ amperes for #12 THHN awg.",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "25 amps"
+                },
+                {
+                    "value" : 2,
+                    "label" : "30 amps"
+                },
+                {
+                    "value" : 3,
+                    "label" : "15 amps"
+                },
+                {
+                    "value" : 4,
+                    "label" : "20 amps"
+                }
+            ]
+        },
+        {    
+            "name" : "ans10",
+            "type" : "multiple",
+            "label" : "On what screw do you connect the power wire on a 3 way switch?",
+            "choices" : [
+                {
+                    "value" : 1,
+                    "label" : "Gold"
+                },
+                {
+                    "value" : 2,
+                    "label" : "Silver"
+                },
+                {
+                    "value" : 3,
+                    "label" : "Green"
+                },
+                {
+                    "value" : 4,
+                    "label" : "Black"
+                }
+            ]
+        }
+    ]
+}

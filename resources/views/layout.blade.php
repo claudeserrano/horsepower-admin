@@ -34,6 +34,8 @@
 
         @yield('content')
 
+        <center>-- local database --</center>
+
         {{ Html::script('js/signature_pad.js') }}
         {{ Html::script('js/sig_app.js') }}
         {{ Html::script('js/app.js') }}

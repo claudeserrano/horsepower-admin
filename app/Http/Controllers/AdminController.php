@@ -136,7 +136,221 @@ class AdminController extends Controller
     {
         $guest = Guest::find($id);
 
+        switch($guest->progress){
+            case 1:
+                $guest->progress = 'Building Trades Benefits Fund';
+                break;
+            case 2:
+                $guest->progress = 'Union Local 363';
+                break;
+            case 3:
+                $guest->progress = 'Files Upload';
+                break;
+            case 4:
+                $guest->progress = 'Complete';
+                break;
+            default:
+                break;
+        }
+
         return view('admin.form.data_emp')->with('guest', $guest);
+    }
+
+    /**
+     * Generate specific employee form
+     *
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    public function generateForm(Request $request, $id)
+    {
+        if(!isset($request->form))
+            abort(500, 'Form not found.');
+        
+        $form = $request->form;
+        $guest = Guest::findOrFail($id);
+        $structure = './tmp/' . $guest->id . '/';
+
+        // To create the nested structure, the $recursive parameter 
+        // to mkdir() must be specified.
+
+        if(!file_exists($structure)){
+          if (!mkdir($structure, 0777, true)) {
+              die('Failed to create folders...');
+          }
+        }
+        $formData = $this->getFormDataArray($guest, $form);
+
+        //  File paths
+        $tmp = env('TMP_PATH', 'tmp/' . $guest->id . '/' );
+
+        $session_id = session()->getId();
+        $filename = $form . $session_id . '.pdf';
+        $sig = $tmp . 'sig.png';
+        $sigpdf = $tmp . 'sig.pdf';
+        $pdftmp = $tmp . 'form.pdf';
+        $first = $tmp . 'first.pdf';
+        $fdf = $tmp . 'fdf.pdf';
+
+        switch($form)
+        {
+          case 'reg':
+            //  Start Registration
+
+            //  Signature image processing
+            $data_uri = $formData['Signature'];
+            $encoded_image = explode(",", $data_uri)[1];
+            $decoded_image = base64_decode($encoded_image);
+
+            //  Copying image to tmp file
+            file_put_contents($sig, $decoded_image);
+
+            $this->image_resize($sig, $sig, 350, 200);
+
+            $x = 175;
+            $y = 270;
+            
+            //  Creating signature PDF file
+            $pdf = new \App\Services\FPDF('P', 'mm', 'A4');
+            $pdf->AddPage();
+            $pdf->Image($sig,$x,$y,-300);
+            file_put_contents($sigpdf, $pdf->output('S'));
+
+            $pdf = file_get_contents('forms/reg.pdf');
+
+            try {
+                file_put_contents($pdftmp, $pdf);
+
+                //  Stamp signature to PDF
+                exec(getenv('LIB_PATH', '') . 'pdftk '. $pdftmp .' stamp ' . $sigpdf . ' output ' . $first);
+
+            } catch (Exception $e) {
+                return dd($e); 
+            }
+
+            unset($formData['Signature']);
+
+            //  Create FDF file for filling up form
+            $dfdf = $this->toFDF($formData);
+            file_put_contents($fdf, $dfdf);
+
+            //  Fill up form with signature & flatten file to remove editing
+            //  No flatten because they have to manually add school and classification
+            exec(getenv('LIB_PATH', '') . 'pdftk '. $first .' fill_form '. $fdf . ' output '. $filename);
+
+            $this->cleanTmp($tmp);
+            //  End registration
+            break;
+          case 'bf':
+            //  BF
+
+            //  Signature image processing
+            $data_uri = $formData['Signature'];
+            $encoded_image = explode(",", $data_uri)[1];
+            $decoded_image = base64_decode($encoded_image);
+            
+            //  Copying image to tmp file
+            file_put_contents($sig, $decoded_image);
+
+            self::image_resize($sig, $sig, 350, 200);
+
+            $x = 127;
+            $y = 240;
+
+            //  Check if using mobile
+            $mobile = new \App\Services\Mobile_Detect();
+            if($mobile->isMobile()){
+                $y -= 3;
+            }
+            
+            //  Creating signature PDF file
+            $pdf = new \App\Services\FPDF('P', 'mm', 'A4');
+            $pdf->AddPage();
+            $pdf->Image($sig,$x,$y,-300);
+            file_put_contents($sigpdf, $pdf->output('S'));
+
+            $pdf = file_get_contents('forms/bf.pdf');
+
+            try {
+                file_put_contents($pdftmp, $pdf);
+
+                exec(getenv("LIB_PATH") . 'pdftk '. $pdftmp .' stamp ' . $sigpdf . ' output ' . $first);
+            } 
+            catch (Exception $e) {
+                return $e; 
+            }
+
+            unset($formData['Signature']);
+
+            $dfdf = self::toFDF($formData);
+
+            file_put_contents($fdf, $dfdf);
+
+            exec(getenv("LIB_PATH") . "pdftk ". $first ." fill_form ". $fdf . " output ". $filename);
+
+            //  End BF
+            break;
+          case 'union':
+            //  Union
+
+            //  Signature image processing
+            $data_uri = $formData['Signature'];
+            $encoded_image = explode(",", $data_uri)[1];
+            $decoded_image = base64_decode($encoded_image);
+
+            //  Copying image to tmp file
+            file_put_contents($sig, $decoded_image);
+
+            self::image_resize($sig, $sig, 350, 200);
+
+            //  Check if using mobile
+            $x1 = 9.25;
+            $x2 = 3.5;
+            $y1 = 3.30;
+            $y2 = 5.15;
+            $y3 = 7.55;
+            
+            //  Creating signature PDF file
+            $pdf = new \App\Services\FPDF('L', 'in', [11, 8.52]);
+            $pdf->AddPage();
+            $pdf->Image($sig,$x1,$y1,-300);
+            $pdf->Image($sig,$x1,$y2,-300);
+            $pdf->Image($sig,$x2,$y3,-300);
+            file_put_contents($sigpdf, $pdf->output('S'));
+
+            $pdf = file_get_contents('forms/union.pdf');
+
+            try {
+                file_put_contents($pdftmp, $pdf);
+
+                exec(getenv("LIB_PATH") . 'pdftk '. $pdftmp .' stamp ' . $sigpdf . ' output ' . $first);
+            } 
+            catch (Exception $e) {
+                return $e; 
+            }
+            unset($formData['Signature']);
+
+            $dfdf = self::toFDF($formData);
+
+            file_put_contents($fdf, $dfdf);
+
+            exec(getenv("LIB_PATH") . "pdftk ". $first ." fill_form ". $fdf . " output ". $filename);
+
+            //  End Union
+            break;
+          default:
+            break;
+        }
+
+        return $filename;
+    }
+
+    public function downloadFile($id, $filename){
+        if(!isset($filename))
+            abort(500, 'Form not found.');
+        else{
+            return response()->download($filename)->deleteFileAfterSend(true);
+        }
     }
 
     /**
@@ -147,7 +361,6 @@ class AdminController extends Controller
      */
     public function generateData($id)
     {
-        // return $this->generateFormData($id);
         return $this->generateForms($id);
     }
 
@@ -159,10 +372,11 @@ class AdminController extends Controller
         // To create the nested structure, the $recursive parameter 
         // to mkdir() must be specified.
 
-        if(!file_exists($structure))
+        if(!file_exists($structure)){
           if (!mkdir($structure, 0777, true)) {
               die('Failed to create folders...');
           }
+        }
           
         $reg = $this->getFormDataArray($guest, 'reg');
         $bf = $this->getFormDataArray($guest, 'bf');
@@ -336,7 +550,7 @@ class AdminController extends Controller
             }
         }
 
-        $zipname = 'file.zip';
+        $zipname = $guest->id . ' ' . $guest->name . '.zip';
         $zip = new \ZipArchive;
         $zip->open($zipname, \ZipArchive::CREATE);
         foreach ($forms as $form) {
@@ -347,7 +561,7 @@ class AdminController extends Controller
 
         $this->cleanTmp($tmp);
 
-        return response()->download($zipname);
+        return response()->download($zipname)->deleteFileAfterSend(true);
 
     }
 

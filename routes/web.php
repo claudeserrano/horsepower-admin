@@ -24,6 +24,8 @@ Route::prefix('admin')->group(function(){
 	Route::get('/form/list', 'AdminController@getNewHireList');
 	Route::get('/form/data/{id}', 'AdminController@getNewHireData');
 	Route::get('/form/data/{id}/generate', 'AdminController@generateData');
+	Route::get('/form/data/{id}/getForm', 'AdminController@generateForm');
+	Route::get('/form/data/{id}/download/{filename}', 'AdminController@downloadFile');
 });
 
 // Route::get('/admin/employees/new', 'UsersController@getNewEmployeesView')->name('getnewview');
